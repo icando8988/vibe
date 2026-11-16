@@ -30,7 +30,7 @@ lint·typecheck exit 0, `npm test` 10 files / 186 tests 통과(QA-MKT-002 기준
 
 ### 배포 (Vercel)
 
-GitHub `main` push 시 Vercel이 자동 배포한다(Hobby, 프로젝트 `vibe`). 프로젝트 설정 Node.js Version = **24.x**(CI와 동일). Production 환경변수는 공개 값 2개(, )뿐이다. secret key는 쓰지 않는다. Preview 배포에는 변수가 없어 로그인 미연결로 표시된다.
+GitHub `main` push 시 Vercel이 자동 배포한다(Hobby, 프로젝트 `vibe`). 프로젝트 설정 Node.js Version = **24.x**(CI와 동일). Production 환경변수는 공개 값 2개(`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`)뿐이다. secret key는 쓰지 않는다. Preview 배포에는 변수가 없어 로그인 미연결로 표시된다.
 
 ### Windows 개발 ↔ Linux CI 차이
 
