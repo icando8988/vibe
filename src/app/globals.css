@@ -1,0 +1,23 @@
+/*
+ * 앱 전역 기본값. 색·글꼴·간격은 디자인 시스템(src/styles/design.css, CX-DESIGN-01)이 담당하므로
+ * 여기에는 디자인과 겹치지 않는 최소 규칙만 둔다. layout에서 이 파일 다음에 design.css를 불러온다.
+ */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+img,
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* 라우트 본문 공통: 일반 목록 가독성 */
+.app-prose ol,
+.app-prose ul {
+  padding-left: 1.4em;
+}
+.app-prose li + li {
+  margin-top: 0.5rem;
+}

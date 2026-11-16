@@ -1,0 +1,54 @@
+# 검사 전용 CI (CI-001). 배포·비밀값·원격 쓰기 없음.
+# 로컬 검증 순서와 같다: npm ci → lint → test → build → typecheck
+# typecheck를 build 뒤에 두는 이유: tsconfig가 build가 만드는 .next/types를 포함한다.
+# 깨끗한 CI에서는 오래된 .next가 없으므로 로컬에서 겪은 '삭제한 라우트의 타입 잔여' 문제는 생기지 않는다.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# 읽기 전용. pull_request_target 같은 특권 트리거는 쓰지 않는다.
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: lint · test · build · typecheck
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      # 공식 action, 릴리스 태그가 가리키는 커밋 SHA로 고정 (2026-11-16 확인)
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Install (lockfile)
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Typecheck
+        run: npm run typecheck
