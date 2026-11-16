@@ -141,12 +141,12 @@ describe("함수 보안 속성", () => {
         db,
         null,
         null,
-        `select prosecdef, proconfig from pg_proc where proname = $1 and pronamespace = 'public'::regnamespace`,
+        `select prosecdef, proconfig from pg_proc where proname = $1 and pronamespace = 'private'::regnamespace`,
         [fn],
       );
       expect(meta.rows[0]?.prosecdef, fn).toBe(true);
       expect(meta.rows[0]?.proconfig, fn).toEqual(['search_path=""']);
-      const sig = `public.${fn}()`;
+      const sig = `private.${fn}()`;
       const priv = await run(
         db,
         null,

@@ -123,7 +123,7 @@ describe("회원 데이터 — anon은 전부 거절", () => {
     },
   );
   it("anon: 역할 함수 실행 불가, auth.users 조회 불가", async () => {
-    expect((await anon("select public.is_admin()")).code).toBe(DENIED);
+    expect((await anon("select private.is_admin()")).code).toBe(DENIED);
     expect((await anon("select 1 from auth.users")).code).toBe(DENIED);
   });
 });
@@ -167,10 +167,10 @@ describe("프로필 — 자기 승인·승격 불가, display_name만 수정", (
   });
 
   it("역할 함수: 호출자 본인만 판정", async () => {
-    expect((await member(U.A, "select public.is_admin() as v")).rows[0]?.v).toBe(false);
-    expect((await member(U.ADM, "select public.is_admin() as v")).rows[0]?.v).toBe(true);
-    expect((await member(U.P, "select public.is_approved_member() as v")).rows[0]?.v).toBe(false);
-    expect((await member(U.A, "select public.is_approved_member() as v")).rows[0]?.v).toBe(true);
+    expect((await member(U.A, "select private.is_admin() as v")).rows[0]?.v).toBe(false);
+    expect((await member(U.ADM, "select private.is_admin() as v")).rows[0]?.v).toBe(true);
+    expect((await member(U.P, "select private.is_approved_member() as v")).rows[0]?.v).toBe(false);
+    expect((await member(U.A, "select private.is_approved_member() as v")).rows[0]?.v).toBe(true);
   });
 });
 
