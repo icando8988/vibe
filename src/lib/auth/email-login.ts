@@ -1,5 +1,6 @@
 /**
- * 이메일 로그인(매직 링크) 순수 규칙. Supabase 호출은 서버 액션에서만 한다.
+ * 이메일+비밀번호 로그인 순수 규칙. Supabase 호출은 서버 액션에서만 한다.
+ * 메일 링크(가입 인증·비밀번호 재설정)는 /auth/callback 으로 돌아온다.
  */
 import { safeReturnTo } from "@/lib/domain/input";
 
@@ -37,11 +38,39 @@ export function buildEmailRedirect(origin: string, rawReturnTo: unknown): string
   return url.toString();
 }
 
-export type LoginNotice = "sent" | "invalid_email" | "unavailable" | "callback_failed" | "signed_out" | null;
+/** 비밀번호: 8자 이상, 72바이트 이하(bcrypt 한도), 공백만으로 된 값 거절. 원문은 다듬지 않는다. */
+export const PASSWORD_MIN = 8;
+export const PASSWORD_MAX_BYTES = 72;
+export function validatePassword(raw: unknown): string | null {
+  if (typeof raw !== "string") return null;
+  if (raw.length < PASSWORD_MIN || new TextEncoder().encode(raw).length > PASSWORD_MAX_BYTES) return null;
+  if (raw.trim().length === 0) return null;
+  return raw;
+}
 
-export function parseLoginNotice(raw: unknown): LoginNotice {
+export type LoginMode = "login" | "signup" | "reset";
+export function parseLoginMode(raw: unknown): LoginMode {
   const v = Array.isArray(raw) ? raw[0] : raw;
-  return v === "sent" || v === "invalid_email" || v === "unavailable" || v === "callback_failed" || v === "signed_out"
-    ? v
-    : null;
+  return v === "signup" || v === "reset" ? v : "login";
+}
+
+export const LOGIN_NOTICES = [
+  "invalid_email",
+  "invalid_password",
+  "password_mismatch",
+  "invalid_login",
+  "email_not_confirmed",
+  "signup_sent",
+  "reset_sent",
+  "password_updated",
+  "rate_limited",
+  "unavailable",
+  "callback_failed",
+  "signed_out",
+] as const;
+export type LoginNotice = (typeof LOGIN_NOTICES)[number];
+
+export function parseLoginNotice(raw: unknown): LoginNotice | null {
+  const v = Array.isArray(raw) ? raw[0] : raw;
+  return typeof v === "string" && (LOGIN_NOTICES as readonly string[]).includes(v) ? (v as LoginNotice) : null;
 }

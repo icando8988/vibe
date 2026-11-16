@@ -1,6 +1,6 @@
 # 세계일주·출판 프로젝트 웹앱 (가칭)
 
-비공개 개발 단계. 2026-11-16 기준(DEV-004A). 이메일 로그인과 Supabase(서울)는 연결됐다. 거래·외부 게시는 **연결되지 않았다**. 화면이 있다고 기능이 완료된 것이 아니다.
+비공개 개발 단계. 2026-11-16 기준(DEV-004A). 이메일+비밀번호 로그인과 Supabase(서울)는 연결됐다. 거래·외부 게시는 **연결되지 않았다**. 화면이 있다고 기능이 완료된 것이 아니다.
 
 ## 실행
 
@@ -51,7 +51,7 @@ GitHub `main` push 시 Vercel이 자동 배포한다(Hobby, 프로젝트 `vibe`)
 | 이야기(/stories) | 저장소가 비어 있어 빈 상태 안내. 공개 판정(게시·공개 허용·검토·출처 확인·게시 시각)을 통과한 글만 보인다 |
 | 이야기 변경 반영 | **빌드 시점에 확정된다.** 상세 라우트가 `dynamicParams = false` + `generateStaticParams`라서 글 추가·공개 변경·예약 게시 시각 도래는 재빌드(재배포)해야 반영된다. 저장소를 DB/CMS로 바꾸거나 예약 게시를 연결하기 전에 이 방식을 다시 정해야 한다(이유: `docs/qa/MKT-006/README.md`) |
 | 없는 주소 404 | 라우팅 단계 404로 서버 HTML에 안내·복구 링크 포함(JS 없이도 보임). 페이지 렌더 중 `notFound()`는 Next 16.4.6에서 빈 오류 셸을 보내므로 새 동적 라우트에서도 같은 방식을 쓴다 |
-| 로그인·회원 | 이메일 매직 링크(`/login` → `/auth/callback`), POST 로그아웃. 가입 시 승인 대기 프로필 자동 생성. `getViewer`는 Auth 서버 검증 + RLS 본인 행. 카카오·관리자 승인 화면은 미구현. 메일은 Supabase 기본 SMTP(조직 구성원 주소만, 소량) |
+| 로그인·회원 | 이메일+비밀번호(`/login` 로그인·`?mode=signup` 가입·`?mode=reset` 비밀번호 찾기 → `/login/update-password`). 가입 인증·재설정 메일 링크는 `/auth/callback`. 비밀번호 8자 이상(Supabase 최소 길이도 8). POST 로그아웃. 가입 시 승인 대기 프로필 자동 생성. `getViewer`는 Auth 서버 검증 + RLS 본인 행. 카카오·관리자 승인 화면은 미구현. 메일은 Supabase 기본 SMTP(조직 구성원 주소만, 소량) |
 | 거래 | `POST /api/participations` 항상 503. `TRANSACTIONS_ENABLED = false` 코드 상수 |
 | 콘텐츠 배포(블로그·Threads·Instagram) | `src/lib/distribution`에 공통 타입·상태 전이만. 실제 공급자 어댑터 없음(live는 NOT_CONNECTED, dry-run은 미리보기만). **자동포스팅 프로그램 미제공** |
 | 외부 호출·추적 | `src`에 fetch·외부 스크립트·분석 태그 없음 |

@@ -1,6 +1,13 @@
 import { describe, expect, it } from "vitest";
 import { parseSupabaseConfig } from "@/lib/supabase/config";
-import { buildEmailRedirect, normalizeEmail, parseLoginNotice, resolveSiteOrigin } from "@/lib/auth/email-login";
+import {
+  buildEmailRedirect,
+  normalizeEmail,
+  parseLoginMode,
+  parseLoginNotice,
+  resolveSiteOrigin,
+  validatePassword,
+} from "@/lib/auth/email-login";
 import { decideAccess, toApproval, toRoles } from "@/lib/auth/viewer";
 
 describe("parseSupabaseConfig", () => {
@@ -64,9 +71,29 @@ describe("buildEmailRedirect", () => {
 
 describe("parseLoginNotice", () => {
   it("허용 목록만", () => {
-    expect(parseLoginNotice("sent")).toBe("sent");
+    expect(parseLoginNotice("signup_sent")).toBe("signup_sent");
+    expect(parseLoginNotice("sent")).toBeNull();
     expect(parseLoginNotice(["callback_failed"])).toBe("callback_failed");
     expect(parseLoginNotice("<script>")).toBeNull();
+  });
+});
+
+describe("validatePassword", () => {
+  it("8자 이상 허용, 원문 그대로", () => {
+    expect(validatePassword(" abcd1234 ")).toBe(" abcd1234 ");
+    expect(validatePassword("한글비밀번호입니다")).toBe("한글비밀번호입니다");
+  });
+  it.each(["", "short1", "        ", "a".repeat(73), "가".repeat(25), undefined, 12345678])("거절: %s", (v) => {
+    expect(validatePassword(v)).toBeNull();
+  });
+});
+
+describe("parseLoginMode", () => {
+  it("알 수 없는 값은 login", () => {
+    expect(parseLoginMode("signup")).toBe("signup");
+    expect(parseLoginMode(["reset"])).toBe("reset");
+    expect(parseLoginMode("admin")).toBe("login");
+    expect(parseLoginMode(undefined)).toBe("login");
   });
 });
 
