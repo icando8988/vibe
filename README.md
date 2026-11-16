@@ -1,6 +1,6 @@
 # 세계일주·출판 프로젝트 웹앱 (가칭)
 
-비공개 개발 단계. 2026-11-16 기준(INT-002 정리). 인증·DB·거래·외부 게시는 **연결되지 않았다**. 화면이 있다고 기능이 완료된 것이 아니다.
+비공개 개발 단계. 2026-11-16 기준(DEV-004A). 이메일 로그인과 Supabase(서울)는 연결됐다. 거래·외부 게시는 **연결되지 않았다**. 화면이 있다고 기능이 완료된 것이 아니다.
 
 ## 실행
 
@@ -30,7 +30,7 @@ lint·typecheck exit 0, `npm test` 10 files / 186 tests 통과(QA-MKT-002 기준
 
 ### 배포 (Vercel)
 
-GitHub `main` push 시 Vercel이 자동 배포한다(Hobby, 프로젝트 `vibe`). 프로젝트 설정 Node.js Version = **24.x**(CI와 동일). 환경변수 없음 — 앱은 '미연결' 상태로 배포된다. Supabase(서울 리전 프로젝트)에는 초기 migration만 적용했고 앱과 연결하지 않았다.
+GitHub `main` push 시 Vercel이 자동 배포한다(Hobby, 프로젝트 `vibe`). 프로젝트 설정 Node.js Version = **24.x**(CI와 동일). Production 환경변수는 공개 값 2개(, )뿐이다. secret key는 쓰지 않는다. Preview 배포에는 변수가 없어 로그인 미연결로 표시된다.
 
 ### Windows 개발 ↔ Linux CI 차이
 
@@ -51,7 +51,7 @@ GitHub `main` push 시 Vercel이 자동 배포한다(Hobby, 프로젝트 `vibe`)
 | 이야기(/stories) | 저장소가 비어 있어 빈 상태 안내. 공개 판정(게시·공개 허용·검토·출처 확인·게시 시각)을 통과한 글만 보인다 |
 | 이야기 변경 반영 | **빌드 시점에 확정된다.** 상세 라우트가 `dynamicParams = false` + `generateStaticParams`라서 글 추가·공개 변경·예약 게시 시각 도래는 재빌드(재배포)해야 반영된다. 저장소를 DB/CMS로 바꾸거나 예약 게시를 연결하기 전에 이 방식을 다시 정해야 한다(이유: `docs/qa/MKT-006/README.md`) |
 | 없는 주소 404 | 라우팅 단계 404로 서버 HTML에 안내·복구 링크 포함(JS 없이도 보임). 페이지 렌더 중 `notFound()`는 Next 16.4.6에서 빈 오류 셸을 보내므로 새 동적 라우트에서도 같은 방식을 쓴다 |
-| 로그인·회원 | 미연결. `/me`, `/admin`은 개인·운영 데이터를 렌더하지 않는다 |
+| 로그인·회원 | 이메일 매직 링크(`/login` → `/auth/callback`), POST 로그아웃. 가입 시 승인 대기 프로필 자동 생성. `getViewer`는 Auth 서버 검증 + RLS 본인 행. 카카오·관리자 승인 화면은 미구현. 메일은 Supabase 기본 SMTP(조직 구성원 주소만, 소량) |
 | 거래 | `POST /api/participations` 항상 503. `TRANSACTIONS_ENABLED = false` 코드 상수 |
 | 콘텐츠 배포(블로그·Threads·Instagram) | `src/lib/distribution`에 공통 타입·상태 전이만. 실제 공급자 어댑터 없음(live는 NOT_CONNECTED, dry-run은 미리보기만). **자동포스팅 프로그램 미제공** |
 | 외부 호출·추적 | `src`에 fetch·외부 스크립트·분석 태그 없음 |
@@ -103,4 +103,4 @@ tests/                  domain · distribution · content (npm test) / db (별�
 
 ## 미연결·미결
 
-인증(이메일·카카오), Supabase 연결, 신청/취소/입금/환불 쓰기, 알림, 관리 기능, 외부 게시는 미구현. 목표 기준·입금 순서·만료·1인 상한·수수료는 DEC-002/003 결정 전이라 확정하지 않았다(`POLICY-PENDING` 주석). 승인된 이야기 원문, 공개 사이트 주소, 자동포스팅 프로그램은 아직 받지 않았다.
+카카오 로그인, 관리자 승인, 커스텀 메일(SMTP), 신청/취소/입금/환불 쓰기, 알림, 관리 기능, 외부 게시는 미구현. 목표 기준·입금 순서·만료·1인 상한·수수료는 DEC-002/003 결정 전이라 확정하지 않았다(`POLICY-PENDING` 주석). 승인된 이야기 원문, 공개 사이트 주소, 자동포스팅 프로그램은 아직 받지 않았다.
