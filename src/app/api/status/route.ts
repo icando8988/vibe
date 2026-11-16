@@ -10,7 +10,7 @@ export function GET() {
   const s = getIntegrationStatus();
   return NextResponse.json(
     {
-      stage: "DEV-001",
+      stage: "DEV-004",
       supabaseConfigured: s.supabaseConfigured,
       authConnected: s.authConnected,
       transactionsEnabled: s.transactionsEnabled,

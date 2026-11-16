@@ -42,7 +42,9 @@ beforeAll(async () => {
     `insert into auth.users (id) values ('${U.A}'), ('${U.B}'), ('${U.P}'), ('${U.ADM}');
      insert into public.profiles (id, display_name, approval_status) values
        ('${U.A}', 'tester-a', 'approved'), ('${U.B}', 'tester-b', 'approved'),
-       ('${U.P}', 'tester-p', 'pending'), ('${U.ADM}', 'tester-admin', 'approved');
+       ('${U.P}', 'tester-p', 'pending'), ('${U.ADM}', 'tester-admin', 'approved')
+       -- 가입 트리거가 이미 pending 프로필을 만들었으므로 덮어쓴다.
+       on conflict (id) do update set display_name = excluded.display_name, approval_status = excluded.approval_status;
      insert into public.role_assignments (user_id, role, granted_by) values ('${U.ADM}', 'admin', '${U.ADM}');
 
      insert into public.projects (id, slug, title, publication_status) values
