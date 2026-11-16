@@ -30,7 +30,7 @@ lint·typecheck exit 0, `npm test` 10 files / 186 tests 통과(QA-MKT-002 기준
 
 ### 배포 (Vercel)
 
-GitHub `main` push 시 Vercel이 자동 배포한다(Hobby, 프로젝트 `vibe`). 프로젝트 설정 Node.js Version = **24.x**(CI와 동일). 환경변수 없음 — 앱은 '미연결' 상태로 배포된다. Supabase(서울 리전 프로젝트)는 생성만 했고 앱과 연결하지 않았다.
+GitHub `main` push 시 Vercel이 자동 배포한다(Hobby, 프로젝트 `vibe`). 프로젝트 설정 Node.js Version = **24.x**(CI와 동일). 환경변수 없음 — 앱은 '미연결' 상태로 배포된다. Supabase(서울 리전 프로젝트)에는 초기 migration만 적용했고 앱과 연결하지 않았다.
 
 ### Windows 개발 ↔ Linux CI 차이
 
@@ -55,7 +55,7 @@ GitHub `main` push 시 Vercel이 자동 배포한다(Hobby, 프로젝트 `vibe`)
 | 거래 | `POST /api/participations` 항상 503. `TRANSACTIONS_ENABLED = false` 코드 상수 |
 | 콘텐츠 배포(블로그·Threads·Instagram) | `src/lib/distribution`에 공통 타입·상태 전이만. 실제 공급자 어댑터 없음(live는 NOT_CONNECTED, dry-run은 미리보기만). **자동포스팅 프로그램 미제공** |
 | 외부 호출·추적 | `src`에 fetch·외부 스크립트·분석 태그 없음 |
-| DB | `supabase/migrations` 초기 스키마·RLS·열 권한 작성. **실제 DB에서 실행 검증 안 함**(`tests/db`는 실행기 준비 후 실행) |
+| DB | `supabase/migrations` 초기 스키마·RLS·열 권한. 2026-11-16 서울 Supabase 프로젝트에 적용, 권한 구조·역할 전환 점검 통과. 행 단위 RLS 매트릭스(`tests/db`)는 **미실행**. 앱과는 아직 연결 안 함 |
 
 ## 버전 고정과 근거 (2026-11-16 확인)
 
