@@ -26,14 +26,18 @@ lint·typecheck exit 0, `npm test` 10 files / 186 tests 통과(QA-MKT-002 기준
 `.github/workflows/ci.yml` — `main` push와 pull request에서 `npm ci → lint → test → build → typecheck`를 실행한다(로컬 순서와 같음).
 - 권한 `contents: read`만. 배포·비밀값·원격 쓰기·특권 트리거 없음. 공식 action을 커밋 SHA로 고정했다.
 - Node 버전은 `.nvmrc`(24)를 따른다. npm 캐시 키는 `package-lock.json`.
-- **아직 GitHub에서 한 번도 실행하지 않았다**(원격 저장소 미설정). 첫 push 뒤 결과를 확인해야 한다. 근거·대기 항목: `../docs/CI_VERIFICATION.md`(루트 문서 폴더, 이 저장소 밖).
+- 첫 실행(2026-11-16, 커밋 `854285e`) 통과: Node v24.22.2에서 install·lint·test·build·typecheck 모두 성공. 근거: `../docs/CI_VERIFICATION.md`(루트 문서 폴더, 이 저장소 밖).
+
+### 배포 (Vercel)
+
+GitHub `main` push 시 Vercel이 자동 배포한다(Hobby, 프로젝트 `vibe`). 프로젝트 설정 Node.js Version = **24.x**(CI와 동일). 환경변수 없음 — 앱은 '미연결' 상태로 배포된다. Supabase(서울 리전 프로젝트)는 생성만 했고 앱과 연결하지 않았다.
 
 ### Windows 개발 ↔ Linux CI 차이
 
 | 항목 | 로컬(Windows) | CI(ubuntu-latest) |
 |---|---|---|
 | npm 실행 | PowerShell에서 `npm.cmd` | `npm` |
-| Node | 26.13.0(현재 Active LTS 계열) | `.nvmrc` 24 |
+| Node | 26.13.0(현재 Active LTS 계열) | `.nvmrc` 24 (Vercel도 24.x) |
 | 파일 경로 대소문자 | 구분 안 함 | **구분함**. import 경로는 실제 파일명과 대소문자까지 같아야 한다(2026-11-16 점검: 문제 0건) |
 | `.next` 잔여물 | 라우트를 지운 뒤 typecheck를 build보다 먼저 돌리면 옛 타입 때문에 실패할 수 있음 → build 후 typecheck | 매번 깨끗한 checkout이라 해당 없음 |
 | 줄바꿈 | CRLF일 수 있음 | LF. 현재 검사 도구들은 줄바꿈에 영향받지 않음 |
