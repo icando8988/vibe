@@ -67,6 +67,9 @@ const TOKEN_MAP: Readonly<Record<string, ConsoleErrorCode>> = {
   RIGHTS_NOT_APPROVED: "invalid_input",
   RIGHTS_EXPIRED: "invalid_input",
   CHANNEL_NOT_ALLOWED: "invalid_input",
+  // 리비전 미디어(150000, check_violation) — BE-REVISION-MEDIA-037
+  MEDIA_NOT_OWNED: "invalid_input",
+  MEDIA_DUPLICATE: "invalid_input",
 };
 
 /** M4 미디어 거절 세부 사유(허용 목록). BE-MEDIA-024. */
@@ -78,6 +81,8 @@ const MEDIA_REASON_BY_TOKEN = {
   RIGHTS_NOT_APPROVED: "rights_not_approved",
   RIGHTS_EXPIRED: "rights_expired",
   CHANNEL_NOT_ALLOWED: "channel_not_allowed",
+  MEDIA_NOT_OWNED: "media_not_owned",
+  MEDIA_DUPLICATE: "media_duplicate",
 } as const;
 export type MediaErrorReason = (typeof MEDIA_REASON_BY_TOKEN)[keyof typeof MEDIA_REASON_BY_TOKEN];
 export const MEDIA_ERROR_REASONS: readonly MediaErrorReason[] = Object.freeze(Object.values(MEDIA_REASON_BY_TOKEN));

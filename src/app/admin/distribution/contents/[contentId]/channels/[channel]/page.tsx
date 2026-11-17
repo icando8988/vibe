@@ -3,10 +3,14 @@ import { ActionForm } from "@/components/distribution-console/action-form";
 import { ConsoleShell } from "@/components/distribution-console/console-shell";
 import { denyUnlessDistributionAdmin } from "@/components/distribution-console/guard";
 import { CHANNEL_INFO, CHANNELS, isChannel, isWellFormedId } from "@/components/distribution-console/readiness";
+import { MEDIA_REASON_FIELD_LABELS, requestNow } from "@/components/distribution-console/media-labels";
+import { selectorModel, type CandidateSource } from "@/components/distribution-console/revision-media";
+import { RevisionMediaSelector } from "@/components/distribution-console/revision-media-selector";
 import { IdLine, InvalidParam, ModeTable } from "@/components/distribution-console/states";
 import { ReadStateNotice, WriteNoticeView } from "@/components/distribution-console/write-notice-view";
 import { isWriteConfigured, loadContentDetail } from "@/server/distribution/content-page";
 import { APPROVAL_LABEL } from "@/server/distribution/dto";
+import { loadMediaList } from "../../../../media/load";
 import { appendDraftRevisionAction, createChannelDraftAction } from "../../../actions";
 
 export const dynamic = "force-dynamic";
@@ -17,7 +21,9 @@ const TEXT_STYLE = { whiteSpace: "pre-wrap" as const };
 /**
  * W4 채널 초안(A3 만들기, A4 리비전 저장) — AUTOPOST-CONTENT-CONNECT-014.
  * 기대 리비전 번호와 기대 원문 버전 ID는 렌더 값 그대로 보낸다(원문이 그 사이 바뀌면 STALE_CONTENT_VERSION).
- * Blog 제목은 원문 버전 title을 그대로 쓴다(리비전에 별도 제목 없음). 이미지·대상 계정은 아직 연결하지 않는다.
+ * Blog 제목은 원문 버전 title을 그대로 쓴다(리비전에 별도 제목 없음). 대상 계정은 아직 연결하지 않는다.
+ * Instagram 이미지(FE-REVISION-MEDIA-038): 단일 이미지 선택을 기존 hidden `preserveMedia`와 같은 JSON 형식으로 보낸다.
+ * 첨부 조회 실패는 detail 전체 오류라 저장 폼 자체가 없다. 목록 조회만 실패하면 현재 첨부를 유지하고 변경을 잠근다.
  */
 export default async function ChannelDraftPage({
   params,
@@ -46,6 +52,13 @@ export default async function ChannelDraftPage({
   const draft = detail?.drafts[channel] ?? null;
   const current = detail?.current ?? null;
   const canWrite = isWriteConfigured() && detail !== null && !detail.archived && !(draft?.archived ?? false);
+  // Instagram 초안 편집 폼이 있을 때만 이미지 후보를 읽는다(최근 100건, 서명 URL 없음).
+  let mediaModel: ReturnType<typeof selectorModel> | null = null;
+  if (channel === "instagram" && draft && current) {
+    const { view } = await loadMediaList();
+    const source: CandidateSource = view.state === "ok" ? { state: "ok", assets: view.assets } : { state: view.state };
+    mediaModel = selectorModel({ state: "ok", items: draft.revision?.media ?? [] }, source, requestNow());
+  }
 
   return (
     <ConsoleShell
@@ -108,7 +121,12 @@ export default async function ChannelDraftPage({
                   </button>
               </ActionForm>
             ) : (
-              <ActionForm action={appendDraftRevisionAction} disabled={!canWrite} className="ds-editor-fields">
+              <ActionForm
+                action={appendDraftRevisionAction}
+                disabled={!canWrite}
+                className="ds-editor-fields"
+                fieldLabels={{ ...MEDIA_REASON_FIELD_LABELS, body: channel === "instagram" ? "캡션" : channel === "threads" ? "글" : "본문", linkUrl: "링크", preserved: channel === "instagram" ? "보존 값·이미지 첨부(새로 불러와 다시 확인)" : "보존 값(새로 불러와 다시 확인)" }}
+              >
                 <input type="hidden" name="contentId" value={contentId} />
                 <input type="hidden" name="channel" value={channel} />
                 <input type="hidden" name="draftId" value={draft.id} />
@@ -117,7 +135,7 @@ export default async function ChannelDraftPage({
                 <input type="hidden" name="expectedContentVersionId" value={current.id} />
                 {/* 이 화면이 편집하지 않는 값은 직전 리비전 값을 그대로 보존(빈 값으로 소실 방지) */}
                 <input type="hidden" name="preserveUtm" value={JSON.stringify(draft.revision?.utm ?? {})} />
-                <input type="hidden" name="preserveMedia" value={JSON.stringify(draft.revision?.media ?? [])} />
+                {mediaModel ? null : <input type="hidden" name="preserveMedia" value={JSON.stringify(draft.revision?.media ?? [])} />}
                 <input type="hidden" name="preserveTargetConnectionId" value={draft.revision?.targetConnectionId ?? ""} />
                 <input type="hidden" name="preserveTargetAccountId" value={draft.revision?.targetExternalAccountId ?? ""} />
                   <p><strong>
@@ -126,6 +144,7 @@ export default async function ChannelDraftPage({
                   {channel === "blog" ? <p className="ds-muted">Blog 제목은 원문 제목을 그대로 씁니다: {current.title}</p> : null}
                   <label htmlFor="d-body">{channel === "instagram" ? "캡션" : channel === "threads" ? "글" : "본문"}</label>
                   <textarea id="d-body" name="body" rows={12} required defaultValue={draft.revision?.body ?? current.body} />
+                  {mediaModel ? <RevisionMediaSelector key={`r${draft.currentRevisionNo}`} model={mediaModel} fieldName="preserveMedia" /> : null}
                   {channel === "threads" ? (
                     <>
                       <label htmlFor="d-link">링크(선택, https)</label>
@@ -145,11 +164,11 @@ export default async function ChannelDraftPage({
             {!canWrite ? <p className="ds-muted dc-reason">저장 준비 전이거나 보관된 원문·초안이라 저장할 수 없습니다.</p> : null}
             {channel === "instagram" ? (
               <p className="ds-muted">
-                이 초안에 이미지 1장을 붙이는 화면은 아직 없습니다. 이미지 없는 캡션은 게시 준비가 아닙니다. 게시에 쓸 이미지의 처리·권리 상태는{" "}
+                이미지는 위 초안 폼에서 1장을 고르고 초안을 저장해야 붙습니다. 이미지 없는 캡션은 게시 준비가 아닙니다. 이미지 업로드·권리 결정은{" "}
                 <Link className="ds-text-link" href="/admin/distribution/media">
                   미디어·권리
                 </Link>
-                에서 확인합니다.
+                에서 합니다(업로드는 아직 닫혀 있음).
               </p>
             ) : null}
           </section>

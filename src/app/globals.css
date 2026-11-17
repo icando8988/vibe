@@ -142,3 +142,25 @@ svg {
 @media (prefers-reduced-motion: reduce) {
   .dc-console * { scroll-behavior: auto; transition: none; animation: none; }
 }
+
+/* DESIGN-CONNECTIONS-FIX(C057-01): 폼이 들어가는 카드 목록용 쌓기 배치. 기본 .dc-cards(3열)는 불변.
+   카드 최소 폭 22rem(좁으면 100%), 콘솔 콘텐츠 폭에서는 최대 2열. 기존 960px 1열 분기보다 뒤에 있어 모든 폭에서 이 규칙이 적용되며, 좁은 화면은 min(100%,…)으로 자연히 1열이 된다. */
+.dc-console .dc-cards--stack { grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr)); }
+
+/* DESIGN-CONNECTIONS-FIX(C057-02/03): 카드 안 연결 해제 등 파괴적 동작 영역. ActionForm className=""여도 이 래퍼 아래에서 입력·체크·fieldset이 디자인 시스템과 같아진다. */
+.dc-console .dc-danger-zone { display: grid; gap: .7rem; min-width: 0; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--ds-line); }
+.dc-console .dc-danger-zone > summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; font-weight: 700; color: var(--ds-error); }
+.dc-console .dc-danger-zone fieldset { display: grid; gap: .6rem; min-width: 0; margin: 0; padding: 0; border: 0; }
+.dc-console .dc-danger-zone label { font-weight: 700; }
+.dc-console .dc-danger-zone .dc-check { display: flex; align-items: flex-start; gap: .6rem; min-height: 44px; font-weight: 600; cursor: pointer; }
+.dc-console .dc-danger-zone .dc-check input[type=checkbox] { flex: none; width: 1.15rem; height: 1.15rem; margin: .3rem 0 0; accent-color: var(--ds-error); }
+.dc-console .dc-danger-zone input[type=text] { width: 100%; min-width: 0; min-height: 48px; padding: .65rem .8rem; border: 1px solid var(--ds-muted); border-radius: 8px; background: var(--ds-paper); color: var(--ds-ink); font: inherit; }
+/* 위 입력 규칙(0,3,1)이 공용 비활성 규칙(0,2,2)보다 강하므로 비활성 표시를 다시 둔다 */
+.dc-console .dc-danger-zone input:disabled { cursor: not-allowed; opacity: .7; background: #eef1f6; }
+.dc-console .dc-danger-zone .ds-button { justify-self: start; }
+@media (max-width: 700px) {
+  .dc-console .dc-danger-zone .ds-button { justify-self: stretch; width: 100%; }
+}
+@media (forced-colors: active) {
+  .dc-console .dc-danger-zone { border-top-color: CanvasText; }
+}

@@ -6,9 +6,9 @@
 import sharp from "sharp";
 import { beforeAll, describe, expect, it } from "vitest";
 import type { ActorResult } from "@/server/distribution/actor-core";
-import { MEDIA_INTAKE_BUCKET } from "@/server/distribution/media/policy";
+import { MEDIA_INTAKE_BUCKET, UPLOAD_POLICY } from "@/server/distribution/media/policy";
 import { listAssets } from "@/server/distribution/media/service";
-import { SignedUrl, type MediaIntakeStorage, type MediaStorage } from "@/server/distribution/media/storage";
+import { SignedUrl, type MediaIntakeStorage, type MediaStorage, type StorageResult } from "@/server/distribution/media/storage";
 import { cancelUpload, completeUpload, issueUploadGrant, type IssuedGrant, type UploadDeps } from "@/server/distribution/media/upload";
 import type { RpcClient } from "@/server/distribution/write-runner";
 import { inTx, openDb, rpcClientOf, type Db } from "./pglite-harness";
@@ -20,6 +20,7 @@ let rpc: RpcClient;
 const intakeObjects = new Map<string, Buffer>();
 const variants = new Map<string, Buffer>();
 const signedPaths: string[] = [];
+const transientPaths = new Set<string>();
 let failSigning = false;
 const intake: MediaIntakeStorage = {
   createSignedUploadUrl: async (b, p) => {
@@ -28,7 +29,15 @@ const intake: MediaIntakeStorage = {
     signedPaths.push(p);
     return { ok: true, value: new SignedUrl(`https://intake.local/upload/sign/${b}/${p}?token=t${signedPaths.length}`) };
   },
-  download: async (_b, p) => (intakeObjects.has(p) ? { ok: true, value: intakeObjects.get(p) as Buffer } : { ok: false, code: "not_found" }),
+  download: async (_b, p) => {
+    // 052: 실제 intake 어댑터처럼 빈 객체·상한 초과는 영구 표시, transientPaths는 일시 장애
+    if (transientPaths.has(p)) return { ok: false, code: "storage_unavailable" };
+    const obj = intakeObjects.get(p);
+    if (!obj) return { ok: false, code: "not_found" };
+    if (obj.length === 0) return { ok: false, code: "storage_error", permanent: "empty_object" } as StorageResult<Buffer>;
+    if (obj.length > UPLOAD_POLICY.maxBytes) return { ok: false, code: "storage_error", permanent: "object_too_large" } as StorageResult<Buffer>;
+    return { ok: true, value: obj };
+  },
   remove: async (_b, ps) => {
     const hit = ps.filter((p) => intakeObjects.delete(p));
     return hit.length ? { ok: true, value: true } : { ok: false, code: "not_found" };
@@ -218,6 +227,33 @@ describe.skipIf(!PROJECT)("PGlite 왕복: 직접 업로드 grant", () => {
     put(g2, small);
     expect(await completeUpload(deps(), keyOf(g2))).toMatchObject({ status: "failed", code: "TOO_SMALL" });
     expect(await completeUpload(deps(), keyOf(g2))).toEqual({ status: "grant_used" });
+  });
+
+  it("052: 빈 객체·상한 초과 → 1회차 failed(EMPTY_INPUT/INPUT_TOO_LARGE)·grant consumed·자산 failed·원본 삭제, 반복 완료는 grant_used(무한 storage_error 아님)", async () => {
+    const bytes = await png();
+    for (const [obj, code] of [[Buffer.alloc(0), "EMPTY_INPUT"], [Buffer.alloc(UPLOAD_POLICY.maxBytes + 1), "INPUT_TOO_LARGE"]] as const) {
+      const g = await issue(bytes);
+      put(g, obj);
+      expect(await completeUpload(deps(), keyOf(g))).toMatchObject({ status: "failed", code, asset: { status: "failed", failureCode: code } });
+      expect((await grantRow(g.grantId))?.status).toBe("consumed");
+      expect(await assetRow(g.assetId)).toMatchObject({ status: "failed", failure_code: code });
+      expect(intakeObjects.has(pathOf(g))).toBe(false);
+      for (let i = 0; i < 2; i++) expect(await completeUpload(deps(), keyOf(g))).toEqual({ status: "grant_used" });
+      expect((await grantRow(g.grantId))?.status).toBe("consumed");
+    }
+  });
+
+  it("052: 일시 장애는 storage_error 반복 가능·grant issued·자산 pending 유지 → 장애 해소 뒤 같은 grant로 ready", async () => {
+    const bytes = await png();
+    const g = await issue(bytes);
+    put(g, bytes);
+    transientPaths.add(pathOf(g));
+    for (let i = 0; i < 2; i++) expect(await completeUpload(deps(), keyOf(g))).toEqual({ status: "storage_error" });
+    expect((await grantRow(g.grantId))?.status).toBe("issued");
+    expect((await assetRow(g.assetId))?.status).toBe("pending_upload");
+    transientPaths.delete(pathOf(g));
+    expect(await completeUpload(deps(), keyOf(g))).toMatchObject({ status: "ready" });
+    expect((await grantRow(g.grantId))?.status).toBe("consumed");
   });
 
   it("서명 실패 → grant 취소·자산 failed, 재발급은 새 자산·새 경로(덮어쓰기 없음)", async () => {

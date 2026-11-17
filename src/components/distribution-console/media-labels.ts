@@ -107,6 +107,9 @@ export const MEDIA_REASON_FIELD_LABELS: Record<string, string> = {
   "reason:rights_not_approved": "권리 미승인",
   "reason:rights_expired": "권리 유효기한 지남",
   "reason:channel_not_allowed": "권리 허용 채널이 아님",
+  // 리비전 첨부(REVISION_MEDIA_CONTRACT §3, 150000)
+  "reason:media_not_owned": "내 이미지가 아님(다른 관리자 이미지는 그대로 유지만 가능)",
+  "reason:media_duplicate": "같은 이미지가 두 번 들어감",
 };
 
 /**

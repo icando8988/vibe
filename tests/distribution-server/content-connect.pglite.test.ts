@@ -221,7 +221,7 @@ describe.skipIf(!PROJECT)("PGlite 왕복: 원문 → 초안 → 승인·반려·
 
     // 옛 원문 기준 리비전 승인 → stale, 옛 원문 버전으로 새 리비전 → stale
     expect(writeNoticeOf(await decideApproval(deps(), form({ subjectType: "draft_revision", subjectId: rev.data.revisionId, decision: "approved", expectedSubjectHash: rev.data.revisionHash, ...revChecks })))).toMatch(/^(stale_content|not_latest)$/);
-    expect(writeNoticeOf(await appendDraftRevision(deps(), form({ draftId: draft.data.draftId, expectedRevisionNo: "1", expectedContentVersionId: v1.id, body: "옛 기준" })))).toBe("stale_content");
+    expect(writeNoticeOf(await appendDraftRevision(deps(), form({ draftId: draft.data.draftId, expectedRevisionNo: "1", expectedContentVersionId: v1.id, body: "옛 기준", preserveMedia: "[]" /* 037: 리비전 ≥1은 명시 필수 */ })))).toBe("stale_content");
 
     // 보관 → 쓰기 거절(archived)
     await inTx("service_role", null, () => db.query(`select public.distribution_archive_content($1::uuid, $2::uuid, '정리')`, [U.admin, cid]));

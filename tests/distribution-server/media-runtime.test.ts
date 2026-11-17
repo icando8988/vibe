@@ -162,6 +162,7 @@ describe("M4 오류 사유(허용 목록)", () => {
       ["MEDIA_PENDING_LIMIT: x", "pending_limit"], ["ASSET_REFERENCED: x", "asset_referenced"], ["MEDIA_NOT_READY: x", "media_not_ready"],
       ["VARIANT_MISMATCH: x", "variant_mismatch"], ["RIGHTS_NOT_APPROVED: x", "rights_not_approved"], ["RIGHTS_EXPIRED: x", "rights_expired"],
       ["CHANNEL_NOT_ALLOWED: x", "channel_not_allowed"],
+      ["MEDIA_NOT_OWNED: x", "media_not_owned"], ["MEDIA_DUPLICATE: x", "media_duplicate"], // BE-REVISION-MEDIA-037(150000)
     ];
     for (const [msg, reason] of pairs) {
       const e = db(msg);

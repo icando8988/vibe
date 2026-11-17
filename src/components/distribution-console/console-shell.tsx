@@ -120,7 +120,7 @@ export function ConsoleShell({
             <nav aria-label="콘텐츠 배포 메뉴">
               <NavGroups section={section} isRoot={isRoot} />
             </nav>
-            <p className="dc-aside-note">공통 원문을 채널마다 따로 검토합니다. 계정·실적·성공 데이터는 표시하지 않습니다.</p>
+            <p className="dc-aside-note">공통 원문을 채널마다 따로 검토합니다. 토큰·비밀값과 실적·성공 데이터는 표시하지 않습니다.</p>
           </aside>
           <div className="dc-content">
             <header className="dc-pagehead">
@@ -137,7 +137,7 @@ export function ConsoleShell({
                   원문·채널 초안·검토·작업은 연결된 서버에 저장하고 다시 불러옵니다. 서버 준비 전이거나 조회에 실패하면 화면마다 따로 알려 드립니다.
                 </p>
                 <p>
-                  자동 게시는 열려 있지 않습니다. Blog는 사람이 외부에서 게시하고 증거를 기록하며, Threads는 계정 연결·모의 실행 작업까지, Instagram은 초안·검토·미디어 권리까지 쓸 수 있습니다.
+                  자동 게시는 열려 있지 않습니다. Blog는 사람이 외부에서 게시하고 증거를 기록하며, Threads는 계정 연결·모의 실행 작업까지, Instagram은 초안·검토·이미지 1장 선택·미디어 권리와 계정 연결 화면(서버 설정 준비 시)까지 쓸 수 있습니다.
                 </p>
               </StatusNotice>
             )}

@@ -223,7 +223,7 @@ describe.skipIf(!PROJECT)("PGlite 왕복: 채널 연결 metadata + 암호화 cre
     const bd = await createChannelDraft(deps(), form({ contentId: c.data.contentId, channel: "blog" }));
     if (td.status !== "ok" || bd.status !== "ok") throw new Error("drafts");
     const rev = (draftId: string, no: string, conn: string, acct: string) =>
-      appendDraftRevision(deps(), form({ draftId, expectedRevisionNo: no, expectedContentVersionId: v.id, body: "스레드 본문", preserveTargetConnectionId: conn, preserveTargetAccountId: acct }));
+      appendDraftRevision(deps(), form({ draftId, expectedRevisionNo: no, expectedContentVersionId: v.id, body: "스레드 본문", preserveTargetConnectionId: conn, preserveTargetAccountId: acct, preserveMedia: "[]" /* 037: 리비전 ≥1은 명시 필수 */ }));
 
     // 계정 불일치·없는 연결·다른 채널 → TARGET_CONNECTION_MISMATCH
     for (const out of [

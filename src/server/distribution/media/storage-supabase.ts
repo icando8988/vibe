@@ -96,14 +96,35 @@ function httpsOrigin(raw: string): string {
   }
 }
 
-async function downloadCapped(api: { download(path: string): PromiseLike<SdkResult<BlobLike>> }, path: string, max: number): Promise<StorageResult<Buffer>> {
+/**
+ * 영구(결정적) 읽기 실패 표시 — BE-MEDIA-PERMANENT-INTAKE-ERROR-052.
+ * 객체는 upsert 없이 한 번만 써지므로(덮어쓰기 불가) 빈 객체·상한 초과 객체는 다시 읽어도 같다 → 재시도 대상이 아니다.
+ * code는 후방호환을 위해 storage_error 그대로 두고 `permanent`로만 구분한다(StorageResult 실패 모양과 구조적으로 호환).
+ * 일시 장애(응답 없음·5xx·SDK 형식 이상)는 permanent 없이 기존 storage_error/storage_unavailable.
+ */
+export type PermanentReadReason = "empty_object" | "object_too_large";
+export type PermanentReadFailure = { ok: false; code: "storage_error"; permanent: PermanentReadReason };
+const permanentFail = (permanent: PermanentReadReason): PermanentReadFailure => ({ ok: false, code: "storage_error", permanent });
+
+/** 실패 결과가 결정적 입력 문제인지(빈 객체·상한 초과). 그 밖(일시 장애·없음)은 null. */
+export function permanentReadReason(r: StorageResult<unknown>): PermanentReadReason | null {
+  if (r.ok) return null;
+  const p = (r as { permanent?: unknown }).permanent;
+  return p === "empty_object" || p === "object_too_large" ? p : null;
+}
+
+async function downloadCapped(api: { download(path: string): PromiseLike<SdkResult<BlobLike>> }, path: string, max: number, tagPermanent = false): Promise<StorageResult<Buffer>> {
+  const sized = (reason: PermanentReadReason) => (tagPermanent ? permanentFail(reason) : fail("storage_error")); // 052: intake만 영구 표시(M4 어댑터 결과 모양 불변)
   const r = await api.download(path);
   if (r.error) return fail(sanitizeStorageError(r.error));
   const blob = r.data;
   if (!blob || typeof blob.size !== "number" || typeof blob.arrayBuffer !== "function") return fail("storage_error");
-  if (blob.size === 0 || blob.size > max) return fail("storage_error");
+  if (blob.size === 0) return sized("empty_object");
+  if (blob.size > max) return sized("object_too_large"); // 바이트를 읽지 않는다
   const buf = Buffer.from(await blob.arrayBuffer());
-  return buf.length === 0 || buf.length > max ? fail("storage_error") : { ok: true, value: buf };
+  if (buf.length === 0) return sized("empty_object");
+  if (buf.length > max) return sized("object_too_large");
+  return { ok: true, value: buf };
 }
 
 async function removeChecked(api: { remove(paths: string[]): PromiseLike<SdkResult<unknown[]>> }, paths: string[]): Promise<StorageResult<true>> {
@@ -135,7 +156,7 @@ export function createSupabaseIntakeStorage(client: IntakeClientLike, options: S
         return { ok: true, value: new SignedUrl(raw) };
       }),
     download: (bucket, path) =>
-      guarded(async () => (!bucketOk(bucket) || !isUploadObjectPath(path) ? fail("storage_error") : downloadCapped(client.from(bucket), path, maxDownload))),
+      guarded(async () => (!bucketOk(bucket) || !isUploadObjectPath(path) ? fail("storage_error") : downloadCapped(client.from(bucket), path, maxDownload, true))),
     remove: (bucket, paths) => guarded(async () => (!bucketOk(bucket) ? fail("storage_error") : removeChecked(client.from(bucket), paths))),
   };
 }

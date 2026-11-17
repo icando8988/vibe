@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ConsoleShell } from "@/components/distribution-console/console-shell";
 import { denyUnlessDistributionAdmin } from "@/components/distribution-console/guard";
 import { CHANNEL_INFO, CHANNELS } from "@/components/distribution-console/readiness";
-import { CapabilityTable, Dependencies, DisabledAction, ModeTable } from "@/components/distribution-console/states";
+import { CapabilityTable, Dependencies, ModeTable } from "@/components/distribution-console/states";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "연결·준비도" };
@@ -20,11 +20,11 @@ export default async function ConnectionsPage() {
           <h2 id={`cn-${c}`}>{CHANNEL_INFO[c].label}</h2>
           <dl className="dc-facts">
             <dt>연결 상태</dt>
-            <dd>{c === "blog" ? "연결 대상 아님 (수동 게시)" : c === "threads" ? "Threads 계정 연결 화면에서 확인" : "연결 없음"}</dd>
+            <dd>{c === "blog" ? "연결 대상 아님 (수동 게시)" : c === "threads" ? "Threads 계정 연결 화면에서 확인" : "Instagram 계정 연결 화면에서 확인"}</dd>
             <dt>계정</dt>
-            <dd>{c === "threads" ? "Threads 계정 연결 화면에서 확인" : "없음"}</dd>
+            <dd>{c === "blog" ? "없음" : `${CHANNEL_INFO[c].label} 계정 연결 화면에서 확인`}</dd>
             <dt>마지막 확인</dt>
-            <dd>{c === "threads" ? "Threads 계정 연결 화면에서 확인" : "미확인"}</dd>
+            <dd>{c === "blog" ? "미확인" : `${CHANNEL_INFO[c].label} 계정 연결 화면에서 확인`}</dd>
           </dl>
           <ModeTable channel={c} />
           <CapabilityTable channel={c} />
@@ -44,7 +44,12 @@ export default async function ConnectionsPage() {
             </p>
           ) : (
             <>
-              <DisabledAction id={`cn-connect-${c}`} label={`${CHANNEL_INFO[c].label} 계정 연결`} reason="Instagram 외부 인증(OAuth) 연결이 아직 구현되지 않았습니다(Threads 연결과 별개)." />
+              <p>
+                Instagram 로그인(비즈니스·크리에이터 전문 계정)으로 계정을 연결합니다(연결됨 ≠ 게시 가능, 게시 실행기 없음·live gate 닫힘):{" "}
+                <Link className="ds-text-link" href="/admin/distribution/connections/instagram">
+                  Instagram 계정 연결
+                </Link>
+              </p>
               <p>
                 지금은 캡션 초안·검토(원문 화면의 채널 초안)와 게시에 쓸 이미지의 권리 관리를 할 수 있습니다:{" "}
                 <Link className="ds-text-link" href="/admin/distribution/media">

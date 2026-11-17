@@ -20,6 +20,7 @@ import { MEDIA_INTAKE_BUCKET, UPLOAD_POLICY, type UploadContentType } from "./po
 import { sniffFormat } from "./process";
 import { ingestAssetBytes, toMediaAssetDto, type MediaAssetDto } from "./service";
 import { isUploadObjectPath, type MediaIntakeStorage, type MediaStorage, type SignedUrl } from "./storage";
+import { permanentReadReason } from "./storage-supabase";
 
 export const UPLOAD_RPC = Object.freeze({
   issue: "distribution_issue_media_upload_grant",
@@ -212,8 +213,11 @@ export async function completeUpload(deps: UploadDeps, input: { grantId: unknown
 
   // 2) 원본 읽기(grant 미소비)
   const dl = await b.intake.download(MEDIA_INTAKE_BUCKET, g.objectPath);
-  if (!dl.ok) return dl.code === "not_found" ? { status: "not_uploaded" } : { status: "storage_error" };
-  const bytes = dl.value;
+  // 052: 빈 객체·상한 초과는 결정적 입력 문제(객체는 덮어쓸 수 없어 다시 읽어도 같다) → 재시도 가능한 storage_error가 아니라
+  //      grant를 소비하고 EMPTY_INPUT / INPUT_TOO_LARGE로 실패 기록. 일시 장애(permanent 없음)는 기존대로 storage_error(grant 미소비).
+  const permanent = permanentReadReason(dl);
+  if (!dl.ok && !permanent) return dl.code === "not_found" ? { status: "not_uploaded" } : { status: "storage_error" };
+  const bytes = dl.ok ? dl.value : null;
 
   // 3) 1회 소비(원자)
   const consumed = await call(b.client, UPLOAD_RPC.consume, { ...key, p_expected_version: input.expectedVersion });
@@ -227,15 +231,19 @@ export async function completeUpload(deps: UploadDeps, input: { grantId: unknown
   const c = parseGrant(consumed.data);
   if (!c || c.asset.id !== g.asset.id) return { status: "uncertain" };
   const removeOriginal = () => b.intake.remove(MEDIA_INTAKE_BUCKET, [c.objectPath]);
+  const failRecorded = async (code: CompleteFailureCode): Promise<CompleteResult> => {
+    const f = await call(b.client, UPLOAD_RPC.fail, { p_actor_id: b.actorId, p_asset_id: c.asset.id, p_expected_version: c.asset.rowVersion, p_code: code });
+    const failedAsset = f.ok ? toMediaAssetDto(f.data) : null;
+    if (failedAsset) await removeOriginal(); // 실패 기록 확인 시에만 원본 삭제(RECOVERY-030 규칙). 기록 못 하면 보존 — sweep 대상
+    return { status: "failed", code, asset: failedAsset };
+  };
+
+  // 3-1) 052: 영구 읽기 실패(빈 객체·상한 초과) — 소비 뒤 확정 실패 기록
+  if (permanent || !bytes) return failRecorded(permanent === "object_too_large" ? "INPUT_TOO_LARGE" : "EMPTY_INPUT");
 
   // 4) 신고값 대조(형식은 바이트 magic, 크기는 정확히 일치)
   const sniffed = sniffFormat(bytes);
-  if ((sniffed && FORMAT_TYPE[sniffed] !== c.declaredContentType) || bytes.length !== c.declaredByteSize) {
-    const f = await call(b.client, UPLOAD_RPC.fail, { p_actor_id: b.actorId, p_asset_id: c.asset.id, p_expected_version: c.asset.rowVersion, p_code: "DECLARED_MISMATCH" });
-    const failedAsset = f.ok ? toMediaAssetDto(f.data) : null;
-    if (failedAsset) await removeOriginal(); // RECOVERY-030: 실패 기록을 확인한 경우만 원본 삭제(복구·경합으로 기록 못 하면 보존 — sweep 대상)
-    return { status: "failed", code: "DECLARED_MISMATCH", asset: failedAsset };
-  }
+  if ((sniffed && FORMAT_TYPE[sniffed] !== c.declaredContentType) || bytes.length !== c.declaredByteSize) return failRecorded("DECLARED_MISMATCH");
 
   // 5) M4 검사·변환·변형 저장
   const out = await ingestAssetBytes({ actorId: b.actorId, client: b.client, storage: b.storage }, c.asset, bytes);

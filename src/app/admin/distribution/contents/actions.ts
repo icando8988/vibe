@@ -14,6 +14,7 @@ import { getServiceRpcClient } from "@/server/distribution/blog/service";
 import { appendContentVersion, appendDraftRevision, createChannelDraft, createContent } from "@/server/distribution/content-service";
 import { createBlogManualJob, createThreadsDryRunJob } from "@/server/distribution/jobs-service";
 import { isUuid } from "@/server/distribution/validation";
+import { mediaErrorReason } from "@/server/distribution/errors";
 import { failureState, type FormState } from "@/server/distribution/write-notice";
 
 const deps = { resolveActor: requireDistributionActor, getClient: getServiceRpcClient };
@@ -56,7 +57,10 @@ export async function createChannelDraftAction(prev: FormState, formData: FormDa
 export async function appendDraftRevisionAction(prev: FormState, formData: FormData): Promise<FormState> {
   const out = await appendDraftRevision(deps, formData);
   if (out.status === "ok") done(channelPath(formData.get("contentId"), formData.get("channel")));
-  return failureState(out, prev);
+  const st = failureState(out, prev);
+  // FE-REVISION-MEDIA-038: 첨부 거절(MEDIA_NOT_READY·VARIANT_MISMATCH·MEDIA_NOT_OWNED·MEDIA_DUPLICATE) 세부 사유를 필드로 덧붙인다(안내 코드는 그대로).
+  const reason = out.status === "db_error" ? mediaErrorReason(out.error) : null;
+  return reason ? { ...st, fields: [...st.fields, `reason:${reason}`] } : st;
 }
 
 export async function decideApprovalAction(prev: FormState, formData: FormData): Promise<FormState> {

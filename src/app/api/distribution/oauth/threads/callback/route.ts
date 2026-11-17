@@ -10,6 +10,9 @@ import { getThreadsOAuthDeps } from "@/server/distribution/threads/oauth/session
 import { OAUTH_STATE_COOKIE } from "@/server/distribution/threads/oauth/state";
 
 export const dynamic = "force-dynamic";
+// BE-OAUTH-DURATION-050: 공급자 요청 15초 × 최대 2회(순차) + state·저장 RPC 뒤에도 결과 redirect·쿠키 삭제를 끝낼 여유.
+// 프로젝트 대시보드 기본값이 낮게 바뀌어도 이 route만은 60초로 고정한다(Vercel 문서: App Router는 named maxDuration export).
+export const maxDuration = 60;
 
 export async function GET(request: NextRequest): Promise<Response> {
   try {

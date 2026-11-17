@@ -10,7 +10,7 @@ import { MEDIA_BUCKET, MEDIA_INTAKE_BUCKET, UPLOAD_POLICY } from "@/server/distr
 import { SignedUrl, type MediaIntakeStorage, type MediaStorage, type StorageResult } from "@/server/distribution/media/storage";
 import { createSupabaseIntakeStorage, type IntakeBucketApi } from "@/server/distribution/media/storage-supabase";
 import { cancelUpload, completeUpload, issueUploadGrant, nonceHash, UPLOAD_RPC, type UploadDeps } from "@/server/distribution/media/upload";
-import { completeResponse, issueResponse, readJsonBody, UPLOAD_BODY_MAX_BYTES } from "@/server/distribution/media/upload-http";
+import { completeResponse, issueResponse, readJsonBody, UPLOAD_BODY_MAX_BYTES, uploadSiteOrigin } from "@/server/distribution/media/upload-http";
 import type { RpcClient } from "@/server/distribution/write-runner";
 
 const ORIGIN = "https://proj-fake.supabase.co";
@@ -234,6 +234,45 @@ describe("완료(completeUpload)", () => {
     expect(b.calls.remove).toEqual([]);
   });
 
+  it("052: 영구 읽기 실패(빈 객체·상한 초과) → 소비 → EMPTY_INPUT/INPUT_TOO_LARGE 기록 → 기록 확인 뒤 원본 삭제, 처리·변형 0", async () => {
+    for (const [permanent, code] of [["empty_object", "EMPTY_INPUT"], ["object_too_large", "INPUT_TOO_LARGE"]] as const) {
+      const rpc = rpcMock({
+        [UPLOAD_RPC.get]: () => ({ data: grantJson({ declared_byte_size: 10 }), error: null }),
+        [UPLOAD_RPC.consume]: () => ({ data: grantJson({ status: "consumed", declared_byte_size: 10 }), error: null }),
+        [UPLOAD_RPC.fail]: (p) => ({ data: meta({ status: "failed", failure_code: p.p_code, row_version: 2 }), error: null }),
+      });
+      const a = intakeMock({ download: () => ({ ok: false, code: "storage_error", permanent }) as StorageResult<Buffer> });
+      const s = storageMock();
+      expect(await completeUpload(deps(rpc.client, a.intake, s.storage), key)).toMatchObject({ status: "failed", code, asset: { status: "failed", failureCode: code } });
+      expect(rpc.names()).toEqual([UPLOAD_RPC.get, UPLOAD_RPC.consume, UPLOAD_RPC.fail]);
+      expect(rpc.calls[2]?.[1]).toMatchObject({ p_code: code, p_expected_version: 1 });
+      expect(a.calls.remove).toEqual([[MEDIA_INTAKE_BUCKET, [UPATH]]]);
+      expect(s.uploads).toEqual([]);
+    }
+  });
+  it("052: 영구 실패 기록이 거부되면 failed(asset:null)·원본 보존, 소비 거절(grant_used·만료)·유실은 기존 매핑(기록·삭제 0)", async () => {
+    const perm = () => ({ ok: false, code: "storage_error", permanent: "empty_object" }) as StorageResult<Buffer>;
+    const rejected = rpcMock({
+      [UPLOAD_RPC.get]: () => ({ data: grantJson(), error: null }), [UPLOAD_RPC.consume]: () => ({ data: grantJson({ status: "consumed" }), error: null }),
+      [UPLOAD_RPC.fail]: () => dbErr("VERSION_CONFLICT: x", "P0001"),
+    });
+    const a = intakeMock({ download: perm });
+    expect(await completeUpload(deps(rejected.client, a.intake), key)).toEqual({ status: "failed", code: "EMPTY_INPUT", asset: null });
+    expect(a.calls.remove).toEqual([]);
+    for (const [consume, status] of [[() => dbErr("UPLOAD_GRANT_USED: x"), "grant_used"], [() => dbErr("UPLOAD_GRANT_EXPIRED: x"), "grant_expired"], [() => { throw new Error("lost"); }, "uncertain"]] as const) {
+      const rpc = rpcMock({ [UPLOAD_RPC.get]: () => ({ data: grantJson(), error: null }), [UPLOAD_RPC.consume]: consume });
+      const b = intakeMock({ download: perm });
+      expect(await completeUpload(deps(rpc.client, b.intake), key)).toEqual({ status });
+      expect([rpc.names(), b.calls.remove]).toEqual([[UPLOAD_RPC.get, UPLOAD_RPC.consume], []]);
+    }
+  });
+  it("052: 일시 장애(permanent 없음 storage_error·storage_unavailable)는 기존대로 storage_error, grant 미소비(재시도 가능)", async () => {
+    for (const code of ["storage_error", "storage_unavailable"] as const) {
+      const rpc = rpcMock({ [UPLOAD_RPC.get]: () => ({ data: grantJson(), error: null }) });
+      expect(await completeUpload(deps(rpc.client, intakeMock({ download: () => ({ ok: false, code }) }).intake), key)).toEqual({ status: "storage_error" });
+      expect(rpc.names()).toEqual([UPLOAD_RPC.get]);
+    }
+  });
   it("RECOVERY-030: 실패 기록이 거부(VERSION_CONFLICT 등)되면 failed(asset:null)이고 원본을 지우지 않음", async () => {
     const bytes = await png();
     const g = grantJson({ declared_byte_size: bytes.length + 1 });
@@ -323,7 +362,30 @@ describe("intake 어댑터(SDK mock)", () => {
     expect(await s.remove(MEDIA_INTAKE_BUCKET, [`variants/${ASSET}/feed_jpeg.jpg`])).toEqual({ ok: false, code: "storage_error" });
     expect(await s.remove(MEDIA_INTAKE_BUCKET, [UPATH])).toEqual({ ok: true, value: true });
     const big = { from: () => ({ ...sdk().client.from(), download: async () => ({ data: { size: UPLOAD_POLICY.maxBytes + 1, arrayBuffer: async () => new ArrayBuffer(0) }, error: null }) }) };
-    expect(await createSupabaseIntakeStorage(big as never, { origin: ORIGIN }).download(MEDIA_INTAKE_BUCKET, UPATH)).toEqual({ ok: false, code: "storage_error" });
+    // 052: 상한 초과는 영구 표시(code는 후방호환 storage_error)
+    expect(await createSupabaseIntakeStorage(big as never, { origin: ORIGIN }).download(MEDIA_INTAKE_BUCKET, UPATH)).toEqual({ ok: false, code: "storage_error", permanent: "object_too_large" });
+  });
+  it("052: 빈 객체·상한 초과만 permanent, 상한 초과는 바이트를 읽지 않음, 일시 장애(5xx·응답 없음·SDK 형식 이상)는 permanent 없음", async () => {
+    const withDownload = (download: IntakeBucketApi["download"]) => createSupabaseIntakeStorage({ from: () => ({ ...sdk().client.from(), download }) } as never, { origin: ORIGIN });
+    const read = vi.fn(async () => new ArrayBuffer(0));
+    expect(await withDownload(async () => ({ data: new Blob([]), error: null })).download(MEDIA_INTAKE_BUCKET, UPATH)).toEqual({ ok: false, code: "storage_error", permanent: "empty_object" });
+    expect(await withDownload(async () => ({ data: { size: UPLOAD_POLICY.maxBytes + 1, arrayBuffer: read }, error: null })).download(MEDIA_INTAKE_BUCKET, UPATH))
+      .toEqual({ ok: false, code: "storage_error", permanent: "object_too_large" });
+    expect(read).not.toHaveBeenCalled();
+    // size 표시와 실제 바이트가 다르면 실제 바이트 기준
+    expect(await withDownload(async () => ({ data: { size: 5, arrayBuffer: async () => new ArrayBuffer(0) }, error: null })).download(MEDIA_INTAKE_BUCKET, UPATH))
+      .toEqual({ ok: false, code: "storage_error", permanent: "empty_object" });
+    expect(await withDownload(async () => ({ data: { size: 5, arrayBuffer: async () => new ArrayBuffer(UPLOAD_POLICY.maxBytes + 1) }, error: null })).download(MEDIA_INTAKE_BUCKET, UPATH))
+      .toEqual({ ok: false, code: "storage_error", permanent: "object_too_large" });
+    for (const transient of [
+      withDownload(async () => ({ data: null, error: { status: 503 } })),
+      withDownload(async () => ({ data: null, error: { message: "network" } })),
+      withDownload(async () => ({ data: { nope: true } as never, error: null })),
+      withDownload(async () => { throw new Error("socket"); }),
+    ]) {
+      const r = await transient.download(MEDIA_INTAKE_BUCKET, UPATH);
+      expect(r.ok === false && "permanent" in r).toBe(false);
+    }
   });
 });
 
@@ -332,13 +394,66 @@ describe("라우트 HTTP 조립", () => {
     new Request("https://site.example/api/distribution/media/upload/grant", {
       method: "POST", body, headers: { "content-type": "application/json", origin: "https://site.example", ...h },
     });
+  const SITE_ENV = { NEXT_PUBLIC_SITE_URL: "https://site.example" };
   it("JSON·같은 origin·4KB 이하만", async () => {
-    expect(await readJsonBody(req('{"a":1}'))).toEqual({ ok: true, body: { a: 1 } });
-    expect((await readJsonBody(req('{"a":1}', { origin: "https://evil.example" }))).ok).toBe(false);
-    expect((await readJsonBody(req('{"a":1}', { origin: "" }))).ok).toBe(false);
-    expect((await readJsonBody(req("a=1", { "content-type": "application/x-www-form-urlencoded" }))).ok).toBe(false);
-    expect((await readJsonBody(req("[1]"))).ok).toBe(false);
-    expect((await readJsonBody(req(JSON.stringify({ a: "x".repeat(UPLOAD_BODY_MAX_BYTES) })))).ok).toBe(false);
+    expect(await readJsonBody(req('{"a":1}'), SITE_ENV)).toEqual({ ok: true, body: { a: 1 } });
+    expect((await readJsonBody(req('{"a":1}', { origin: "https://evil.example" }), SITE_ENV)).ok).toBe(false);
+    expect((await readJsonBody(req('{"a":1}', { origin: "" }), SITE_ENV)).ok).toBe(false);
+    expect((await readJsonBody(req("a=1", { "content-type": "application/x-www-form-urlencoded" }), SITE_ENV)).ok).toBe(false);
+    expect((await readJsonBody(req("[1]"), SITE_ENV)).ok).toBe(false);
+    expect((await readJsonBody(req(JSON.stringify({ a: "x".repeat(UPLOAD_BODY_MAX_BYTES) })), SITE_ENV)).ok).toBe(false);
+  });
+
+  // QA-PROXY-ORIGIN-AUDIT-053 — reverse proxy 뒤 내부 request.url과 공개 Origin
+  describe("Origin 기준 = 설정된 공개 사이트 origin(NEXT_PUBLIC_SITE_URL)", () => {
+    const PUBLIC = "https://vibe.example";
+    const ENV = { NEXT_PUBLIC_SITE_URL: PUBLIC };
+    const internal = (path: string, h: Record<string, string> = {}) =>
+      new Request(`http://localhost:3000/api/distribution/media/upload/${path}`, {
+        method: "POST", body: '{"a":1}', headers: { "content-type": "application/json", origin: PUBLIC, host: "localhost:3000", ...h },
+      });
+    for (const path of ["grant", "complete", "cancel"]) {
+      it(`${path}: 내부 localhost request.url + 공개 Origin → 통과`, async () => {
+        expect(await readJsonBody(internal(path), ENV)).toEqual({ ok: true, body: { a: 1 } });
+      });
+      it(`${path}: 내부 request.url origin을 Origin으로 보내면 거절(request.url 신뢰 안 함)`, async () => {
+        expect((await readJsonBody(internal(path, { origin: "http://localhost:3000" }), ENV)).ok).toBe(false);
+      });
+    }
+    it("적대적·불일치 Origin은 거절", async () => {
+      for (const origin of ["https://evil.example", "http://vibe.example", "https://vibe.example:8443", "https://sub.vibe.example", "https://vibe.example.evil.example", "null", ""]) {
+        expect((await readJsonBody(internal("grant", { origin }), ENV)).ok, origin).toBe(false);
+      }
+    });
+    it("x-forwarded-host·Host를 공격자 Origin에 맞춰도 거절(헤더 신뢰 안 함)", async () => {
+      const r = internal("grant", { origin: "https://evil.example", "x-forwarded-host": "evil.example", "x-forwarded-proto": "https", host: "evil.example" });
+      expect((await readJsonBody(r, ENV)).ok).toBe(false);
+    });
+    it("설정 없음·형식 오류면 같은 origin 요청도 거절(fail closed)", async () => {
+      const same = () => new Request(`${PUBLIC}/api/distribution/media/upload/grant`, {
+        method: "POST", body: '{"a":1}', headers: { "content-type": "application/json", origin: PUBLIC },
+      });
+      for (const env of [
+        {}, { NEXT_PUBLIC_SITE_URL: "" }, { NEXT_PUBLIC_SITE_URL: "   " }, { NEXT_PUBLIC_SITE_URL: "not a url" },
+        { NEXT_PUBLIC_SITE_URL: "http://vibe.example" }, { NEXT_PUBLIC_SITE_URL: "https://vibe.example/app" },
+        { NEXT_PUBLIC_SITE_URL: "https://u:p@vibe.example" }, { NEXT_PUBLIC_SITE_URL: "https://vibe.example/?x=1" },
+        { NEXT_PUBLIC_SITE_URL: "https://vibe.example/#h" }, { NEXT_PUBLIC_SITE_URL: "ftp://vibe.example" },
+      ] as Array<Record<string, string | undefined>>) {
+        expect((await readJsonBody(same(), env)).ok, JSON.stringify(env)).toBe(false);
+      }
+    });
+    it("설정 값 정규화: 끝 슬래시·앞뒤 공백 허용, loopback http만 예외", async () => {
+      expect(uploadSiteOrigin(" https://vibe.example/ ")).toBe(PUBLIC);
+      expect(uploadSiteOrigin("http://localhost:3000")).toBe("http://localhost:3000");
+      expect(uploadSiteOrigin("http://127.0.0.1:3000/")).toBe("http://127.0.0.1:3000");
+      expect(uploadSiteOrigin("http://[::1]:3000")).toBe("http://[::1]:3000");
+      expect(uploadSiteOrigin("http://localhost.evil.example")).toBeNull();
+      expect(uploadSiteOrigin(undefined)).toBeNull();
+      const local = new Request("http://localhost:3000/api/distribution/media/upload/grant", {
+        method: "POST", body: '{"a":1}', headers: { "content-type": "application/json", origin: "http://localhost:3000" },
+      });
+      expect((await readJsonBody(local, { NEXT_PUBLIC_SITE_URL: "http://localhost:3000" })).ok).toBe(true);
+    });
   });
   it("URL은 issued 응답에만, 모든 응답 no-store, 상태별 HTTP 코드", async () => {
     const issued = issueResponse({

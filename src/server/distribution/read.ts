@@ -65,6 +65,31 @@ export async function run<T>(src: ReadSource | null, fn: (s: ReadSource) => Prom
 
 const str = (v: unknown) => (typeof v === "string" ? v : null);
 
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const isId = (v: unknown): v is string => typeof v === "string" && UUID_RE.test(v);
+const nullableStr = (v: unknown) => v === null || typeof v === "string"; // 042: undefined(키 누락)는 SQL NULL이 아니다
+
+/**
+ * 현재 리비전 첨부 목록(BE-REVISION-MEDIA-HARDEN-041, 계약 REVISION_MEDIA_CONTRACT §1).
+ * ok는 "완전한 목록"이라는 계약이므로 이상 행을 조용히 걸러 내지 않는다(fail closed → ReadFailure("error") → detail 전체 error).
+ * 이상 행: 요청하지 않은 revision_id, position이 1 이상 정수가 아님·중복·역순, asset_id uuid 아님, variant_id가 null·uuid 아님,
+ * alt_text가 null·문자열 아님. nullable variant_id·alt_text는 실제 null만 유효 — 명시 선택한 열의 키 누락(undefined)은 이상 행(HARDEN-042).
+ */
+export function revisionMediaOf(media: Record<string, unknown>[], revisionId: string, requested: readonly string[]): Array<{ asset_id: string; variant_id: string | null; alt_text: string | null }> {
+  const out: Array<{ asset_id: string; variant_id: string | null; alt_text: string | null }> = [];
+  let last = 0;
+  for (const m of media) {
+    if (!isId(m.revision_id) || !requested.includes(m.revision_id)) throw new ReadFailure("error");
+    if (m.revision_id !== revisionId) continue;
+    const pos = m.position;
+    if (typeof pos !== "number" || !Number.isInteger(pos) || pos < 1 || pos <= last) throw new ReadFailure("error");
+    if (!isId(m.asset_id) || !(m.variant_id === null || isId(m.variant_id)) || !nullableStr(m.alt_text)) throw new ReadFailure("error");
+    last = pos;
+    out.push({ asset_id: m.asset_id, variant_id: str(m.variant_id), alt_text: str(m.alt_text) });
+  }
+  return out;
+}
+
 // ---------------------------------------------------------------- 보관함
 export function listContents(src: ReadSource | null): Promise<ReadOutcome<ContentListItem[]>> {
   return run(src, async (s) => {
@@ -121,11 +146,7 @@ export function getContentDetail(src: ReadSource | null, contentId: string): Pro
     // 리비전 미디어(다음 리비전 저장 때 그대로 보존하기 위해 읽는다 — BLOG-FLOW-015)
     if (revIds.length) {
       const media = await rows(s, { table: "distribution_draft_revision_media", columns: COLS.media, filters: [{ col: "revision_id", op: "in", value: revIds }], order: [{ col: "position", ascending: true }] });
-      for (const r of revisions) {
-        r.media = media
-          .filter((m) => m.revision_id === r.id && typeof m.asset_id === "string")
-          .map((m) => ({ asset_id: m.asset_id as string, variant_id: str(m.variant_id), alt_text: str(m.alt_text) }));
-      }
+      for (const r of revisions) r.media = revisionMediaOf(media, r.id, revIds);
     }
 
     const approvals: ApprovalRow[] = [];

@@ -83,8 +83,12 @@ type Preserved = {
   media: Array<{ asset_id: string; variant_id: string | null; alt_text: string | null }>;
 };
 
-/** hidden `preserveUtm`·`preserveMedia`(JSON), `preserveTargetConnectionId`·`preserveTargetAccountId`. 없으면 빈 값. */
-export function parsePreserved(form: Form): { ok: true; value: Preserved } | { ok: false } {
+/**
+ * hidden `preserveUtm`·`preserveMedia`(JSON), `preserveTargetConnectionId`·`preserveTargetAccountId`. 없으면 빈 값.
+ * BE-REVISION-MEDIA-037(계약 REVISION_MEDIA_CONTRACT §2): `requireMedia`이면 preserveMedia 미입력·빈 문자열을 []로 보지 않고 거절한다
+ * (미입력 ≠ 명시 해제 "[]"). 같은 asset_id 중복도 거절한다.
+ */
+export function parsePreserved(form: Form, opts: { requireMedia?: boolean } = {}): { ok: true; value: Preserved } | { ok: false } {
   const parseJson = (v: unknown, fallback: unknown) => {
     if (v === null || v === undefined || v === "") return fallback;
     if (typeof v !== "string" || v.length > 20000) return undefined;
@@ -95,7 +99,9 @@ export function parsePreserved(form: Form): { ok: true; value: Preserved } | { o
     }
   };
   const utmRaw = parseJson(form.get("preserveUtm"), {});
-  const mediaRaw = parseJson(form.get("preserveMedia"), []);
+  const mediaField = form.get("preserveMedia");
+  if (opts.requireMedia && (mediaField === null || mediaField === undefined || mediaField === "")) return { ok: false };
+  const mediaRaw = parseJson(mediaField, []);
   if (utmRaw === undefined || mediaRaw === undefined) return { ok: false }; // 파싱 실패를 빈 값으로 취급하지 않음
   const utm = validateUtm(utmRaw);
   if (!utm.ok || !Array.isArray(mediaRaw) || mediaRaw.length > 20) return { ok: false };
@@ -104,6 +110,7 @@ export function parsePreserved(form: Form): { ok: true; value: Preserved } | { o
     const o = m && typeof m === "object" ? (m as Record<string, unknown>) : null;
     if (!o || !isUuid(o.asset_id) || (o.variant_id !== null && o.variant_id !== undefined && !isUuid(o.variant_id))) return { ok: false };
     if (o.alt_text !== null && o.alt_text !== undefined && (typeof o.alt_text !== "string" || o.alt_text.length > 1000)) return { ok: false };
+    if (media.some((x) => x.asset_id === o.asset_id)) return { ok: false }; // 같은 자산 중복(DB도 MEDIA_DUPLICATE로 거부)
     media.push({ asset_id: o.asset_id, variant_id: (o.variant_id as string | null | undefined) ?? null, alt_text: (o.alt_text as string | null | undefined) ?? null });
   }
   const tc = form.get("preserveTargetConnectionId");
@@ -135,7 +142,8 @@ export function appendDraftRevision(deps: WriteDeps, form: Form): Promise<WriteO
       else if ([...body].length > LIMITS.bodyMax) errors.push({ field: "body", rule: "max_length" });
       if (!link.ok) errors.push({ field: "linkUrl", rule: "https_url" });
       // 이 화면이 편집하지 않는 값(UTM·대상 계정·미디어)은 직전 리비전에서 렌더된 값을 그대로 보존한다(빈 값으로 소실 방지).
-      const kept = parsePreserved(form);
+      // 037: 직전 리비전이 있으면(기대 번호 ≥ 1) preserveMedia 필수 — 미입력을 첨부 해제로 해석하지 않는다.
+      const kept = parsePreserved(form, { requireMedia: expectedRevisionNo !== null && expectedRevisionNo >= 1 });
       if (!kept.ok) errors.push({ field: "preserved", rule: "format" });
       if (errors.length || !isUuid(draftId) || expectedRevisionNo === null || !isUuid(expectedContentVersionId) || !link.ok || !kept.ok) return { ok: false, errors };
       return { ok: true, value: { draftId, expectedRevisionNo, expectedContentVersionId, body, linkUrl: link.value, ...kept.value } };

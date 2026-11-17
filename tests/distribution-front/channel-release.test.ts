@@ -49,6 +49,10 @@ describe("채널 안내가 현재 구현과 일치", () => {
     expect(CHANNEL_INFO.instagram.summary).toContain("미디어 권리");
     expect(CHANNEL_INFO.instagram.blocked).toContain("OAuth");
     expect(CHANNEL_INFO.instagram.blocked).toContain("live gate가 닫혀");
+    // 044: Instagram 연결 화면·초안 이미지 선택이 생겼으므로 "없다"고 단정하지 않고, OAuth는 서버 준비 상태로 구분
+    expect(CHANNEL_INFO.instagram.blocked).not.toMatch(/초안 이미지 첨부 화면|계정 연결(OAuth)·/);
+    expect(CHANNEL_INFO.instagram.blocked).toContain("준비 상태로 확인");
+    expect(CHANNEL_INFO.instagram.summary).toContain("이미지 1장 선택");
     // 어떤 채널도 실제 게시 가능·연결 완료를 말하지 않는다
     for (const c of CHANNELS) {
       const all = `${CHANNEL_INFO[c].summary} ${CHANNEL_INFO[c].blocked} ${CHANNEL_INFO[c].methodTag}`;
@@ -122,15 +126,15 @@ describe("동선: 진입·내부 링크", () => {
     expect(admin).toContain("자동 게시·예약은 열려 있지 않습니다");
   });
 
-  it("Instagram: 연결 화면·초안 화면이 실제 미디어·권리 화면으로 안내하고, 연결 버튼은 비활성 유지", () => {
+  it("Instagram: 연결 화면·초안 화면이 실제 미디어·권리 화면으로 안내하고, 연결은 전용 화면(044)으로 안내", () => {
     const conn = readFileSync(join(root, "src", "app", "admin", "distribution", "connections", "page.tsx"), "utf8");
     expect(conn).toContain('href="/admin/distribution/media"');
-    expect(conn).toContain("DisabledAction");
+    expect(conn).toContain('href="/admin/distribution/connections/instagram"'); // FE-INSTAGRAM-OAUTH-044: 비활성 버튼 → 전용 연결 화면
     const draft = readFileSync(join(root, "src", "app", "admin", "distribution", "contents", "[contentId]", "channels", "[channel]", "page.tsx"), "utf8");
     expect(draft).toContain('href="/admin/distribution/media"');
     expect(draft).not.toContain("기능이 준비되면 연결됩니다");
-    // Instagram OAuth 경로를 새로 만들지 않았다
-    expect(existsSync(join(root, "src", "app", "admin", "distribution", "connections", "instagram"))).toBe(false);
+    // 044에서 Instagram 연결 화면이 생겼다(start 폼만, OAuth 흐름은 서버 라우트)
+    expect(existsSync(join(root, "src", "app", "admin", "distribution", "connections", "instagram", "page.tsx"))).toBe(true);
   });
 
   it("개요의 작업 영역은 '운영 데이터 미연결'을 단정하지 않고 실제 작업 화면으로 안내", () => {

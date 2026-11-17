@@ -4,7 +4,7 @@ import styles from "./media.module.css";
 
 /**
  * 자산 상세 사실(FE-MEDIA-024). 값은 서버 DTO 그대로이며 텍스트로만 렌더한다.
- * 미리보기는 없다: 원본은 저장하지 않고, 변환본도 서명 URL이 필요해 화면에서 보여 주지 않는다(계약 §2).
+ * 미리보기는 없다: 원본은 비공개 임시 저장소(intake)에 올라가 처리 뒤 삭제를 시도하지만(실패·보존분 정리 작업은 아직 없음) 화면에 표시하지 않고, 변환본도 서명 URL이 필요해 화면에서 보여 주지 않는다(계약 §2).
  */
 export function MediaAssetFacts({ asset, now }: { asset: MediaAssetDto; now: number }) {
   const usable = rightsUsableNow(asset, now);

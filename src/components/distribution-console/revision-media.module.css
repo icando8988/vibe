@@ -1,0 +1,48 @@
+/* Instagram 초안 이미지 선택(FE-REVISION-MEDIA-038). 공용 globals·dc-* 토큰은 바꾸지 않는다. */
+
+/* 공용 `.dc-console .ds-editor-fields fieldset`(0,2,1)보다 높게 — 미디어 폼과 같은 방식 */
+fieldset.selector.selector {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0.8rem 0;
+  padding: 0.7rem 0.9rem;
+}
+
+.list {
+  display: grid;
+  gap: 0.3rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem 0.8rem;
+}
+
+/* 라벨 전체가 44px 터치 대상, 라디오는 텍스트 입력 규칙(design.css)에서 분리 */
+.choice {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  overflow-wrap: anywhere;
+}
+
+.selector .choice input[type="radio"] {
+  width: auto;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  flex-shrink: 0;
+  inline-size: 1.15rem;
+  block-size: 1.15rem;
+}
+
+.note {
+  margin: 0 0 0.4rem;
+}

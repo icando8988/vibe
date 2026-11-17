@@ -1,6 +1,9 @@
 /**
  * 직접 업로드 라우트 요청·응답 조립 — 순수 함수(시험 대상). BE-UPLOAD-025.
- * - POST + application/json + 같은 origin(Origin 헤더 = 요청 origin)만. 본문 4KB 이하(바이트는 이 라우트로 받지 않는다).
+ * - POST + application/json + 같은 사이트 Origin만. 본문 4KB 이하(바이트는 이 라우트로 받지 않는다).
+ *   Origin 기준은 설정된 공개 사이트 origin(NEXT_PUBLIC_SITE_URL)이다(QA-PROXY-ORIGIN-AUDIT-053).
+ *   reverse proxy 뒤에서 request.url은 내부 host(예: http://localhost:3000)일 수 있으므로 request.url·Host·
+ *   x-forwarded-host는 신뢰하지 않는다. 설정이 없거나 형식이 틀리면 모든 요청 거절(fail closed).
  * - 응답: 허용 목록 status + 필요한 필드만, Cache-Control no-store, Referrer-Policy no-referrer(전역 next.config가 덮을 수 있음 — 계약 문서 참고).
  * - 서명 URL은 issued 응답에서만 reveal한다. 다른 응답·로그에는 없다.
  */
@@ -8,18 +11,38 @@ import type { CancelResult, CompleteResult, IssueResult } from "./upload";
 
 export const UPLOAD_BODY_MAX_BYTES = 4096;
 
-export async function readJsonBody(request: Request): Promise<{ ok: true; body: Record<string, unknown> } | { ok: false }> {
+const LOOPBACK_HOSTS = new Set(["localhost", "127.0.0.1", "[::1]"]);
+
+/**
+ * 업로드 JSON 요청의 Origin 기준(공개 사이트 origin). https origin만, 로컬 개발용으로 loopback host의 http만 예외.
+ * 자격증명·query·hash·루트 아닌 path가 붙은 값은 형식 오류로 보고 null(→ fail closed).
+ */
+export function uploadSiteOrigin(raw: unknown): string | null {
+  if (typeof raw !== "string" || !raw.trim()) return null;
+  let u: URL;
+  try {
+    u = new URL(raw.trim());
+  } catch {
+    return null;
+  }
+  const httpsOk = u.protocol === "https:";
+  const loopbackHttpOk = u.protocol === "http:" && LOOPBACK_HOSTS.has(u.hostname);
+  if (!httpsOk && !loopbackHttpOk) return null;
+  if (u.username || u.password || u.search || u.hash || (u.pathname !== "/" && u.pathname !== "")) return null;
+  return u.origin;
+}
+
+export async function readJsonBody(
+  request: Request,
+  env: Readonly<Record<string, string | undefined>> = process.env,
+): Promise<{ ok: true; body: Record<string, unknown> } | { ok: false }> {
   if (request.method !== "POST") return { ok: false };
   const type = request.headers.get("content-type") ?? "";
   if (!/^application\/json(\s*;|$)/i.test(type)) return { ok: false };
+  const siteOrigin = uploadSiteOrigin(env.NEXT_PUBLIC_SITE_URL);
+  if (!siteOrigin) return { ok: false };
   const origin = request.headers.get("origin");
-  let selfOrigin: string;
-  try {
-    selfOrigin = new URL(request.url).origin;
-  } catch {
-    return { ok: false };
-  }
-  if (!origin || origin !== selfOrigin) return { ok: false };
+  if (!origin || origin !== siteOrigin) return { ok: false };
   const len = Number(request.headers.get("content-length") ?? "0");
   if (Number.isFinite(len) && len > UPLOAD_BODY_MAX_BYTES) return { ok: false };
   let text: string;

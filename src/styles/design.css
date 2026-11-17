@@ -138,3 +138,12 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 @media (forced-colors: active) {
   .ds-button, .ds-tag, .ds-brand-symbol { border: 1px solid ButtonText; }
 }
+
+/* DESIGN-CONNECTIONS-FIX(C057-03): 되돌릴 수 없는 동작용 위험 버튼 변형. 추가 전용 — 기존 primary/secondary 불변.
+   #991b1b(--ds-error) 텍스트/테두리는 흰 배경 대비 약 8.3:1. hover는 비활성 배경(.dc-console .ds-button:disabled)을 덮지 않게 :not(:disabled)로 제한. */
+.ds-main .ds-button--danger, .ds-distribution .ds-button--danger { background: white; color: var(--ds-error); border-color: var(--ds-error); }
+.ds-main .ds-button--danger:not(:disabled):hover, .ds-distribution .ds-button--danger:not(:disabled):hover { background: var(--ds-error-soft); }
+@media (forced-colors: active) {
+  /* 색이 강제될 때도 일반 버튼과 구별되도록 이중 테두리 */
+  .ds-main .ds-button--danger, .ds-distribution .ds-button--danger { border: 3px double ButtonText; }
+}
