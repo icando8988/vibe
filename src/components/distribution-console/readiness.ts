@@ -42,24 +42,26 @@ export type ChannelInfo = {
 export const CHANNEL_INFO: { readonly [C in Channel]: ChannelInfo } = {
   blog: {
     label: "Blog",
-    methodTag: "수동 / 모의",
+    methodTag: "수동 게시 + 증거",
     focus: "제목과 본문을 나눠 준비합니다.",
-    summary: "승인본을 사람이 외부에서 게시하고 게시 증거를 기록하는 흐름입니다. 자동 게시(live)는 제공하지 않습니다.",
-    blocked: "운영 저장·수동 증거 기록 경로가 연결되지 않았습니다.",
+    summary:
+      "승인된 초안으로 수동 게시 작업을 만들고, 사람이 네이버 블로그에 직접(또는 확장 입력기로 입력 후) 게시한 뒤 게시 증거를 기록합니다. 자동 게시(live)는 제공하지 않습니다.",
+    blocked: "자동 게시는 제공하지 않습니다. 실제 게시는 사람이 하고, 게시 증거로 확인합니다.",
   },
   threads: {
     label: "Threads",
-    methodTag: "API·연결 미검증",
+    methodTag: "계정 연결 · 모의 실행 · 실제 게시 닫힘",
     focus: "텍스트 초안부터 준비합니다.",
-    summary: "공식 API 경로를 계획 중입니다. 계정 연결과 기능 검증 전에는 실제 게시·예약을 할 수 없습니다.",
-    blocked: "계정 연결·기능 검증·실행기가 없고 live gate가 닫혀 있습니다.",
+    summary: "공식 Threads 로그인으로 계정을 연결하고, 승인된 초안으로 모의 실행 작업을 만들 수 있습니다. 연결됨은 게시 가능을 뜻하지 않습니다.",
+    blocked:
+      "게시 실행기(워커)가 없고 live gate가 닫혀 있어 실제 게시·자동 예약은 할 수 없습니다. 모의 실행은 자동으로 돌지 않으며, 관리자가 작업 상세에서 직접 실행할 수 있습니다(외부 게시 없음).",
   },
   instagram: {
     label: "Instagram",
-    methodTag: "단일 이미지 우선 · 미검증",
+    methodTag: "단일 이미지 우선 · 연결·게시 미구현",
     focus: "캡션과 단일 이미지·권리를 함께 검토합니다. 캐러셀·동영상은 후속입니다.",
-    summary: "이미지 없이 캡션만으로는 게시 준비가 되지 않습니다. 연결·미디어·API 모두 구현 전입니다.",
-    blocked: "계정 연결·미디어 저장/권리·API 구현이 없고 live gate가 닫혀 있습니다.",
+    summary: "캡션 초안·검토와 미디어 권리 관리는 쓸 수 있습니다. 이미지 없이 캡션만으로는 게시 준비가 되지 않습니다.",
+    blocked: "계정 연결(OAuth)·초안 이미지 첨부 화면·게시 실행기가 없고 live gate가 닫혀 있습니다.",
   },
 };
 

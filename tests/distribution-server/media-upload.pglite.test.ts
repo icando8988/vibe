@@ -1,6 +1,6 @@
 /**
  * BE-UPLOAD-025 — 직접 업로드 흐름 → 130000 RPC 왕복(PGlite 대역 + 메모리 intake/Storage mock + 실제 sharp).
- * `PGLITE_PROJECT`가 있을 때만 실행(평소에는 건너뜀 — 통과로 세지 않음). 실행: node web/scripts/distribution-local-verify/upload-run.mjs --pglite-project <dir>
+ * `PGLITE_PROJECT`가 있을 때만 실행(평소에는 건너뜀 — 통과로 세지 않음). 실행: node scripts/distribution-local-verify/upload-run.mjs --pglite-project <dir>
  * 한계: Storage는 메모리 mock(실제 서명 업로드·bucket 정책·토큰 2시간 수명 미검증). PGlite는 단일 연결 — 동시 시험은 직렬화된 행 잠금 논리 확인일 뿐.
  */
 import sharp from "sharp";
@@ -176,6 +176,33 @@ describe.skipIf(!PROJECT)("PGlite 왕복: 직접 업로드 grant", () => {
     expect((await grantRow(g.grantId))?.status).toBe("expired");
     expect(await assetRow(g.assetId)).toMatchObject({ status: "failed", failure_code: "UPLOAD_EXPIRED" });
     expect(await completeUpload(deps(), keyOf(g))).toEqual({ status: "grant_expired" });
+    intakeObjects.delete(pathOf(g));
+  });
+
+  it("RESUME-026 공백 재현: 소비 뒤 처리 유실 → uncertain, grant consumed·자산 pending_upload로 남고 만료 정리 RPC도 닫지 않음(원본 보존)", async () => {
+    const bytes = await png();
+    const g = await issue(bytes);
+    put(g, bytes);
+    const lossy: RpcClient = {
+      rpc: async (fn, p) => {
+        if (fn === "distribution_mark_media_received") throw new Error("response lost");
+        return rpc.rpc(fn, p);
+      },
+    };
+    expect(await completeUpload({ ...deps(), getClient: () => lossy }, keyOf(g))).toEqual({ status: "uncertain" });
+    expect((await grantRow(g.grantId))?.status).toBe("consumed");
+    expect(await assetRow(g.assetId)).toMatchObject({ status: "pending_upload", failure_code: null });
+    expect(intakeObjects.has(pathOf(g))).toBe(true);
+    expect(await completeUpload(deps(), keyOf(g))).toEqual({ status: "grant_used" }); // 같은 grant 재완료 불가
+    // 앱 기한이 지나도 만료 정리 RPC(130000)는 issued만 본다 → 이 자산은 pending_upload로 남는다(대기 상한 20을 계속 점유).
+    // 복구는 별도 RPC(140000 distribution_recover_stalled_media_uploads) — media-upload-recovery.pglite.test.ts.
+    await owner("alter table public.distribution_media_upload_grants disable trigger distribution_media_upload_grants_guard");
+    await owner("alter table public.distribution_media_upload_grants drop constraint if exists distribution_media_upload_grants_ttl");
+    await owner("update public.distribution_media_upload_grants set expires_at = now() - interval '1 second' where id = $1::uuid", [g.grantId]);
+    await owner("alter table public.distribution_media_upload_grants enable trigger distribution_media_upload_grants_guard");
+    await rpc.rpc("distribution_expire_media_upload_grants", { p_limit: 50 });
+    expect((await grantRow(g.grantId))?.status).toBe("consumed");
+    expect((await assetRow(g.assetId))?.status).toBe("pending_upload");
     intakeObjects.delete(pathOf(g));
   });
 

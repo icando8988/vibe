@@ -16,7 +16,7 @@ export const metadata = { title: "실행 준비 비교" };
 /**
  * W9 채널별 실행 준비 비교(AUTOPOST-BLOG-FLOW-015).
  * Blog: 원문 버전 승인 + 최신 원문 기준 Blog 리비전 승인이 모두 유효할 때만 "수동 게시 작업 만들기"(A8)를 연다.
- * Threads: 같은 조건으로 모의 실행(dry_run) 작업만 만든다(실행기 없음 → 대기). Instagram은 비활성. 최종 판단은 서버 create_job.
+ * Threads: 같은 조건으로 모의 실행(dry_run) 대기 작업을 만든다. 자동 실행기(스케줄러)는 없고, 관리자가 작업 상세의 모의 실행 버튼으로 직접 실행한다. Instagram은 비활성. 최종 판단은 서버 create_job.
  * 여러 채널을 한 번에 접수하지 않는다('모두 선택' 없음).
  */
 export default async function PreparePage({
@@ -156,7 +156,7 @@ export default async function PreparePage({
                 <p className="ds-muted dc-reason">
                   {!writeConfigured
                     ? "저장 준비 전: 서버 저장 연결이 설정되지 않았습니다."
-                    : "작업은 '모의 실행 대기'로 만들어집니다. 실행기(워커·스케줄러)가 아직 없어 실행되지 않으며, 모의 실행 성공도 외부 게시도 아닙니다. 실제 게시(live)는 계정 연결(OAuth)·토큰 저장·live gate가 준비되지 않아 닫혀 있습니다."}
+                    : "작업은 '모의 실행 대기'로 만들어집니다. 자동 실행기(스케줄러)는 없으므로, 만든 뒤 작업 상세의 '모의 실행' 버튼으로 관리자가 직접 실행합니다. 모의 실행은 Threads에 게시하지 않으며, 작업을 만든 것만으로 모의 실행이 끝난 것도 아닙니다. 실제 게시(live)는 게시 실행기가 없고 live gate가 닫혀 있어 할 수 없습니다. 계정 연결은 Threads 연결 화면에서 따로 확인하며, 연결돼도 게시 가능을 뜻하지 않습니다(운영 설정 검증 별도)."}
                 </p>
               </>
             ) : (

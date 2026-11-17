@@ -12,8 +12,17 @@ import styles from "./media.module.css";
 export type MediaListView =
   | { state: "not_ready"; reason: string }
   | { state: "denied" }
-  | { state: "error" }
+  | { state: "error"; kind?: MediaListErrorKind }
   | { state: "ok"; assets: MediaAssetDto[] };
+
+/** 조회 오류 종류: 응답 유실(unavailable) · 응답 형식 이상(bad_response) · DB 거절(db). */
+export type MediaListErrorKind = "unavailable" | "bad_response" | "db";
+
+const LIST_ERROR_TEXT: Record<MediaListErrorKind, string> = {
+  unavailable: "서버 응답을 받지 못했습니다(연결 끊김·시간 초과).",
+  bad_response: "서버 응답 형식이 예상과 달라 표시하지 않았습니다.",
+  db: "저장소가 조회를 거절했습니다.",
+};
 
 export function MediaAssetList({ view, now, selectedId = null }: { view: MediaListView; now: number; selectedId?: string | null }) {
   if (view.state === "not_ready") {
@@ -34,6 +43,7 @@ export function MediaAssetList({ view, now, selectedId = null }: { view: MediaLi
   if (view.state === "error") {
     return (
       <StatusNotice tone="error" title="자산 목록을 불러오지 못했습니다">
+        {view.kind ? <p>{LIST_ERROR_TEXT[view.kind]}</p> : null}
         <p>잠시 뒤 다시 불러오세요. 조회 실패는 자산이 없다는 뜻이 아닙니다.</p>
       </StatusNotice>
     );

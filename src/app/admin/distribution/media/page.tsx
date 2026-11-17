@@ -1,8 +1,8 @@
 import { ConsoleShell } from "@/components/distribution-console/console-shell";
 import { denyUnlessDistributionAdmin } from "@/components/distribution-console/guard";
 import { MediaAssetList } from "@/components/distribution-console/media-asset-list";
-import { MediaUploadPanel } from "@/components/distribution-console/media-forms";
-import { requestNow } from "@/components/distribution-console/media-labels";
+import { MEDIA_PAGE_NOTICE_OVERRIDES, MediaGateNotice, MediaUploadPanel } from "@/components/distribution-console/media-forms";
+import { mediaPageNotice, requestNow } from "@/components/distribution-console/media-labels";
 import { WriteNoticeView } from "@/components/distribution-console/write-notice-view";
 import { loadMediaList } from "./load";
 
@@ -27,9 +27,10 @@ export default async function MediaPage({ searchParams }: { searchParams: Promis
       title="미디어·권리"
       description="게시에 쓰는 이미지는 처리 완료와 권리 승인이 모두 필요합니다. 두 상태를 따로 봅니다."
       crumbs={[{ label: "미디어·권리" }]}
+      gateNotice={<MediaGateNotice listState={view.state} />}
     >
-      <WriteNoticeView notice={sp.notice} />
-      <MediaUploadPanel reason="원본 업로드 경로(원본 전용 비공개 저장소·서명 업로드)가 아직 구현·확정되지 않았습니다." />
+      <WriteNoticeView notice={mediaPageNotice(sp.notice)} overrides={MEDIA_PAGE_NOTICE_OVERRIDES} />
+      <MediaUploadPanel reason="원본 직접 업로드 계약의 최종 인수와 실제 저장소 연결 검증 전입니다." />
       <section aria-labelledby="md-list" className="dc-panel dc-block">
         <h2 id="md-list">내 자산</h2>
         <MediaAssetList view={view} now={requestNow()} selectedId={selected} />

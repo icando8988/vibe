@@ -3,8 +3,8 @@ import { ConsoleShell } from "@/components/distribution-console/console-shell";
 import { denyUnlessDistributionAdmin } from "@/components/distribution-console/guard";
 import { MediaAssetList } from "@/components/distribution-console/media-asset-list";
 import { MediaAssetFacts } from "@/components/distribution-console/media-asset-detail";
-import { MediaArchiveForm, MediaRightsForm } from "@/components/distribution-console/media-forms";
-import { requestNow } from "@/components/distribution-console/media-labels";
+import { MEDIA_PAGE_NOTICE_OVERRIDES, MediaArchiveForm, MediaGateNotice, MediaRightsForm } from "@/components/distribution-console/media-forms";
+import { mediaPageNotice, requestNow } from "@/components/distribution-console/media-labels";
 import { isWellFormedId } from "@/components/distribution-console/readiness";
 import { IdLine, InvalidParam } from "@/components/distribution-console/states";
 import { WriteNoticeView } from "@/components/distribution-console/write-notice-view";
@@ -34,7 +34,7 @@ export default async function MediaAssetPage({
 
   if (!isWellFormedId(assetId)) {
     return (
-      <ConsoleShell section="media" title="자산 상세" crumbs={crumbs}>
+      <ConsoleShell section="media" title="자산 상세" crumbs={crumbs} gateNotice={<MediaGateNotice listState="not_loaded" />}>
         <InvalidParam what="자산 ID" back={{ href: "/admin/distribution/media", label: "미디어 목록으로" }} />
       </ConsoleShell>
     );
@@ -45,8 +45,8 @@ export default async function MediaAssetPage({
   const asset = assets?.find((a) => a.id === assetId) ?? null;
 
   return (
-    <ConsoleShell section="media" eyebrow="미디어" title="자산 상세" crumbs={crumbs}>
-      <WriteNoticeView notice={sp.notice} />
+    <ConsoleShell section="media" eyebrow="미디어" title="자산 상세" crumbs={crumbs} gateNotice={<MediaGateNotice listState={view.state} />}>
+      <WriteNoticeView notice={mediaPageNotice(sp.notice)} overrides={MEDIA_PAGE_NOTICE_OVERRIDES} />
       <IdLine label="자산 ID" value={assetId} />
       {view.state !== "ok" ? (
         <MediaAssetList view={view} now={now} />

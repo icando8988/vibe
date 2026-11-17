@@ -4,6 +4,8 @@
 
 ## 1. 총괄 검토 결론
 
+2026-11-17 새 PC 실행 갱신: D:/VIBE/vibe-github의 main 8f0691c와 origin/main 일치, Node24/PGlite 전체622pass/skip0·build/typecheck 성공·lint 오류0/기존경고3 재현. 아래 과거 기준선보다 최신이다. 사용자 담당별 작업지시로 기존 Backend BE-UPLOAD-RESUME-026(업로드 계약/서버 인수), Front FE-MEDIA-RESUME-027(metadata UI 완성), Design DESIGN-MEDIA-RESUME-028(읽기전용 QA)을 실제 전달했다. Backend 착수 수락, 나머지 전달 ready. 업로드 UI 활성화는 최종 계약 Master 인수 후. 실제 DB/Storage/OAuth/게시 검증은 미완료 유지. 전달 근거 .ai/results/DISPATCH-RESUME-20261117-MASTER.md, 세부 지시는 .ai/tasks/각 작업ID.md.
+
 현재 핵심 공백은 실제 운영 연결이다. 코드·로컬 검증·운영 배포·실계정 검증을 각각 기록하고, 운영 가능한 Blog 흐름을 먼저 확보한 뒤 Threads와 Instagram을 순서대로 연다. 수집·생성·다중 이미지 기능도 전체 범위에 남긴다.
 
 기존 계획의 보완점은 다섯 가지다. 오래된 작업 상태가 최신 결과와 섞였고, DB/계정 설정 없이 코드 이식만 누적됐으며, 로컬 전체 작업과 공개 배포본의 차이가 커졌다. 관리자 집계·검색·연결 상태 등 운영 동선이 부족하고, 역할 분리 뒤 공유 파일의 책임이 불명확했다. 이번 계획은 현재 기준선·실행 관문·파일 담당·검증 근거·인계를 명시해 이 공백을 보완한다.

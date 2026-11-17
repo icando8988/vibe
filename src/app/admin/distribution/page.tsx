@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ConsoleShell } from "@/components/distribution-console/console-shell";
 import { denyUnlessDistributionAdmin } from "@/components/distribution-console/guard";
 import { CONTENT_FLOW } from "@/components/distribution-console/nav";
-import { ChannelCards, NotConnected } from "@/components/distribution-console/states";
+import { ChannelCards } from "@/components/distribution-console/states";
 import { ReadStateNotice } from "@/components/distribution-console/write-notice-view";
 import { loadContentList } from "@/server/distribution/content-page";
 
@@ -103,8 +103,9 @@ export default async function DistributionOverviewPage() {
             예약·작업 →
           </Link>
         </div>
-        <p className="ds-muted">결과 불명(대사 필요) → 재인증 필요 → 실패 → 확인이 필요한 예약 순서로 보여 줄 자리입니다.</p>
-        <NotConnected what="작업" />
+        <p className="ds-muted">
+          작업 목록은 예약·작업 화면에서 조치 필요 순(대사 필요 → 결과 불명 → 실패 → 증거 대기 → 수동 준비 → 예약)으로 봅니다. 이 개요에는 작업 건수·요약을 따로 집계하지 않습니다.
+        </p>
       </section>
     </ConsoleShell>
   );

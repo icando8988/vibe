@@ -26,7 +26,6 @@
  */
 .mediaForm .choice input[type="checkbox"],
 .mediaForm .choice input[type="radio"] {
-  inline-size: auto;
   width: auto;
   min-width: 0;
   min-height: 0;
@@ -47,8 +46,8 @@
   font-weight: 650;
 }
 
-/* 공용 `.dc-console .ds-editor-fields fieldset`의 grid·여백보다 특정성을 높여 선택지 배치를 이 범위에서 정한다 */
-.mediaForm fieldset.choiceGroup {
+/* 공용 `.dc-console .ds-editor-fields fieldset`(0,2,1)과 같으면 CSS 순서에 좌우되므로 클래스를 한 번 더 붙여 (0,3,1)로 확실히 높인다(D028 M025-01 대조) */
+.mediaForm fieldset.choiceGroup.choiceGroup {
   display: flex;
   flex-wrap: wrap;
   gap: 0.2rem 1.2rem;
@@ -56,7 +55,7 @@
   padding: 0.6rem 0.8rem;
 }
 
-.mediaForm fieldset.choiceGroup legend {
+.mediaForm fieldset.choiceGroup.choiceGroup legend {
   font-weight: 700;
 }
 

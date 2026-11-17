@@ -76,8 +76,8 @@ describe.skipIf(!PROJECT)("PGlite 왕복: 미디어 자산·권리·서명 승�
       "distribution_archive_media_asset", "distribution_authorize_media_signing", "distribution_cancel_media_upload_grant", "distribution_complete_media_processing",
       "distribution_consume_media_upload_grant", "distribution_create_media_asset", "distribution_decide_media_rights", "distribution_expire_media_upload_grants",
       "distribution_fail_media_processing", "distribution_get_media_upload_grant", "distribution_issue_media_upload_grant", "distribution_list_media_assets",
-      "distribution_mark_media_received",
-    ]); // BE-UPLOAD-025: 130000 업로드 grant RPC 5개 추가(같은 service_role 전용 조건)
+      "distribution_mark_media_received", "distribution_recover_stalled_media_uploads",
+    ]); // BE-UPLOAD-025: 130000 업로드 grant RPC 5개 추가, BE-UPLOAD-RECOVERY-030: 140000 복구 RPC 1개 추가(같은 service_role 전용 조건)
     expect(rpcs.every((f) => !f.a && !f.u && f.s)).toBe(true);
     expect(acl.filter((f) => !f.d && f.n !== "distribution_draft_revision_media_before_insert").every((f) => !f.a && !f.u && !f.s)).toBe(true);
   });

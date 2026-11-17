@@ -143,7 +143,15 @@ export default async function ChannelDraftPage({
               </ActionForm>
             )}
             {!canWrite ? <p className="ds-muted dc-reason">저장 준비 전이거나 보관된 원문·초안이라 저장할 수 없습니다.</p> : null}
-            {channel === "instagram" ? <p className="ds-muted">이미지 1장 선택은 미디어·권리 기능이 준비되면 연결됩니다. 이미지 없는 캡션은 게시 준비가 아닙니다.</p> : null}
+            {channel === "instagram" ? (
+              <p className="ds-muted">
+                이 초안에 이미지 1장을 붙이는 화면은 아직 없습니다. 이미지 없는 캡션은 게시 준비가 아닙니다. 게시에 쓸 이미지의 처리·권리 상태는{" "}
+                <Link className="ds-text-link" href="/admin/distribution/media">
+                  미디어·권리
+                </Link>
+                에서 확인합니다.
+              </p>
+            ) : null}
           </section>
         </div>
       )}

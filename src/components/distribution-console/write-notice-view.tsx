@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { StatusNotice } from "../status-notice";
 import { parseWriteNotice, type WriteNotice } from "@/server/distribution/write-notice";
 
@@ -35,13 +36,19 @@ const TEXT: Record<WriteNotice, { tone: "info" | "warning" | "error"; title: str
   live_gate_closed: { tone: "warning", title: "실제 게시 gate가 닫혀 있습니다", body: "자동 게시는 준비되지 않았습니다." },
 };
 
-export function WriteNoticeView({ notice }: { notice: unknown }) {
+/** 화면별 안내 덮어쓰기(선택, FE-MEDIA-FIX-029). 주지 않은 코드는 공용 TEXT 그대로. `extra`는 본문 뒤 추가 동선(링크 등). */
+export type WriteNoticeOverride = { tone?: "info" | "warning" | "error"; title?: string; body?: string; extra?: ReactNode };
+export type WriteNoticeOverrides = Partial<Record<WriteNotice, WriteNoticeOverride>>;
+
+export function WriteNoticeView({ notice, overrides }: { notice: unknown; overrides?: WriteNoticeOverrides }) {
   const code = parseWriteNotice(notice);
   if (!code) return null;
-  const t = TEXT[code];
+  const o = overrides?.[code];
+  const t = o ? { ...TEXT[code], ...o } : TEXT[code];
   return (
     <StatusNotice tone={t.tone} title={t.title} announce>
       {t.body ? <p>{t.body}</p> : null}
+      {o?.extra ?? null}
     </StatusNotice>
   );
 }

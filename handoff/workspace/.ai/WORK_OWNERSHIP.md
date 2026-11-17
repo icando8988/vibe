@@ -2,6 +2,12 @@
 
 관리 Codex master / 2026-11-17. 선언형 기록이며 파일시스템 잠금은 아니다. 사용자 직접지시 우선.
 
+현재 재개 범위: Front FE-MEDIA-NOTICE-032는 두 미디어 페이지의 query notice와 보관 오류 문구/관련 시험만, Backend BE-UPLOAD-RECOVERY-030은 신규 140000·복구 서버/시험/계약만 담당한다. Master는 OPS_READY_024_MEDIA_RUNBOOK.md·공통 상태 기록·결과 통합을 담당하며 두 담당의 코드 점유를 침범하지 않는다. 과거 표와 충돌 시 이 범위가 우선한다.
+
+후속: Front032·Backend030 로컬 인수 후 코드 점유 종료. Front033은 media-labels.ts의 UPLOAD_STALLED 라벨 및 관련 Front 회귀만 점유한다. Backend는 lifecycle 보고 정정 후 대기, 추가 서버 수정은 새 배정에 따른다.
+
+Front033 반환·로컬 통합 인수 완료로 해당 라벨/회귀 점유도 종료했다. 다음 담당 수정은 새 범위 배정 후 진행한다.
+
 | 범위 | 기본 담당 | 현재 조정 |
 |---|---|---|
 | app UI·components·폼연결 | Claude(Front) | API 제외, Design 완료구간 보존 |

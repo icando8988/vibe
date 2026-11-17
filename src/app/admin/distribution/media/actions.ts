@@ -1,63 +1,27 @@
 "use server";
 
 /**
- * 미디어 권리 결정·보관 server action(FE-MEDIA-024, 얇은 연결). 계약: docs/contracts/MEDIA_FRONT_CONTRACT.md §0-A(확정).
+ * 미디어 권리 결정·보관 server action(FE-MEDIA-024 → FE-MEDIA-RESUME-027, 얇은 연결). 계약: docs/contracts/MEDIA_FRONT_CONTRACT.md §0-A(확정).
  * 매 요청 getMediaMetadataDeps()를 새로 부르고 service 함수만 호출한다(세션 actor·D1·RPC는 서버 모듈 몫 — 여기서 복사하지 않음).
- * 성공: 서버 응답 확인 뒤 redirect(+notice=saved). 실패: 폼 상태만(입력은 클라이언트 폼에 남음).
- * 세부 거절 사유는 mediaErrorReason(e)로, 그 밖은 공용 안내 코드로. 응답 유실·형식 이상은 결과 불명(자동 재시도 없음).
+ * 성공: 서버 응답 확인 뒤 redirect(+notice=saved). 실패: 폼 상태만(입력은 클라이언트 폼에 남음). 실패 판정은 action-state.ts(순수, 시험 대상).
  */
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { mediaErrorReason } from "@/server/distribution/errors";
-import { archiveAsset, decideRights, type MediaFail } from "@/server/distribution/media/service";
+import { archiveAsset, decideRights } from "@/server/distribution/media/service";
 import { getMediaMetadataDeps } from "@/server/distribution/media/session";
-import { isUuid } from "@/server/distribution/validation";
-import { writeNoticeOf, type FormState, type WriteNotice } from "@/server/distribution/write-notice";
+import type { FormState } from "@/server/distribution/write-notice";
+import { intOf, kstToIso, mediaFailState, noteFieldError } from "./action-state";
 
 const BASE = "/admin/distribution/media";
-
-function fail(f: MediaFail | { status: "invalid"; field: string }, prev: FormState): FormState {
-  let notice: WriteNotice;
-  let fields: string[] = [];
-  switch (f.status) {
-    case "denied":
-      notice = "denied";
-      break;
-    case "not_ready":
-      notice = "not_ready";
-      break;
-    case "invalid":
-      notice = "invalid";
-      fields = [f.field];
-      break;
-    case "bad_response":
-      notice = "uncertain";
-      break;
-    case "db_error": {
-      notice = writeNoticeOf({ status: "db_error", error: f.error });
-      const reason = mediaErrorReason(f.error);
-      if (reason) fields = [`reason:${reason}`];
-      break;
-    }
-  }
-  return { notice, fields, seq: prev.seq + 1 };
-}
-
-const intOf = (v: FormDataEntryValue | null) => (typeof v === "string" && /^[1-9][0-9]{0,8}$/.test(v) ? Number(v) : null);
-
-/** datetime-local(KST로 안내) → 시간대 붙은 ISO. 빈 값이면 null(기한 없음). 형식이 틀리면 undefined. */
-function kstToIso(v: FormDataEntryValue | null): string | null | undefined {
-  if (v === null || v === "") return null;
-  if (typeof v !== "string" || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(v)) return undefined;
-  const t = Date.parse(`${v}:00+09:00`);
-  return Number.isNaN(t) ? undefined : new Date(t).toISOString();
-}
 
 export async function decideMediaRightsAction(prev: FormState, fd: FormData): Promise<FormState> {
   const assetId = fd.get("assetId");
   const decision = fd.get("decision");
-  const validUntil = kstToIso(fd.get("validUntil"));
-  if (validUntil === undefined) return fail({ status: "invalid", field: "validUntil" }, prev);
+  // 유효기한은 승인일 때만 쓰므로 승인일 때만 검사한다(반려·철회 때 남은 값으로 막지 않음).
+  const validUntil = decision === "approved" ? kstToIso(fd.get("validUntil")) : null;
+  if (validUntil === undefined) return mediaFailState({ status: "invalid", field: "validUntil" }, prev);
+  const noteField = noteFieldError(fd.get("note"));
+  if (noteField) return mediaFailState({ status: "invalid", field: noteField }, prev);
   const out = await decideRights(getMediaMetadataDeps(), {
     assetId,
     expectedVersion: intOf(fd.get("expectedVersion")),
@@ -71,16 +35,16 @@ export async function decideMediaRightsAction(prev: FormState, fd: FormData): Pr
     revalidatePath(`${BASE}/${out.asset.id}`);
     redirect(`${BASE}/${out.asset.id}?notice=saved`);
   }
-  return fail(out, prev);
+  return mediaFailState(out, prev);
 }
 
 export async function archiveMediaAssetAction(prev: FormState, fd: FormData): Promise<FormState> {
-  if (fd.get("confirmArchive") !== "on") return fail({ status: "invalid", field: "confirmArchive" }, prev);
-  const assetId = fd.get("assetId");
-  const out = await archiveAsset(getMediaMetadataDeps(), { assetId, expectedVersion: intOf(fd.get("expectedVersion")) });
+  if (fd.get("confirmArchive") !== "on") return mediaFailState({ status: "invalid", field: "confirmArchive" }, prev);
+  const out = await archiveAsset(getMediaMetadataDeps(), { assetId: fd.get("assetId"), expectedVersion: intOf(fd.get("expectedVersion")) });
   if (out.status === "ok") {
     revalidatePath(BASE);
-    redirect(`${BASE}/${isUuid(assetId) ? assetId : ""}?notice=saved`);
+    revalidatePath(`${BASE}/${out.asset.id}`);
+    redirect(`${BASE}/${out.asset.id}?notice=saved`);
   }
-  return fail(out, prev);
+  return mediaFailState(out, prev);
 }

@@ -39,9 +39,11 @@ export default async function AdminPage() {
         <section aria-labelledby="admin-distribution" className="dc-admin-entry">
           <h2 id="admin-distribution">콘텐츠 배포</h2>
           <p>
-            <span className="ds-tag">준비 전 · 실제 게시 gate 닫힘</span>
+            <span className="ds-tag">실제 게시 gate 닫힘</span>
           </p>
-          <p>원문 하나로 Blog·Threads·Instagram 초안을 준비하는 콘솔입니다. 운영 저장소·계정 연결·실행기가 아직 연결되지 않아 저장·예약·게시는 할 수 없습니다.</p>
+          <p>
+            원문 하나로 Blog·Threads·Instagram 초안을 준비·검토하는 콘솔입니다. Blog는 수동 게시와 증거 기록, Threads는 계정 연결과 모의 실행 작업, Instagram은 초안·미디어 권리까지 쓸 수 있습니다. 자동 게시·예약은 열려 있지 않습니다.
+          </p>
           <Link className="ds-text-link" href="/admin/distribution">
             콘텐츠 배포 콘솔 열기
           </Link>

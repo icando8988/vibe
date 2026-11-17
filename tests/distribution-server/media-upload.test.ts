@@ -234,6 +234,34 @@ describe("완료(completeUpload)", () => {
     expect(b.calls.remove).toEqual([]);
   });
 
+  it("RECOVERY-030: 실패 기록이 거부(VERSION_CONFLICT 등)되면 failed(asset:null)이고 원본을 지우지 않음", async () => {
+    const bytes = await png();
+    const g = grantJson({ declared_byte_size: bytes.length + 1 });
+    const rpc = rpcMock({
+      [UPLOAD_RPC.get]: () => ({ data: g, error: null }), [UPLOAD_RPC.consume]: () => ({ data: { ...g, status: "consumed" }, error: null }),
+      [UPLOAD_RPC.fail]: () => dbErr("VERSION_CONFLICT: media asset is at version 2 (expected 1)", "P0001"),
+    });
+    const a = intakeMock({ download: () => ({ ok: true, value: bytes }) });
+    expect(await completeUpload(deps(rpc.client, a.intake), key)).toEqual({ status: "failed", code: "DECLARED_MISMATCH", asset: null });
+    expect(a.calls.remove).toEqual([]);
+  });
+
+  it("RESUME-026: 소비 뒤 DB 오류(유실 아님)도 uncertain — 재시도 가능한 error로 내보내지 않음, 원본 보존·변형 0", async () => {
+    const bytes = await png();
+    for (const received of [() => dbErr("VERSION_CONFLICT: stale", "40001"), () => dbErr("boom", "XX000"), () => ({ data: { bad: true }, error: null })]) {
+      const rpc = rpcMock({
+        [UPLOAD_RPC.get]: () => ({ data: grantJson({ declared_byte_size: bytes.length }), error: null }),
+        [UPLOAD_RPC.consume]: () => ({ data: grantJson({ status: "consumed", declared_byte_size: bytes.length }), error: null }),
+        distribution_mark_media_received: received,
+      });
+      const a = intakeMock({ download: () => ({ ok: true, value: bytes }) });
+      const s = storageMock();
+      expect(await completeUpload(deps(rpc.client, a.intake, s.storage), key)).toEqual({ status: "uncertain" });
+      expect(a.calls.remove).toEqual([]);
+      expect(s.uploads).toEqual([]);
+    }
+  });
+
   it("입력 검증: grantId·nonce·expectedVersion 형식 — RPC 0회", async () => {
     const rpc = rpcMock({});
     const { intake } = intakeMock();

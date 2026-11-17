@@ -132,8 +132,13 @@ export function ConsoleShell({
               {actions ? <div className="dc-pagehead-actions">{actions}</div> : null}
             </header>
             {gateNotice ?? (
-              <StatusNotice tone="warning" title="준비 전 · 실제 게시 gate 닫힘">
-                <p>원문·초안 저장과 작업 실행은 아직 연결되지 않았습니다. 이 화면의 입력·버튼은 동작하지 않으며, 표시되는 상태는 실제 작업 결과가 아닙니다.</p>
+              <StatusNotice tone="warning" title="실제 게시 gate 닫힘 · 저장은 서버 연결 기준">
+                <p>
+                  원문·채널 초안·검토·작업은 연결된 서버에 저장하고 다시 불러옵니다. 서버 준비 전이거나 조회에 실패하면 화면마다 따로 알려 드립니다.
+                </p>
+                <p>
+                  자동 게시는 열려 있지 않습니다. Blog는 사람이 외부에서 게시하고 증거를 기록하며, Threads는 계정 연결·모의 실행 작업까지, Instagram은 초안·검토·미디어 권리까지 쓸 수 있습니다.
+                </p>
               </StatusNotice>
             )}
             {children}

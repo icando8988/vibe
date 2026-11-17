@@ -11,7 +11,7 @@
 import { startTransition, useActionState, useEffect, useRef, type FormEvent, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { INITIAL_FORM_STATE, type FormState } from "@/server/distribution/write-notice";
-import { WriteNoticeView } from "./write-notice-view";
+import { WriteNoticeView, type WriteNoticeOverrides } from "./write-notice-view";
 
 export function ActionForm({
   action,
@@ -21,6 +21,7 @@ export function ActionForm({
   className = "ds-editor-fields",
   errorSummaryId,
   markInvalidFields = false,
+  noticeOverrides,
   children,
 }: {
   action: (prev: FormState, formData: FormData) => Promise<FormState>;
@@ -32,6 +33,8 @@ export function ActionForm({
   errorSummaryId?: string;
   /** 선택(FE-MEDIA-024): 실패한 필드 이름과 같은 입력에 aria-invalid·요약 연결을 달고 첫 칸에 초점. 기본 false(기존 동작). */
   markInvalidFields?: boolean;
+  /** 선택(FE-MEDIA-FIX-029): 화면 문맥 안내 덮어쓰기. 주지 않으면 공용 안내 그대로(기존 동작). */
+  noticeOverrides?: WriteNoticeOverrides;
   children: ReactNode;
 }) {
   const [state, formAction, pending] = useActionState(action, INITIAL_FORM_STATE);
@@ -54,7 +57,7 @@ export function ActionForm({
 
   return (
     <div className="dc-action-form">
-      {state.seq > 0 ? <WriteNoticeView key={state.seq} notice={state.notice} /> : null}
+      {state.seq > 0 ? <WriteNoticeView key={state.seq} notice={state.notice} overrides={noticeOverrides} /> : null}
       {state.fields.length > 0 ? (
         <p role="alert" className="dc-reason" id={errorSummaryId}>
           확인할 항목: {state.fields.map((f) => fieldLabels[f] ?? f).join(", ")}

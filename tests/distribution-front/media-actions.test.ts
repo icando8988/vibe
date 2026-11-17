@@ -10,7 +10,8 @@ const redirect = vi.fn((url: string) => {
 });
 
 vi.mock("server-only", () => ({}));
-vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
+const revalidatePath = vi.fn();
+vi.mock("next/cache", () => ({ revalidatePath: (p: string) => revalidatePath(p) }));
 vi.mock("next/navigation", () => ({ redirect: (u: string) => redirect(u) }));
 vi.mock("@/server/distribution/media/session", () => ({
   getMediaMetadataDeps: () => ({ tag: "metadata-deps" }),
@@ -75,6 +76,63 @@ describe("권리 결정 action", () => {
   });
 });
 
+describe("FE-MEDIA-FIX-029 핵심 동작 회귀(실제 action 실행, 서비스 mock)", () => {
+  it("승인: 잘못된 기한은 서비스 호출 전 validUntil 오류", async () => {
+    for (const bad of ["2026-12-01", "2026-13-40T25:99", "내일"]) {
+      svc.decideRights.mockReset();
+      expect(await decideMediaRightsAction(prev, fd({ assetId: ID, expectedVersion: "4", decision: "approved", allowedChannels: "blog", validUntil: bad }))).toEqual({ notice: "invalid", fields: ["validUntil"], seq: 4 });
+      expect(svc.decideRights).not.toHaveBeenCalled();
+    }
+  });
+  it("반려·철회: 폼에 남은 잘못된 기한·채널은 막지 않고 보내지 않는다", async () => {
+    for (const decision of ["rejected", "revoked"]) {
+      svc.decideRights.mockReset();
+      svc.decideRights.mockResolvedValue(okAsset);
+      await expect(decideMediaRightsAction(prev, fd({ assetId: ID, expectedVersion: "6", decision, allowedChannels: "blog", validUntil: "잘못된 값", note: "출처 불명" }))).rejects.toThrow("REDIRECT");
+      expect(svc.decideRights).toHaveBeenCalledTimes(1);
+      expect(svc.decideRights.mock.calls[0]?.[1]).toEqual({ assetId: ID, expectedVersion: 6, decision, allowedChannels: undefined, validUntil: undefined, note: "출처 불명" });
+    }
+  });
+  it("사유 제어문자·1001자는 서비스 호출 전 note 오류(입력은 폼에 남음), 1000자·빈 사유는 통과", async () => {
+    for (const note of ["첫 줄\n둘째 줄", "탭\t포함", "가".repeat(1001)]) {
+      svc.decideRights.mockReset();
+      expect(await decideMediaRightsAction(prev, fd({ assetId: ID, expectedVersion: "4", decision: "rejected", note }))).toEqual({ notice: "invalid", fields: ["note"], seq: 4 });
+      expect(svc.decideRights).not.toHaveBeenCalled();
+    }
+    for (const note of ["가".repeat(1000), ""]) {
+      svc.decideRights.mockReset();
+      svc.decideRights.mockResolvedValue(okAsset);
+      await expect(decideMediaRightsAction(prev, fd({ assetId: ID, expectedVersion: "4", decision: "rejected", note }))).rejects.toThrow("REDIRECT");
+      expect(svc.decideRights.mock.calls[0]?.[1]).toMatchObject({ note });
+    }
+  });
+  it("보관 성공: redirect·revalidate는 제출 ID가 아니라 서버 반환 ID", async () => {
+    const SUBMITTED = "cccccccc-cccc-4ccc-8ccc-cccccccccccc";
+    const SERVER = "dddddddd-dddd-4ddd-8ddd-dddddddddddd";
+    revalidatePath.mockClear();
+    svc.archiveAsset.mockResolvedValue({ status: "ok", asset: { id: SERVER } });
+    await expect(archiveMediaAssetAction(prev, fd({ assetId: SUBMITTED, expectedVersion: "4", confirmArchive: "on" }))).rejects.toThrow(`REDIRECT /admin/distribution/media/${SERVER}?notice=saved`);
+    expect(svc.archiveAsset).toHaveBeenCalledWith({ tag: "metadata-deps" }, { assetId: SUBMITTED, expectedVersion: 4 });
+    expect(revalidatePath).toHaveBeenCalledWith(`/admin/distribution/media/${SERVER}`);
+    expect(revalidatePath).not.toHaveBeenCalledWith(`/admin/distribution/media/${SUBMITTED}`);
+  });
+  it("권리 결정 성공도 서버 반환 ID로 redirect·revalidate", async () => {
+    const SERVER = "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee";
+    revalidatePath.mockClear();
+    svc.decideRights.mockResolvedValue({ status: "ok", asset: { id: SERVER } });
+    await expect(decideMediaRightsAction(prev, fd({ assetId: ID, expectedVersion: "4", decision: "rejected" }))).rejects.toThrow(`REDIRECT /admin/distribution/media/${SERVER}?notice=saved`);
+    expect(revalidatePath).toHaveBeenCalledWith(`/admin/distribution/media/${SERVER}`);
+    expect(revalidatePath).not.toHaveBeenCalledWith(`/admin/distribution/media/${ID}`);
+  });
+  it("충돌 실패는 재시도·redirect 없이 한 번만 호출하고 버전을 바꾸지 않는다", async () => {
+    svc.decideRights.mockResolvedValue({ status: "db_error", error: { code: "conflict_version", token: "VERSION_CONFLICT", sqlstate: "P0001" } });
+    expect(await decideMediaRightsAction(prev, fd({ assetId: ID, expectedVersion: "4", decision: "rejected" }))).toEqual({ notice: "conflict_version", fields: [], seq: 4 });
+    expect(svc.decideRights).toHaveBeenCalledTimes(1);
+    expect(svc.decideRights.mock.calls[0]?.[1]).toMatchObject({ expectedVersion: 4 });
+    expect(redirect).not.toHaveBeenCalled();
+  });
+});
+
 describe("보관 action", () => {
   it("확인 체크 없으면 서비스 호출 없음", async () => {
     expect(await archiveMediaAssetAction(prev, fd({ assetId: ID, expectedVersion: "4" }))).toEqual({ notice: "invalid", fields: ["confirmArchive"], seq: 4 });
@@ -100,9 +158,11 @@ describe("목록 조회 함수: 설정 신호 ≠ DB 성공", () => {
   });
   it("metadata=true여도 조회 실패면 오류(0건 아님), 성공일 때만 목록", async () => {
     svc.listAssets.mockResolvedValue({ status: "db_error", error: { code: "unexpected", token: null, sqlstate: "XX000" } });
-    expect(await loadMediaList()).toEqual({ view: { state: "error" }, assets: null });
+    expect(await loadMediaList()).toEqual({ view: { state: "error", kind: "db" }, assets: null });
+    svc.listAssets.mockResolvedValue({ status: "db_error", error: { code: "unavailable", token: null, sqlstate: null } });
+    expect(await loadMediaList()).toEqual({ view: { state: "error", kind: "unavailable" }, assets: null });
     svc.listAssets.mockResolvedValue({ status: "bad_response" });
-    expect((await loadMediaList()).view.state).toBe("error");
+    expect(await loadMediaList()).toEqual({ view: { state: "error", kind: "bad_response" }, assets: null });
     svc.listAssets.mockResolvedValue({ status: "denied" });
     expect((await loadMediaList()).view.state).toBe("denied");
     svc.listAssets.mockResolvedValue({ status: "ok", assets: [] });

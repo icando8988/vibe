@@ -25,7 +25,7 @@ export function MediaAssetFacts({ asset, now }: { asset: MediaAssetDto; now: num
         <dt>원본</dt>
         <dd className={styles.spec}>
           {asset.originalFormat ? `${asset.originalFormat.toUpperCase()} · ${formatPixels(asset.originalWidth, asset.originalHeight)} · ${formatBytes(asset.originalByteSize)}` : "검사 전"}
-          <span className="ds-muted"> (원본 파일은 저장하지 않음)</span>
+          <span className="ds-muted"> (원본은 화면에 표시하지 않음 · 처리 뒤 임시 저장소에서 삭제를 시도하며, 남은 원본 정리 작업은 아직 없음)</span>
         </dd>
         <dt>변환본</dt>
         <dd className={styles.spec}>

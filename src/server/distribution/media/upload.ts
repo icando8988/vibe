@@ -1,5 +1,6 @@
 /**
- * 미디어 직접 업로드(private intake) 흐름 — BE-UPLOAD-025. 의존성 주입 순수 함수(시험 대상). 계약: docs/contracts/MEDIA_UPLOAD_CONTRACT.md
+ * 미디어 직접 업로드(private intake) 흐름 — BE-UPLOAD-025 / BE-UPLOAD-RESUME-026. 의존성 주입 순수 함수(시험 대상).
+ * 계약: handoff/workspace/docs/contracts/MEDIA_UPLOAD_CONTRACT.md (로컬 기준 확정, 실제 Storage 미검증)
  *
  *   issueUploadGrant  : actor·D1 → 입력 → 준비 → nonce(서버 생성) → DB에 자산+grant 원자 기록 → intake 서명 업로드 URL(upsert 없음)
  *                       서명 실패면 grant 취소 시도 → signing_failed(URL 없음). DB 응답 유실 → uncertain(재요청 없음).
@@ -179,7 +180,7 @@ export type CompleteResult =
   /** intake에 객체 없음. grant·nonce·rowVersion 그대로 — 같은 grant로 사용자가 완료 확인을 다시 보낼 수 있다(재발급·재업로드 아님). */
   | { status: "not_uploaded" }
   | { status: "conflict_version" }
-  /** grant 소비 뒤 결과 불명 — 자동 재시도 금지, 목록 확인 */
+  /** grant 소비 뒤 결과 불명(응답 유실·DB 오류 포함) — 자동 재시도 금지, 같은 grant 재완료 불가, 목록 확인 */
   | { status: "uncertain" }
   /** intake 읽기 실패(grant 미소비) */
   | { status: "storage_error" }
@@ -231,8 +232,9 @@ export async function completeUpload(deps: UploadDeps, input: { grantId: unknown
   const sniffed = sniffFormat(bytes);
   if ((sniffed && FORMAT_TYPE[sniffed] !== c.declaredContentType) || bytes.length !== c.declaredByteSize) {
     const f = await call(b.client, UPLOAD_RPC.fail, { p_actor_id: b.actorId, p_asset_id: c.asset.id, p_expected_version: c.asset.rowVersion, p_code: "DECLARED_MISMATCH" });
-    await removeOriginal();
-    return { status: "failed", code: "DECLARED_MISMATCH", asset: f.ok ? toMediaAssetDto(f.data) : null };
+    const failedAsset = f.ok ? toMediaAssetDto(f.data) : null;
+    if (failedAsset) await removeOriginal(); // RECOVERY-030: 실패 기록을 확인한 경우만 원본 삭제(복구·경합으로 기록 못 하면 보존 — sweep 대상)
+    return { status: "failed", code: "DECLARED_MISMATCH", asset: failedAsset };
   }
 
   // 5) M4 검사·변환·변형 저장
@@ -243,15 +245,12 @@ export async function completeUpload(deps: UploadDeps, input: { grantId: unknown
       return { status: "ready", asset: out.asset };
     case "failed":
       if (out.code === "STORAGE_READ_FAILED") return { status: "uncertain" }; // 이 흐름에선 나오지 않음
-      await removeOriginal();
+      if (out.asset) await removeOriginal(); // RECOVERY-030: 실패 기록 확인 시에만 삭제(asset:null이면 상태 불명 — 원본 보존)
       return { status: "failed", code: out.code, asset: out.asset };
-    case "uncertain":
-    case "bad_response":
-      return { status: "uncertain" }; // 원본 보존(sweep 대상)
-    case "db_error":
-      return out.error.code === "unavailable" ? { status: "uncertain" } : { status: "error" };
     default:
-      return { status: "error" };
+      // uncertain·bad_response·db_error(유실 포함 모든 DB 오류)·기타: grant는 이미 소비됐고 자산은 pending_upload/processing일 수 있다.
+      // 같은 grant로 다시 완료할 수 없으므로(grant_used) 재시도 가능한 error가 아니라 uncertain — 원본 보존(sweep 대상), 목록 확인.
+      return { status: "uncertain" };
   }
 }
 

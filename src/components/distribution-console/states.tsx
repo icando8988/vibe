@@ -59,7 +59,7 @@ export function InvalidParam({ what, back }: { what: string; back: { href: strin
 export function IdLine({ label, value }: { label: string; value: string }) {
   return (
     <p className="dc-id">
-      {label}: <code>{value}</code> <span className="ds-muted">(조회 경로 미연결 · 존재 여부 미확인)</span>
+      {label}: <code>{value}</code> <span className="ds-muted">(주소의 값 · 존재 여부는 아래 조회 결과로 확인)</span>
     </p>
   );
 }
@@ -141,7 +141,7 @@ export function CapabilityTable({ channel }: { channel: Channel }) {
         </tbody>
       </table>
       <p className="ds-muted">
-        연결 상태: {caps.connected ? "연결됨" : "연결 안 됨"}. 문서 검토나 모의 실행만으로 &lsquo;지원 확인&rsquo;으로 바꾸지 않습니다.
+        이 표는 기능 검증 상태만 보여 줍니다. 계정 연결 여부는 이 표로 판단하지 않고 각 채널의 연결 화면에서 확인합니다. 문서 검토나 모의 실행만으로 &lsquo;지원 확인&rsquo;으로 바꾸지 않습니다.
       </p>
     </div>
   );

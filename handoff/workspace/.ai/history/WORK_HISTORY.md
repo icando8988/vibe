@@ -2,6 +2,28 @@
 
 관리 Codex master. 지시·전달·수락·구현·검증·배포를 구별한다. 원문 고유results는 보존한다. 관찰하지 않은 사건에 추정 시각을 넣지 않는다.
 
+## RELEASE-CHANNELS-036 — 주인님 세 채널 통합/배포 지시
+
+FE034 최종 정정2(msg_cadd909b245b)와 Backend035 질문 반환(msg_b3794475b9c7)을 회수했다. Front9개최종해시 일치·코드동결, Backend코드수정없음/결과수락. Master가 동일동결본에서Node24/PGlite 전체39파일668pass/skip0·lint오류0/기존경고3·build/typecheck0 재현. Git dry-run 성공, 기존8f0691c Vercel상태success확인. 통합범위/미구현/실환경검증공백은results/RELEASE-CHANNELS-036-MASTER.md. 이후commit/push/배포결과는별도기록한다. Chrome제어는Defender의Orca runtime격리및실행명령정책거절로미실측,보안설정변경/우회없음.
+
+## OPS-READY-033 — 계속 진행 지시 후 독립 운영 준비
+
+2026-11-17 사용자 계속 진행 지시에 따라 현재 작업 트리와 최신 담당 결과/실제 Orca 상태를 재확인했다. Backend030 진행/live, Front032 시작 실패 agent-hooks-review-prompt 및 liveness unverifiable를 관찰했다. 강제 재시작·신규 worker·기존 점유 파일 인수 없이 Master의 운영 점검 준비를 수행했다. docs/OPS_READINESS_20261117.md와 저장소 루트 scripts/distribution-local-verify/ops-readiness.sql 작성. Node24/PGlite 최소 대역 스키마에서 SQL 7구문 실행 exit0, 실제 운영 조회/적용은 없음. 결과 .ai/results/OPS-READY-033-CX-MASTER-01.md. Front/Backend 기존 변경 보존, 실제 DB/Storage/브라우저·배포/게시 미검증 상태 유지.
+
+## 계속 진행 재개 — Master 통합 준비
+
+Front033 최종 반환 msg_dce31a40dfba(task_57ea3766ae0e/ctx_092f4bc35fba succeeded) 회수·로컬 인수. 보고서와 현재 media-labels/media-ui 해시2개 일치. UPLOAD_STALLED는 처리 시간 내 미완료로 서버가 닫았다는 한글 안내로 표시하고 삭제/승인/게시/자동재시도 단정 없음, 업로드 비활성·미지 코드 fallback 보존 확인. 담당 영향 Front52pass/typecheck/eslint0 근거 수락, Master diff --check exit0, 전체시험/build 추가 반복 없음. 현재 묶음 마지막 전체시험은 Backend030/Front032의657pass/skip0이며 이후033의시험2개추가는Front52pass로만검증(전체659실행주장안함). UPLOAD_CANCELLED/EXPIRED 한글화는 후속개선, 실DB/Storage/운영복구/브라우저·배포 미검증 유지.
+
+Backend030 정정 worker_done msg_9f4718438aa3 수신: task_8a4acfa47dae/ctx_f3d695e6c6c7 outcome=succeeded, lifecycle 정상 반환 확인. 로컬 인수 판정은 유지하며 운영 완료로 승격하지 않는다. Front033은 기존 세션 follow-up ctx_092f4bc35fba/task_57ea3766ae0e ready로 전달됨(개별 착수/완료는 별도).
+
+Backend030 결과 회수·로컬 인수: msg_7d76d4b4d2aa의 worker_done은 missing_task_id로 거절됨. msg_4580dd2b02c8 질문에 정확한 task_8a4acfa47dae/ctx_f3d695e6c6c7 보고 정정 지시. 코드/SQL/래퍼/원본보존 회귀를 읽고 해시9개 전부 일치 확인. 담당 실행 run224/m2 334/upload19, 전체657pass/skip0(2회), lint 오류0/기존경고3, typecheck/build 성공 근거를 수락하고 중복 재실행하지 않음. 단일 연결 순서재현과 실제 다중연결 경합을 구별, 실환경 미검증·호출주체/sweep 공백 유지. Front033에 UPLOAD_STALLED 한글 라벨/영향 회귀만 후속 준비. 운영 SQL 적용/배포 없음.
+
+Front032 status msg_de48e32190d6 회수. FE-MEDIA-NOTICE-032 결과와 코드/회귀를 대조하고 해시5개 전부 일치를 확인해 R031-01/02 로컬 통합 인수. 쿼리 saved 외 렌더 없음·saved의 조회결과 확인 안내·보관 invalid 중립 문구·체크 누락과 ASSET_REFERENCED 라벨 분리 확인. 담당 검증 38파일657pass/skip0·lint0(기존경고3)·typecheck0, build 허용 생략. Master는 근거 공백이 없어 전체시험을 반복하지 않았다. 브라우저 실측/실Storage/배포는 미완료. 실패 dispatch의 lifecycle는 성공으로 변경하지 않았다. Backend030 최종 결과 대기.
+
+사용자 계속 진행 지시 및 run_d276924d01cf check 알림에 따라 msg_2bacf8f338b7(Front 다음 작업 질문)을 회수했다. Front029 인수 유지, Front032 안내 2건을 기존 대화에 전달(msg_d5ec0232e33f). Front는 기존 정상 대화에서 hooks 차단 없음·실패 dispatch의 검토 우회 없음·아직 코드 미수정 보고(msg_8588336a9d46). 기존 대화 실행 승인(msg_7c0649eb2bd7), 새 Task/세션 생성 없음. 실패 dispatch ctx_3efb3b16ba87의 상태는 변경하지 않았다. Backend030은 worker-list의 live/in_progress를 확인하고 기존 dispatch에 검증 마무리/결과 회수 요청(msg_1fe7b86901cd). 아직 최종 결과 수신 전이다.
+
+Master OPS-READY-024: docs/OPS_READY_024_MEDIA_RUNBOOK.md 작성. 코드·migration 15개 목록·권한/Storage 점검 쿼리·실세션 시험·복구 전제/정리 공백을 대조했다. 실행은 문서 작성과 git diff --check(exit0)까지이며 전체시험 재실행/실DB조회/SQL적용/bucket생성/배포/외부게시 없음. 담당 코드 변경을 보존했다. 후속은 030/032 결과와 실제 변경 대조 및 통합 인수다.
+
 ## 2026-11-17 성과 기준선
 
 | 사건 | 출처/담당 | 근거·상태 |
@@ -54,4 +76,8 @@ Backend 착수 확인 msg_ef61aea10d6b: BE-BASE-023 수신·시작, run.mjs 그�
 
 ## RELEASE-HANDOFF-20261117 최종 로컬 검증
 Master 스테이징 스냅샷: npm ci/build/typecheck 성공. PGLITE_PROJECT 전체 Vitest 37파일·622통과·skip0·실패0. lint 오류0/기존경고3. 원본 키트·문서 그대로 보존, 실제 비밀파일 제외. 실제 DB/Storage/OAuth/게시 검증과 담당자 완료보고는 별도 미완료.
+
+## RESUME-20261117 새 PC 작업 재개
+
+사용자 직접 지정으로 현재 Codex 대화가 CX-MASTER-01을 승계. 현재 경로 D:/VIBE/vibe-github. origin fetch 후 main/HEAD/origin-main 모두 8f0691cba968838087c89b52ba708ff4e90ccfda, ahead/behind 0/0, 원격 대비 diff 없음, 시작 시 작업 트리 깨끗함. npm ci 성공. 임시 Node 24.22.3/PGlite 0.5.16 환경에서 37파일·622시험 통과·skip0, lint 오류0/기존경고3, build 및 빌드 후 typecheck 모두 exit0. 앱 소스/package/lockfile 변경 없음. 기존 terminal/dispatch는 과거 기록으로 유지하며 새 작업자 생성 없음. 다음은 BE-UPLOAD-025 최종 계약 검토 → 미디어 UI → 실제 DB/Storage 환경 → 채널별 실제 검증. 상세 results/RESUME-20261117-MASTER.md.
 

@@ -22,5 +22,8 @@ export async function loadMediaList(): Promise<{ view: MediaListView; assets: Me
   if (out.status === "ok") return { view: { state: "ok", assets: out.assets }, assets: out.assets };
   if (out.status === "denied") return { view: { state: "denied" }, assets: null };
   if (out.status === "not_ready") return { view: { state: "not_ready", reason: "서버 저장 연결이 준비되지 않았습니다." }, assets: null };
-  return { view: { state: "error" }, assets: null };
+  // 조회는 쓰기가 아니므로 결과 불명이 없다 — 응답 유실·형식 이상·DB 거절을 구분해 안내만 다르게 한다(0건으로 바꾸지 않음).
+  if (out.status === "bad_response") return { view: { state: "error", kind: "bad_response" }, assets: null };
+  if (out.status === "db_error" && out.error.code === "unavailable") return { view: { state: "error", kind: "unavailable" }, assets: null };
+  return { view: { state: "error", kind: "db" }, assets: null };
 }

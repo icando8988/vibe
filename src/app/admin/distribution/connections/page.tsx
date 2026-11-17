@@ -22,9 +22,9 @@ export default async function ConnectionsPage() {
             <dt>연결 상태</dt>
             <dd>{c === "blog" ? "연결 대상 아님 (수동 게시)" : c === "threads" ? "Threads 계정 연결 화면에서 확인" : "연결 없음"}</dd>
             <dt>계정</dt>
-            <dd>없음</dd>
+            <dd>{c === "threads" ? "Threads 계정 연결 화면에서 확인" : "없음"}</dd>
             <dt>마지막 확인</dt>
-            <dd>미확인</dd>
+            <dd>{c === "threads" ? "Threads 계정 연결 화면에서 확인" : "미확인"}</dd>
           </dl>
           <ModeTable channel={c} />
           <CapabilityTable channel={c} />
@@ -43,7 +43,15 @@ export default async function ConnectionsPage() {
               </Link>
             </p>
           ) : (
-            <DisabledAction id={`cn-connect-${c}`} label={`${CHANNEL_INFO[c].label} 계정 연결`} reason="외부 인증(OAuth)·토큰 보관이 구현되지 않았습니다." />
+            <>
+              <DisabledAction id={`cn-connect-${c}`} label={`${CHANNEL_INFO[c].label} 계정 연결`} reason="Instagram 외부 인증(OAuth) 연결이 아직 구현되지 않았습니다(Threads 연결과 별개)." />
+              <p>
+                지금은 캡션 초안·검토(원문 화면의 채널 초안)와 게시에 쓸 이미지의 권리 관리를 할 수 있습니다:{" "}
+                <Link className="ds-text-link" href="/admin/distribution/media">
+                  미디어·권리
+                </Link>
+              </p>
+            </>
           )}
         </section>
       ))}

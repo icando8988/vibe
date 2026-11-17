@@ -44,6 +44,8 @@ export const FAILURE_TEXT: Record<string, string> = {
   PROCESSING_TIMEOUT: "처리 시간이 초과됐습니다.",
   STORAGE_UPLOAD_FAILED: "변환본을 저장소에 올리지 못했습니다.",
   STORAGE_READ_FAILED: "업로드 원본을 읽지 못했습니다.",
+  // 서버 고착 복구(140000, BE-UPLOAD-RECOVERY-030): 처리 중·업로드 대기로 멈춘 자산을 failed로 닫음. 삭제·재시도·권리와 무관.
+  UPLOAD_STALLED: "처리가 제시간에 끝나지 않아 서버가 이 업로드를 닫았습니다.",
 };
 
 export function failureText(code: string | null): string | null {
@@ -106,3 +108,13 @@ export const MEDIA_REASON_FIELD_LABELS: Record<string, string> = {
   "reason:rights_expired": "권리 유효기한 지남",
   "reason:channel_not_allowed": "권리 허용 채널이 아님",
 };
+
+/**
+ * 미디어 페이지 쿼리 notice 제한(R031-01). 미디어 action의 정상 redirect는 `saved`뿐이라 그것만 받는다.
+ * 그 밖의 코드(직접 입력·공유된 주소)는 무시해 공용 원문·초안·체크리스트 안내로 흘리지 않는다.
+ * 쿼리 값은 주소 표시일 뿐 저장의 독립 증거가 아니다 — 실제 상태는 다시 불러온 서버 조회 결과로 본다.
+ */
+export function mediaPageNotice(v: unknown): "saved" | null {
+  const s = Array.isArray(v) ? v[0] : v;
+  return s === "saved" ? "saved" : null;
+}
