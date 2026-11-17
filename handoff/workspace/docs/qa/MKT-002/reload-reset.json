@@ -1,0 +1,11 @@
+﻿{
+  "id": "7918506a-74ab-4cc0-97c9-33eb7880d94f",
+  "ok": true,
+  "result": {
+    "result": "{\"channel\":\"blog\",\"state\":\"disconnected\",\"title\":\"[샘플] 도전을 준비하며 나누고 싶은 이야기\",\"storage\":{\"local\":0,\"session\":0}}",
+    "origin": "http://127.0.0.1:3313/"
+  },
+  "_meta": {
+    "runtimeId": "f75515d2-8fb3-4d95-b496-b122d0c02680"
+  }
+}

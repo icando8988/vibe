@@ -1,0 +1,26 @@
+﻿[
+    {
+        "url":  "/stories",
+        "width":  320,
+        "scroll":  305,
+        "headerHeight":  252.03125
+    },
+    {
+        "url":  "/stories",
+        "width":  390,
+        "scroll":  375,
+        "headerHeight":  202.6328125
+    },
+    {
+        "url":  "/stories",
+        "width":  768,
+        "scroll":  753,
+        "headerHeight":  153.234375
+    },
+    {
+        "url":  "/stories",
+        "width":  1440,
+        "scroll":  1425,
+        "headerHeight":  91.234375
+    }
+]

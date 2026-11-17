@@ -20,7 +20,7 @@ export default async function ConnectionsPage() {
           <h2 id={`cn-${c}`}>{CHANNEL_INFO[c].label}</h2>
           <dl className="dc-facts">
             <dt>연결 상태</dt>
-            <dd>{c === "blog" ? "연결 대상 아님 (수동 게시)" : "연결 없음"}</dd>
+            <dd>{c === "blog" ? "연결 대상 아님 (수동 게시)" : c === "threads" ? "Threads 계정 연결 화면에서 확인" : "연결 없음"}</dd>
             <dt>계정</dt>
             <dd>없음</dd>
             <dt>마지막 확인</dt>
@@ -33,6 +33,13 @@ export default async function ConnectionsPage() {
               Blog 수동 게시에는 계정 연결이 없습니다. 네이버 블로그 입력기(크롬 확장)의 사이트 인증 토큰은 따로 관리합니다:{" "}
               <Link className="ds-text-link" href="/admin/distribution/connections/blog-extension">
                 Blog 확장 인증 토큰 관리
+              </Link>
+            </p>
+          ) : c === "threads" ? (
+            <p>
+              공식 Threads 로그인으로 계정을 연결합니다(연결됨 ≠ 게시 가능, live gate 닫힘):{" "}
+              <Link className="ds-text-link" href="/admin/distribution/connections/threads">
+                Threads 계정 연결
               </Link>
             </p>
           ) : (

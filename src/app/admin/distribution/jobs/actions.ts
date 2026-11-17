@@ -11,6 +11,7 @@ import { requireDistributionActor } from "@/server/distribution/actor";
 import { requestExtensionHandoff } from "@/server/distribution/blog/handoff-request";
 import { getServiceRpcClient } from "@/server/distribution/blog/service";
 import { abandonManualJob, cancelJob, markManualPosted, markManualUncertain, recordManualEvidence, recordReconciliation } from "@/server/distribution/jobs-service";
+import { runThreadsDryRun } from "@/server/distribution/dry-run/executor";
 import { isUuid } from "@/server/distribution/validation";
 import { failureState, type FormState } from "@/server/distribution/write-notice";
 import type { WriteOutcome } from "@/server/distribution/write-runner";
@@ -52,4 +53,16 @@ export async function cancelJobAction(prev: FormState, fd: FormData) {
 /** 확장으로 보내기(manual_ready·blog만, 서버 SQL이 최종 판단). 성공은 '요청됨'이지 입력·게시가 아니다. */
 export async function requestHandoffAction(prev: FormState, fd: FormData) {
   return finish(await requestExtensionHandoff(deps, { jobId: fd.get("jobId") }), prev, fd, "/manual");
+}
+
+// Threads 모의 실행(관리자 수동, DRYRUN-EXEC-020). 외부 호출 없음. 결과는 허용 목록 코드로만 상세 화면에 표시.
+export async function runDryRunAction(prev: FormState, fd: FormData) {
+  const out = await runThreadsDryRun(deps, fd);
+  if (out.status === "ok") {
+    const path = jobPath(fd.get("jobId"));
+    revalidatePath(path);
+    revalidatePath("/admin/distribution/jobs");
+    redirect(`${path}?dryrun=${out.data.status}`);
+  }
+  return failureState(out, prev);
 }

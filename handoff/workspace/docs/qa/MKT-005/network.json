@@ -1,0 +1,40 @@
+﻿{
+  "id": "f94508da-db0c-4bd6-bc85-886181de02f8",
+  "ok": true,
+  "result": {
+    "entries": [
+      {
+        "url": "http://127.0.0.1:3315/",
+        "method": "GET",
+        "status": 200,
+        "mimeType": "text/html",
+        "timestamp": 1794800556340
+      },
+      {
+        "url": "http://127.0.0.1:3315/preview.js",
+        "method": "GET",
+        "status": 200,
+        "mimeType": "application/javascript",
+        "timestamp": 1794800556340
+      },
+      {
+        "url": "http://127.0.0.1:3315/",
+        "method": "GET",
+        "status": 200,
+        "mimeType": "text/html",
+        "timestamp": 1794800679440
+      },
+      {
+        "url": "http://127.0.0.1:3315/preview.js",
+        "method": "GET",
+        "status": 200,
+        "mimeType": "application/javascript",
+        "timestamp": 1794800679440
+      }
+    ],
+    "truncated": false
+  },
+  "_meta": {
+    "runtimeId": "f75515d2-8fb3-4d95-b496-b122d0c02680"
+  }
+}

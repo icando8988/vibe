@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "콘텐츠 배포 네이버 블로그 입력기",
+  "version": "1.87.0",
+  "version_name": "v1.87-port.1",
+  "description": "콘텐츠 배포 콘솔의 승인된 Blog 글을 네이버 블로그 글쓰기 화면에 발행 직전까지 입력합니다. 마지막 발행은 사람이 누릅니다.",
+  "minimum_chrome_version": "120",
+  "permissions": [
+    "sidePanel",
+    "storage",
+    "scripting",
+    "tabs",
+    "debugger",
+    "alarms",
+    "notifications"
+  ],
+  "host_permissions": [
+    "https://*.naver.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "action": {
+    "default_title": "콘텐츠 배포 네이버 블로그 입력기",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

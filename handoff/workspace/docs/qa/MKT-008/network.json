@@ -1,0 +1,19 @@
+﻿{
+  "id": "427ea4e7-65a4-4b2e-90b1-1ad90cfc0ab9",
+  "ok": true,
+  "result": {
+    "entries": [
+      {
+        "url": "file:///D:/Vibe/docs/marketing/content-review.html",
+        "method": "GET",
+        "status": 200,
+        "mimeType": "text/html",
+        "timestamp": 1794802343897
+      }
+    ],
+    "truncated": false
+  },
+  "_meta": {
+    "runtimeId": "f75515d2-8fb3-4d95-b496-b122d0c02680"
+  }
+}

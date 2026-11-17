@@ -1,0 +1,107 @@
+{
+  "evidence": [
+    {
+      "label": "unreviewed execution blocked",
+      "review": "원문 v1 · 샘플 검토 필요",
+      "error": "현재 원문과 채널의 샘플 검토를 먼저 확인해 주세요.",
+      "result": "아직 현재 원문·채널의 모의 실행 결과가 없습니다.",
+      "message": ""
+    },
+    {
+      "label": "explicit sample review",
+      "review": "원문 v1 · 현재 버전 샘플 검토 확인됨",
+      "error": "",
+      "result": "아직 현재 원문·채널의 모의 실행 결과가 없습니다.",
+      "message": "원문 v1 · 블로그 샘플 검토를 확인했습니다. 운영 승인으로 저장되지 않습니다."
+    },
+    {
+      "label": "edit invalidates review",
+      "review": "원문 v2 · 샘플 검토 필요",
+      "error": "",
+      "result": "아직 현재 원문·채널의 모의 실행 결과가 없습니다.",
+      "message": "원문 또는 채널이 바뀌어 이전 샘플 검토 확인이 무효입니다. 다시 확인해 주세요."
+    },
+    {
+      "label": "edited unreviewed execution blocked",
+      "review": "원문 v2 · 샘플 검토 필요",
+      "error": "현재 원문과 채널의 샘플 검토를 먼저 확인해 주세요.",
+      "result": "아직 현재 원문·채널의 모의 실행 결과가 없습니다.",
+      "message": "원문 또는 채널이 바뀌어 이전 샘플 검토 확인이 무효입니다. 다시 확인해 주세요."
+    },
+    {
+      "label": "review then dry run",
+      "review": "원문 v2 · 현재 버전 샘플 검토 확인됨",
+      "error": "",
+      "result": "모의 실행 완료 · 외부 게시 없음결과: dry_run_succeeded · 원문 v2 · 블로그외부 게시 식별자 없음 · 실제 예약 없음 · 저장 없음",
+      "message": "모의 실행 결과를 확인했습니다. 외부 게시·저장·예약은 없습니다."
+    },
+    {
+      "label": "repeat execution rejected by shared duplicate guard",
+      "review": "원문 v2 · 현재 버전 샘플 검토 확인됨",
+      "error": "DUPLICATE: 같은 콘텐츠·버전·채널 작업이 이미 있습니다(상태: dry_run_succeeded).",
+      "result": "모의 실행 완료 · 외부 게시 없음결과: dry_run_succeeded · 원문 v2 · 블로그외부 게시 식별자 없음 · 실제 예약 없음 · 저장 없음",
+      "message": "모의 실행 결과를 확인했습니다. 외부 게시·저장·예약은 없습니다."
+    },
+    {
+      "label": "whitespace body review blocked",
+      "review": "원문 v3 · 샘플 검토 필요",
+      "error": "제목과 본문을 모두 입력해 주세요. 공백만 있는 원문은 검토할 수 없습니다.",
+      "result": "아직 현재 원문·채널의 모의 실행 결과가 없습니다.",
+      "message": "원문 또는 채널이 바뀌어 이전 샘플 검토 확인이 무효입니다. 다시 확인해 주세요."
+    },
+    {
+      "label": "blank-body execution blocked",
+      "review": "원문 v3 · 샘플 검토 필요",
+      "error": "현재 원문과 채널의 샘플 검토를 먼저 확인해 주세요.",
+      "result": "아직 현재 원문·채널의 모의 실행 결과가 없습니다.",
+      "message": "원문 또는 채널이 바뀌어 이전 샘플 검토 확인이 무효입니다. 다시 확인해 주세요."
+    },
+    {
+      "label": "blank title and body blocked",
+      "review": "원문 v4 · 샘플 검토 필요",
+      "error": "제목과 본문을 모두 입력해 주세요. 공백만 있는 원문은 검토할 수 없습니다.",
+      "result": "아직 현재 원문·채널의 모의 실행 결과가 없습니다.",
+      "message": "원문 또는 채널이 바뀌어 이전 샘플 검토 확인이 무효입니다. 다시 확인해 주세요."
+    },
+    {
+      "label": "reset also invalidates review",
+      "review": "원문 v5 · 샘플 검토 필요",
+      "error": "",
+      "result": "아직 현재 원문·채널의 모의 실행 결과가 없습니다.",
+      "message": "원문 입력을 처음 샘플로 되돌렸습니다. 다시 샘플 검토가 필요합니다. 저장하거나 게시하지 않았습니다."
+    },
+    {
+      "label": "channel-specific dry-run",
+      "review": "원문 v5 · 현재 버전 샘플 검토 확인됨",
+      "error": "",
+      "result": "모의 실행 완료 · 외부 게시 없음결과: dry_run_succeeded · 원문 v5 · Threads외부 게시 식별자 없음 · 실제 예약 없음 · 저장 없음",
+      "message": "모의 실행 결과를 확인했습니다. 외부 게시·저장·예약은 없습니다."
+    }
+  ],
+  "widths": [
+    {
+      "width": 320,
+      "scroll": 320,
+      "overflow": [],
+      "capabilities": "텍스트미확인이미지미확인동영상미확인링크미확인예약미확인수정미확인삭제미확인결과 대사미확인통계미확인글자·미디어 제한미확인"
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "overflow": [],
+      "capabilities": "텍스트미확인이미지미확인동영상미확인링크미확인예약미확인수정미확인삭제미확인결과 대사미확인통계미확인글자·미디어 제한미확인"
+    },
+    {
+      "width": 768,
+      "scroll": 753,
+      "overflow": [],
+      "capabilities": "텍스트미확인이미지미확인동영상미확인링크미확인예약미확인수정미확인삭제미확인결과 대사미확인통계미확인글자·미디어 제한미확인"
+    },
+    {
+      "width": 1440,
+      "scroll": 1425,
+      "overflow": [],
+      "capabilities": "텍스트미확인이미지미확인동영상미확인링크미확인예약미확인수정미확인삭제미확인결과 대사미확인통계미확인글자·미디어 제한미확인"
+    }
+  ]
+}

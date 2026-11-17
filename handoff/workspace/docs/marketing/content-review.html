@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'none'; img-src 'none'; font-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="robots" content="noindex,nofollow"><title>첫 콘텐츠 초안 비교 · 로컬 검토 전용</title>
+<style>
+:root{font-size:18px;color:#172b4d;background:#fff;font-family:system-ui,-apple-system,'Segoe UI','Malgun Gothic',sans-serif;line-height:1.7}*{box-sizing:border-box}[hidden]{display:none!important}body{margin:0}main,header{width:min(1280px,calc(100% - 2rem));margin-inline:auto}header{padding-block:2rem 1rem}h1,h2,h3,h4{line-height:1.35;overflow-wrap:anywhere}h1{font-size:clamp(1.8rem,4vw,2.8rem);margin:0 0 1rem}h2{font-size:1.6rem}h3{font-size:1.35rem}h4{font-size:1rem;margin-block:1rem .4rem}p{margin:0 0 1rem}button,input,select{font:inherit}button,select,summary{min-height:48px}button{border:2px solid #1e40af;border-radius:8px;background:#fff;color:#1e40af;padding:.6rem 1rem;cursor:pointer;font-weight:700}button:hover{background:#eff6ff}:focus-visible{outline:3px solid #1e40af;outline-offset:4px}select{width:100%;max-width:100%;padding:.6rem;border:1px solid #526178;border-radius:8px;background:#fff;color:#172b4d}.notice{padding:1.2rem;border-left:5px solid #9a3412;background:#fff7ed;border-radius:10px}.notice p:last-child{margin:0}.muted{color:#526178}.controls{padding:1.4rem;background:#eff6ff;border:1px solid #cbd5e1;border-radius:14px;display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-block:1rem 1.5rem}.topic-control label,legend{font-weight:700}.topic-control label{display:block;margin-bottom:.6rem}fieldset{border:0;padding:0;margin:0;min-width:0}.radios{display:flex;flex-wrap:wrap;gap:.5rem 1rem}.radios label{display:flex;align-items:center;gap:.5rem;min-height:48px;cursor:pointer}.radios input{width:22px;height:22px;accent-color:#2563eb}.comparison{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.4rem;align-items:start}.draft-panel{min-width:0;border:1px solid #cbd5e1;border-radius:14px;padding:1.5rem;background:#fff}.panel-label{color:#1e40af;font-weight:750}.badge{display:inline-block;background:#fff7ed;color:#9a3412;padding:.35rem .7rem;border-radius:6px;font-size:.9rem;font-weight:700}.draft-body{white-space:pre-wrap;overflow-wrap:anywhere;user-select:text;margin-block:1.2rem;padding:.2rem}.copy-button{margin-bottom:1rem}details{border-top:1px solid #cbd5e1;padding-top:1rem;margin-top:.6rem;overflow-wrap:anywhere}summary{cursor:pointer;font-weight:700;padding-block:.4rem}.claim{padding:.8rem 0;border-bottom:1px solid #cbd5e1}ul{padding-left:1.3rem}.footer{padding-block:2rem;color:#526178}.copy-status{min-height:2rem;font-weight:650;overflow-wrap:anywhere}.manual-selection{background:#eff6ff;border:2px solid #1e40af}.skip{position:fixed;top:1rem;left:1rem;transform:translateY(-200%);z-index:10;background:#fff;padding:.5rem;color:#1e40af}.skip:focus{transform:none}code{overflow-wrap:anywhere}.noscript{background:#fff7ed;padding:1rem}@media(max-width:760px){.comparison,.controls{grid-template-columns:1fr}.draft-panel{padding:1rem}.controls{padding:1rem}.topic-panel h2{font-size:1.35rem}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}@media print{.controls,.copy-button,.copy-status,.skip{display:none}.topic-panel[hidden],.draft-panel[hidden]{display:block!important}.topic-panel{break-before:page}.comparison{display:block}.draft-panel{margin-bottom:1rem}}
+</style></head><body>
+<a class="skip" href="#review-main">본문 바로가기</a>
+<header><p class="panel-label">MKT-008 · 단일 로컬 검토 문서</p><h1>첫 콘텐츠, 원문과 채널별 초안 비교</h1>
+<div class="notice"><p><strong>검토 초안·외부 미게시 · 모든 항목 공개승인 false</strong></p><p>공식 브랜드 미확정. 이 문서는 편집 비교용이며 실제 관리자 화면이나 게시 도구가 아닙니다. 공개·승인·예약·게시 기능이 없습니다.</p></div>
+<p class="muted">원문 3개와 채널 변형 9개를 비교합니다. 원본 파일을 수정하거나 정보를 저장하지 않습니다. 프로그램·채널 기능과 이미지 권리는 미확인입니다.</p></header>
+<main id="review-main" tabindex="-1"><div class="controls">
+<div class="topic-control"><label for="topic-select">비교할 주제</label><select id="topic-select"><option value="0">1. 프로젝트 소개</option><option value="1">2. 출발 전 어떤 준비를 기록할지</option><option value="2">3. 도전의 이야기를 책으로 나누려는 계획</option></select></div>
+<fieldset><legend>원문과 비교할 채널</legend><div class="radios"><label><input type="radio" name="channel" value="blog" checked>블로그</label><label><input type="radio" name="channel" value="threads">Threads</label><label><input type="radio" name="channel" value="instagram">Instagram</label></div></fieldset></div>
+<p id="selection-status" class="muted" role="status" aria-atomic="true">1. 프로젝트 소개 · 블로그 변형을 비교합니다.</p>
+<p id="copy-status" class="copy-status" role="status" aria-atomic="true"></p>
+<noscript><p class="noscript">자바스크립트가 꺼져 있어 첫 주제와 블로그 초안만 표시합니다. 전체 내용은 원본 Markdown/JSON에서 읽을 수 있습니다.</p></noscript>
+<section class="topic-panel" data-topic="0" aria-labelledby="topic-0"><h2 id="topic-0">1. 프로젝트 소개</h2><div class="comparison"><article class="draft-panel" data-kind="original" aria-labelledby="title-0-original">
+      <p class="panel-label">원문 초안</p>
+      <p class="badge">draft · 공개승인 false · 외부 미게시</p>
+      <h3 id="title-0-original">자전거 세계일주와 출판, 계획부터 소개합니다</h3>
+      <div class="draft-body" tabindex="0" aria-label="원문 본문 · 읽기 전용">원민철의 자전거 세계일주 도전과 출판을 함께 다루는 프로젝트를 소개합니다. 현재 소개하는 내용은 기획서에 담긴 계획이며, 이미 다녀온 여행이나 달성한 기록에 대한 이야기가 아닙니다.
+
+기획서에는 자전거 세계일주 여정과 전자책·종이책 발간 방향이 함께 적혀 있습니다. 도전의 큰 방향을 소개하고, 앞으로 어떤 내용을 기록하고 나눌지 정리하는 것이 이 콘텐츠의 출발점입니다.
+
+이번 소개는 계획을 이해하기 위한 초안입니다. 공식 이름과 상세 소개는 확인이 필요하며, 출발이나 출판이 확정되었다는 안내로 사용하지 않습니다.</div>
+      <button type="button" class="copy-button">원문 본문 복사</button>
+      <details><summary>출처·확인사항 보기</summary>
+        <h4>원문 출처 셀</h4><ul><li>1_비즈니스 플랜!E19</li><li>1_비즈니스 플랜!E49</li><li>1_비즈니스 플랜!E17</li></ul>
+        <h4>주장별 근거와 제한</h4><div class="claim"><p><strong>T1-C1 · 기획서에 기재된 계획</strong></p><p>원민철의 자전거 세계일주는 도전 계획이다.</p><ul><li>1_비즈니스 플랜!E19</li><li>1_비즈니스 플랜!E49</li></ul><p>출발·완주·기록 달성 사실이나 공식 인증을 주장하지 않는다.</p></div><div class="claim"><p><strong>T1-C2 · 기획서에 기재된 계획</strong></p><p>전자책과 종이책 발간 방향이 기획서에 포함되어 있다.</p><ul><li>1_비즈니스 플랜!E17</li></ul><p>책의 제작·출간 확정이나 판매 개시를 뜻하지 않는다.</p></div><div class="claim"><p><strong>T1-C3 · 편집 제안</strong></p><p>도전 소개와 계획을 먼저 전달하는 콘텐츠를 제안한다.</p><ul><li>1_비즈니스 플랜!E19</li><li>1_비즈니스 플랜!E49</li></ul><ul><li>MASTER_DEVELOPMENT_PLAN 1·9절</li><li>MARKETING_DELIVERY_PLAN 첫 콘텐츠 가설</li></ul><p>기록 자료가 이미 확보되었거나 콘텐츠가 발행되었다는 뜻이 아니다.</p></div>
+        <h4>공개 전 확인 필요</h4><ul><li>원민철 이름·소개 공개 동의와 현재 계획의 유효성</li><li>공식 브랜드와 도전 소개 문구</li><li>이 초안의 주장·표현에 대한 당사자 사실 확인 및 공개 승인</li></ul>
+        <h4>제안 CTA · 미승인</h4><p>도전 소개에서 계획 살펴보기 → <code>/about</code></p><p>내부 경로 제안이며 실제 외부 게시 링크가 아니다.</p>
+        <h4>이미지 원본·권리</h4><p>선택 제안: 당사자가 제공한 소개용 원본 사진과 촬영 정보. 없으면 텍스트 검토 유지.</p><p>원본 미수령 · 사용권 미확인 · 공개 동의 미확인 · 이미지 필수 여부 미확인</p>
+        <h4>채널 기능</h4><p>프로그램 미수령 · 미연결. 서비스·계정 유형 미확인, 글자 수 미확인, 미디어 미확인, API·예약 미확인.</p>
+      </details>
+    </article><div class="channel-column"><article class="draft-panel" data-kind="blog" aria-labelledby="title-0-blog">
+      <p class="panel-label">블로그 변형</p>
+      <p class="badge">draft · 공개승인 false · 외부 미게시</p>
+      <h3 id="title-0-blog">어떤 도전과 출판을 계획하고 있을까요?</h3>
+      <div class="draft-body" tabindex="0" aria-label="블로그 본문 · 읽기 전용">이 프로젝트의 기획서에는 원민철의 자전거 세계일주 도전과 전자책·종이책 발간 방향이 담겨 있습니다.
+
+먼저 소개할 것은 계획입니다. 어떤 여정을 구상하는지, 그 이야기를 어떤 기록으로 남기려는지 차근차근 살펴보는 소개 글을 제안합니다. 아직 완료한 여행의 회고나 기록 달성 소식으로 읽히지 않도록 계획과 실제 사실을 구분하려 합니다.
+
+공식 이름과 상세 소개는 확인 전입니다. 도전 소개에서 계획의 큰 방향을 살펴보는 흐름을 제안합니다.</div>
+      <button type="button" class="copy-button">블로그 본문 복사</button>
+      <details><summary>출처·확인사항 보기</summary>
+        <h4>원문 출처 셀</h4><ul><li>1_비즈니스 플랜!E19</li><li>1_비즈니스 플랜!E49</li><li>1_비즈니스 플랜!E17</li></ul>
+        <h4>주장별 근거와 제한</h4><div class="claim"><p><strong>T1-C1 · 기획서에 기재된 계획</strong></p><p>원민철의 자전거 세계일주는 도전 계획이다.</p><ul><li>1_비즈니스 플랜!E19</li><li>1_비즈니스 플랜!E49</li></ul><p>출발·완주·기록 달성 사실이나 공식 인증을 주장하지 않는다.</p></div><div class="claim"><p><strong>T1-C2 · 기획서에 기재된 계획</strong></p><p>전자책과 종이책 발간 방향이 기획서에 포함되어 있다.</p><ul><li>1_비즈니스 플랜!E17</li></ul><p>책의 제작·출간 확정이나 판매 개시를 뜻하지 않는다.</p></div><div class="claim"><p><strong>T1-C3 · 편집 제안</strong></p><p>도전 소개와 계획을 먼저 전달하는 콘텐츠를 제안한다.</p><ul><li>1_비즈니스 플랜!E19</li><li>1_비즈니스 플랜!E49</li></ul><ul><li>MASTER_DEVELOPMENT_PLAN 1·9절</li><li>MARKETING_DELIVERY_PLAN 첫 콘텐츠 가설</li></ul><p>기록 자료가 이미 확보되었거나 콘텐츠가 발행되었다는 뜻이 아니다.</p></div>
+        <h4>공개 전 확인 필요</h4><ul><li>원민철 이름·소개 공개 동의와 현재 계획의 유효성</li><li>공식 브랜드와 도전 소개 문구</li><li>이 초안의 주장·표현에 대한 당사자 사실 확인 및 공개 승인</li></ul>
+        <h4>제안 CTA · 미승인</h4><p>도전 소개에서 계획 살펴보기 → <code>/about</code></p><p>내부 경로 제안이며 실제 외부 게시 링크가 아니다.</p>
+        <h4>이미지 원본·권리</h4><p>선택 제안: 당사자가 제공한 소개용 원본 사진과 촬영 정보. 없으면 텍스트 검토 유지.</p><p>원본 미수령 · 사용권 미확인 · 공개 동의 미확인 · 이미지 필수 여부 미확인</p>
+        <h4>채널 기능</h4><p>프로그램 미수령 · 미연결. 서비스·계정 유형 미확인, 글자 수 미확인, 미디어 미확인, API·예약 미확인.</p>
+      </details>
+    </article><article class="draft-panel" data-kind="threads" hidden aria-labelledby="title-0-threads">
+      <p class="panel-label">Threads 변형</p>
+      <p class="badge">draft · 공개승인 false · 외부 미게시</p>
+      <h3 id="title-0-threads">여행 후기보다 먼저, 도전 계획을 소개합니다</h3>
+      <div class="draft-body" tabindex="0" aria-label="Threads 본문 · 읽기 전용">원민철의 자전거 세계일주와 출판 프로젝트는 계획을 소개하는 단계입니다. 기획서에는 여정과 전자책·종이책 발간 방향이 함께 담겨 있습니다.
+
+이번 글은 출발 소식이나 완주 경험담이 아닙니다. 도전 소개에서 어떤 계획인지 먼저 살펴보는 콘텐츠를 제안합니다.</div>
+      <button type="button" class="copy-button">Threads 본문 복사</button>
+      <details><summary>출처·확인사항 보기</summary>
+        <h4>원문 출처 셀</h4><ul><li>1_비즈니스 플랜!E19</li><li>1_비즈니스 플랜!E49</li><li>1_비즈니스 플랜!E17</li></ul>
+        <h4>주장별 근거와 제한</h4><div class="claim"><p><strong>T1-C1 · 기획서에 기재된 계획</strong></p><p>원민철의 자전거 세계일주는 도전 계획이다.</p><ul><li>1_비즈니스 플랜!E19</li><li>1_비즈니스 플랜!E49</li></ul><p>출발·완주·기록 달성 사실이나 공식 인증을 주장하지 않는다.</p></div><div class="claim"><p><strong>T1-C2 · 기획서에 기재된 계획</strong></p><p>전자책과 종이책 발간 방향이 기획서에 포함되어 있다.</p><ul><li>1_비즈니스 플랜!E17</li></ul><p>책의 제작·출간 확정이나 판매 개시를 뜻하지 않는다.</p></div><div class="claim"><p><strong>T1-C3 · 편집 제안</strong></p><p>도전 소개와 계획을 먼저 전달하는 콘텐츠를 제안한다.</p><ul><li>1_비즈니스 플랜!E19</li><li>1_비즈니스 플랜!E49</li></ul><ul><li>MASTER_DEVELOPMENT_PLAN 1·9절</li><li>MARKETING_DELIVERY_PLAN 첫 콘텐츠 가설</li></ul><p>기록 자료가 이미 확보되었거나 콘텐츠가 발행되었다는 뜻이 아니다.</p></div>
+        <h4>공개 전 확인 필요</h4><ul><li>원민철 이름·소개 공개 동의와 현재 계획의 유효성</li><li>공식 브랜드와 도전 소개 문구</li><li>이 초안의 주장·표현에 대한 당사자 사실 확인 및 공개 승인</li></ul>
+        <h4>제안 CTA · 미승인</h4><p>도전 소개에서 계획 살펴보기 → <code>/about</code></p><p>내부 경로 제안이며 실제 외부 게시 링크가 아니다.</p>
+        <h4>이미지 원본·권리</h4><p>선택 제안: 당사자가 제공한 소개용 원본 사진과 촬영 정보. 없으면 텍스트 검토 유지.</p><p>원본 미수령 · 사용권 미확인 · 공개 동의 미확인 · 이미지 필수 여부 미확인</p>
+        <h4>채널 기능</h4><p>프로그램 미수령 · 미연결. 서비스·계정 유형 미확인, 글자 수 미확인, 미디어 미확인, API·예약 미확인.</p>
+      </details>
+    </article><article class="draft-panel" data-kind="instagram" hidden aria-labelledby="title-0-instagram">
+      <p class="panel-label">Instagram 변형</p>
+      <p class="badge">draft · 공개승인 false · 외부 미게시</p>
+      <h3 id="title-0-instagram">계획을 소개하는 첫 페이지</h3>
+      <div class="draft-body" tabindex="0" aria-label="Instagram 본문 · 읽기 전용">자전거 세계일주 도전과 그 이야기를 담을 출판 계획.
+
+원민철의 프로젝트 기획서에 담긴 방향을 소개하는 글입니다. 실제 여행 사진이나 완료한 여정의 기록을 바탕으로 한 게시물이 아닙니다.
+
+도전 소개에서 계획의 큰 방향을 살펴보는 흐름을 제안합니다. 공식 이름과 자세한 소개는 확인이 필요합니다.</div>
+      <button type="button" class="copy-button">Instagram 본문 복사</button>
+      <details><summary>출처·확인사항 보기</summary>
+        <h4>원문 출처 셀</h4><ul><li>1_비즈니스 플랜!E19</li><li>1_비즈니스 플랜!E49</li><li>1_비즈니스 플랜!E17</li></ul>
+        <h4>주장별 근거와 제한</h4><div class="claim"><p><strong>T1-C1 · 기획서에 기재된 계획</strong></p><p>원민철의 자전거 세계일주는 도전 계획이다.</p><ul><li>1_비즈니스 플랜!E19</li><li>1_비즈니스 플랜!E49</li></ul><p>출발·완주·기록 달성 사실이나 공식 인증을 주장하지 않는다.</p></div><div class="claim"><p><strong>T1-C2 · 기획서에 기재된 계획</strong></p><p>전자책과 종이책 발간 방향이 기획서에 포함되어 있다.</p><ul><li>1_비즈니스 플랜!E17</li></ul><p>책의 제작·출간 확정이나 판매 개시를 뜻하지 않는다.</p></div><div class="claim"><p><strong>T1-C3 · 편집 제안</strong></p><p>도전 소개와 계획을 먼저 전달하는 콘텐츠를 제안한다.</p><ul><li>1_비즈니스 플랜!E19</li><li>1_비즈니스 플랜!E49</li></ul><ul><li>MASTER_DEVELOPMENT_PLAN 1·9절</li><li>MARKETING_DELIVERY_PLAN 첫 콘텐츠 가설</li></ul><p>기록 자료가 이미 확보되었거나 콘텐츠가 발행되었다는 뜻이 아니다.</p></div>
+        <h4>공개 전 확인 필요</h4><ul><li>원민철 이름·소개 공개 동의와 현재 계획의 유효성</li><li>공식 브랜드와 도전 소개 문구</li><li>이 초안의 주장·표현에 대한 당사자 사실 확인 및 공개 승인</li></ul>
+        <h4>제안 CTA · 미승인</h4><p>도전 소개에서 계획 살펴보기 → <code>/about</code></p><p>내부 경로 제안이며 실제 외부 게시 링크가 아니다.</p>
+        <h4>이미지 원본·권리</h4><p>선택 제안: 당사자가 제공한 소개용 원본 사진과 촬영 정보. 없으면 텍스트 검토 유지.</p><p>원본 미수령 · 사용권 미확인 · 공개 동의 미확인 · 이미지 필수 여부 미확인</p>
+        <h4>채널 기능</h4><p>프로그램 미수령 · 미연결. 서비스·계정 유형 미확인, 글자 수 미확인, 미디어 미확인, API·예약 미확인.</p>
+      </details>
+    </article></div></div></section><section class="topic-panel" data-topic="1" hidden aria-labelledby="topic-1"><h2 id="topic-1">2. 출발 전 어떤 준비를 기록할지</h2><div class="comparison"><article class="draft-panel" data-kind="original" aria-labelledby="title-1-original">
+      <p class="panel-label">원문 초안</p>
+      <p class="badge">draft · 공개승인 false · 외부 미게시</p>
+      <h3 id="title-1-original">출발 전 기록할 준비, 세 가지 질문부터</h3>
+      <div class="draft-body" tabindex="0" aria-label="원문 본문 · 읽기 전용">세계일주 계획을 소개할 때, 준비 과정을 무엇으로 설명할 수 있을까요? 기획서에 적힌 여정과 자료 준비 항목을 바탕으로 세 가지 질문을 제안합니다.
+
+첫째, 여정을 어떤 구간으로 나누고 이동 수단은 어떻게 구분할까요? 둘째, 계획한 일정에서 확인하거나 바꿀 부분은 무엇일까요? 셋째, 소개에 쓸 자료는 무엇이며 원본과 공개 가능 여부를 확인했을까요?
+
+이 질문들은 앞으로 기록할 항목의 제안입니다. 실제 준비가 끝났다는 보고나 구체적인 훈련·장비 경험담은 아닙니다. 당사자가 확인한 자료를 받아 계획과 실제 준비 상태를 나누어 소개하는 글을 검토하려 합니다.</div>
+      <button type="button" class="copy-button">원문 본문 복사</button>
+      <details><summary>출처·확인사항 보기</summary>
+        <h4>원문 출처 셀</h4><ul><li>1_비즈니스 플랜!E49</li><li>1_비즈니스 플랜!E48</li></ul>
+        <h4>주장별 근거와 제한</h4><div class="claim"><p><strong>T2-C1 · 기획서에 기재된 계획</strong></p><p>기획서에는 여정 구간과 자전거·항공·선박의 이동 계획이 적혀 있다.</p><ul><li>1_비즈니스 플랜!E49</li></ul><p>실제 이동 경로나 구간별 자료가 확보되었다는 뜻이 아니다. 거리·구간·일정을 확정 정보로 옮기지 않는다.</p></div><div class="claim"><p><strong>T2-C2 · 편집 제안</strong></p><p>여정 구분·일정·공개할 소개 자료를 확인하며 기록하자는 항목을 제안한다.</p><ul><li>1_비즈니스 플랜!E48</li><li>1_비즈니스 플랜!E49</li></ul><ul><li>MASTER_DEVELOPMENT_PLAN 4·9·20절</li><li>MARKETING_DELIVERY_PLAN 첫 콘텐츠 가설</li></ul><p>실제 장비·훈련·답사·여권·예약 준비 완료를 주장하지 않는다.</p></div><div class="claim"><p><strong>T2-C3 · 검토된 계획에 따른 편집 원칙</strong></p><p>사진·소개 자료는 원본과 공개 가능 여부를 확인한 뒤 쓰는 구성을 제안한다.</p><ul><li>1_비즈니스 플랜!E48</li></ul><ul><li>MASTER_DEVELOPMENT_PLAN 20절 자산대장</li></ul><p>사진을 수령했거나 권리와 동의가 확보되었다는 뜻이 아니다.</p></div>
+        <h4>공개 전 확인 필요</h4><ul><li>실제 준비 중인 항목과 완료 여부에 대한 당사자 자료</li><li>구간별 경로·이동 수단·예정 일정의 최신 원문</li><li>소개·사진 원본의 사실 확인과 사용권·공개 동의</li><li>제안한 기록 항목을 실제 콘텐츠로 채택할지 여부</li></ul>
+        <h4>제안 CTA · 미승인</h4><p>이야기 목록에서 공개된 글 확인하기 → <code>/stories</code></p><p>내부 경로 제안. 승인 글이 없어 빈 목록일 수 있으며 이 초안을 게시한 것으로 표현하지 않는다.</p>
+        <h4>이미지 원본·권리</h4><p>선택 제안: 당사자가 제공한 준비 과정 원본 자료. 촬영 시점과 실제 준비 맥락 확인 필요. 없으면 텍스트 검토 유지.</p><p>원본 미수령 · 사용권 미확인 · 공개 동의 미확인 · 이미지 필수 여부 미확인</p>
+        <h4>채널 기능</h4><p>프로그램 미수령 · 미연결. 서비스·계정 유형 미확인, 글자 수 미확인, 미디어 미확인, API·예약 미확인.</p>
+      </details>
+    </article><div class="channel-column"><article class="draft-panel" data-kind="blog" aria-labelledby="title-1-blog">
+      <p class="panel-label">블로그 변형</p>
+      <p class="badge">draft · 공개승인 false · 외부 미게시</p>
+      <h3 id="title-1-blog">준비 과정을 쓰기 전에 확인할 세 가지</h3>
+      <div class="draft-body" tabindex="0" aria-label="블로그 본문 · 읽기 전용">자전거 세계일주는 현재 계획입니다. 준비 과정을 다룰 글은 기획서의 여정과 자료 항목을 출발점으로 삼을 수 있습니다.
+
+기록 질문 1. 여정의 구간과 자전거·항공·선박 이동 계획을 어떻게 구분할까요?
+기록 질문 2. 예정 일정 중 확인이 필요한 부분은 무엇일까요?
+기록 질문 3. 소개 자료의 원본과 공개 가능 여부를 확인했을까요?
+
+이는 편집 방향의 제안이며 실제 준비 완료 목록이 아닙니다. 답변과 근거 자료가 확인된 뒤에 계획과 현재 상태를 구분한 글로 정리할 수 있습니다. 이야기 목록은 승인된 글을 확인하는 경로로 제안합니다.</div>
+      <button type="button" class="copy-button">블로그 본문 복사</button>
+      <details><summary>출처·확인사항 보기</summary>
+        <h4>원문 출처 셀</h4><ul><li>1_비즈니스 플랜!E49</li><li>1_비즈니스 플랜!E48</li></ul>
+        <h4>주장별 근거와 제한</h4><div class="claim"><p><strong>T2-C1 · 기획서에 기재된 계획</strong></p><p>기획서에는 여정 구간과 자전거·항공·선박의 이동 계획이 적혀 있다.</p><ul><li>1_비즈니스 플랜!E49</li></ul><p>실제 이동 경로나 구간별 자료가 확보되었다는 뜻이 아니다. 거리·구간·일정을 확정 정보로 옮기지 않는다.</p></div><div class="claim"><p><strong>T2-C2 · 편집 제안</strong></p><p>여정 구분·일정·공개할 소개 자료를 확인하며 기록하자는 항목을 제안한다.</p><ul><li>1_비즈니스 플랜!E48</li><li>1_비즈니스 플랜!E49</li></ul><ul><li>MASTER_DEVELOPMENT_PLAN 4·9·20절</li><li>MARKETING_DELIVERY_PLAN 첫 콘텐츠 가설</li></ul><p>실제 장비·훈련·답사·여권·예약 준비 완료를 주장하지 않는다.</p></div><div class="claim"><p><strong>T2-C3 · 검토된 계획에 따른 편집 원칙</strong></p><p>사진·소개 자료는 원본과 공개 가능 여부를 확인한 뒤 쓰는 구성을 제안한다.</p><ul><li>1_비즈니스 플랜!E48</li></ul><ul><li>MASTER_DEVELOPMENT_PLAN 20절 자산대장</li></ul><p>사진을 수령했거나 권리와 동의가 확보되었다는 뜻이 아니다.</p></div>
+        <h4>공개 전 확인 필요</h4><ul><li>실제 준비 중인 항목과 완료 여부에 대한 당사자 자료</li><li>구간별 경로·이동 수단·예정 일정의 최신 원문</li><li>소개·사진 원본의 사실 확인과 사용권·공개 동의</li><li>제안한 기록 항목을 실제 콘텐츠로 채택할지 여부</li></ul>
+        <h4>제안 CTA · 미승인</h4><p>이야기 목록에서 공개된 글 확인하기 → <code>/stories</code></p><p>내부 경로 제안. 승인 글이 없어 빈 목록일 수 있으며 이 초안을 게시한 것으로 표현하지 않는다.</p>
+        <h4>이미지 원본·권리</h4><p>선택 제안: 당사자가 제공한 준비 과정 원본 자료. 촬영 시점과 실제 준비 맥락 확인 필요. 없으면 텍스트 검토 유지.</p><p>원본 미수령 · 사용권 미확인 · 공개 동의 미확인 · 이미지 필수 여부 미확인</p>
+        <h4>채널 기능</h4><p>프로그램 미수령 · 미연결. 서비스·계정 유형 미확인, 글자 수 미확인, 미디어 미확인, API·예약 미확인.</p>
+      </details>
+    </article><article class="draft-panel" data-kind="threads" hidden aria-labelledby="title-1-threads">
+      <p class="panel-label">Threads 변형</p>
+      <p class="badge">draft · 공개승인 false · 외부 미게시</p>
+      <h3 id="title-1-threads">준비 기록에 담을 질문 세 가지</h3>
+      <div class="draft-body" tabindex="0" aria-label="Threads 본문 · 읽기 전용">세계일주 계획을 다룰 준비 기록에는 무엇을 담을까요?
+
+구간과 이동 수단, 확인할 일정, 공개할 자료의 원본과 사용 가능 여부. 기획서 항목을 바탕으로 제안하는 질문입니다.
+
+준비가 완료되었다는 소식은 아닙니다. 당사자 답변과 자료가 확인된 뒤 글로 정리하는 방향을 제안합니다.</div>
+      <button type="button" class="copy-button">Threads 본문 복사</button>
+      <details><summary>출처·확인사항 보기</summary>
+        <h4>원문 출처 셀</h4><ul><li>1_비즈니스 플랜!E49</li><li>1_비즈니스 플랜!E48</li></ul>
+        <h4>주장별 근거와 제한</h4><div class="claim"><p><strong>T2-C1 · 기획서에 기재된 계획</strong></p><p>기획서에는 여정 구간과 자전거·항공·선박의 이동 계획이 적혀 있다.</p><ul><li>1_비즈니스 플랜!E49</li></ul><p>실제 이동 경로나 구간별 자료가 확보되었다는 뜻이 아니다. 거리·구간·일정을 확정 정보로 옮기지 않는다.</p></div><div class="claim"><p><strong>T2-C2 · 편집 제안</strong></p><p>여정 구분·일정·공개할 소개 자료를 확인하며 기록하자는 항목을 제안한다.</p><ul><li>1_비즈니스 플랜!E48</li><li>1_비즈니스 플랜!E49</li></ul><ul><li>MASTER_DEVELOPMENT_PLAN 4·9·20절</li><li>MARKETING_DELIVERY_PLAN 첫 콘텐츠 가설</li></ul><p>실제 장비·훈련·답사·여권·예약 준비 완료를 주장하지 않는다.</p></div><div class="claim"><p><strong>T2-C3 · 검토된 계획에 따른 편집 원칙</strong></p><p>사진·소개 자료는 원본과 공개 가능 여부를 확인한 뒤 쓰는 구성을 제안한다.</p><ul><li>1_비즈니스 플랜!E48</li></ul><ul><li>MASTER_DEVELOPMENT_PLAN 20절 자산대장</li></ul><p>사진을 수령했거나 권리와 동의가 확보되었다는 뜻이 아니다.</p></div>
+        <h4>공개 전 확인 필요</h4><ul><li>실제 준비 중인 항목과 완료 여부에 대한 당사자 자료</li><li>구간별 경로·이동 수단·예정 일정의 최신 원문</li><li>소개·사진 원본의 사실 확인과 사용권·공개 동의</li><li>제안한 기록 항목을 실제 콘텐츠로 채택할지 여부</li></ul>
+        <h4>제안 CTA · 미승인</h4><p>이야기 목록에서 공개된 글 확인하기 → <code>/stories</code></p><p>내부 경로 제안. 승인 글이 없어 빈 목록일 수 있으며 이 초안을 게시한 것으로 표현하지 않는다.</p>
+        <h4>이미지 원본·권리</h4><p>선택 제안: 당사자가 제공한 준비 과정 원본 자료. 촬영 시점과 실제 준비 맥락 확인 필요. 없으면 텍스트 검토 유지.</p><p>원본 미수령 · 사용권 미확인 · 공개 동의 미확인 · 이미지 필수 여부 미확인</p>
+        <h4>채널 기능</h4><p>프로그램 미수령 · 미연결. 서비스·계정 유형 미확인, 글자 수 미확인, 미디어 미확인, API·예약 미확인.</p>
+      </details>
+    </article><article class="draft-panel" data-kind="instagram" hidden aria-labelledby="title-1-instagram">
+      <p class="panel-label">Instagram 변형</p>
+      <p class="badge">draft · 공개승인 false · 외부 미게시</p>
+      <h3 id="title-1-instagram">출발 전, 무엇을 기록할까요?</h3>
+      <div class="draft-body" tabindex="0" aria-label="Instagram 본문 · 읽기 전용">여정은 어떤 구간으로 나눌까요?
+계획한 일정에서 무엇을 확인해야 할까요?
+공개할 소개 자료의 원본은 준비되어 있을까요?
+
+세계일주 계획의 준비 기록을 위한 질문 제안입니다. 실제 준비 장면이나 완료한 작업을 보여주는 게시물이 아닙니다. 확인된 자료로 이야기를 정리하는 방향을 검토합니다.</div>
+      <button type="button" class="copy-button">Instagram 본문 복사</button>
+      <details><summary>출처·확인사항 보기</summary>
+        <h4>원문 출처 셀</h4><ul><li>1_비즈니스 플랜!E49</li><li>1_비즈니스 플랜!E48</li></ul>
+        <h4>주장별 근거와 제한</h4><div class="claim"><p><strong>T2-C1 · 기획서에 기재된 계획</strong></p><p>기획서에는 여정 구간과 자전거·항공·선박의 이동 계획이 적혀 있다.</p><ul><li>1_비즈니스 플랜!E49</li></ul><p>실제 이동 경로나 구간별 자료가 확보되었다는 뜻이 아니다. 거리·구간·일정을 확정 정보로 옮기지 않는다.</p></div><div class="claim"><p><strong>T2-C2 · 편집 제안</strong></p><p>여정 구분·일정·공개할 소개 자료를 확인하며 기록하자는 항목을 제안한다.</p><ul><li>1_비즈니스 플랜!E48</li><li>1_비즈니스 플랜!E49</li></ul><ul><li>MASTER_DEVELOPMENT_PLAN 4·9·20절</li><li>MARKETING_DELIVERY_PLAN 첫 콘텐츠 가설</li></ul><p>실제 장비·훈련·답사·여권·예약 준비 완료를 주장하지 않는다.</p></div><div class="claim"><p><strong>T2-C3 · 검토된 계획에 따른 편집 원칙</strong></p><p>사진·소개 자료는 원본과 공개 가능 여부를 확인한 뒤 쓰는 구성을 제안한다.</p><ul><li>1_비즈니스 플랜!E48</li></ul><ul><li>MASTER_DEVELOPMENT_PLAN 20절 자산대장</li></ul><p>사진을 수령했거나 권리와 동의가 확보되었다는 뜻이 아니다.</p></div>
+        <h4>공개 전 확인 필요</h4><ul><li>실제 준비 중인 항목과 완료 여부에 대한 당사자 자료</li><li>구간별 경로·이동 수단·예정 일정의 최신 원문</li><li>소개·사진 원본의 사실 확인과 사용권·공개 동의</li><li>제안한 기록 항목을 실제 콘텐츠로 채택할지 여부</li></ul>
+        <h4>제안 CTA · 미승인</h4><p>이야기 목록에서 공개된 글 확인하기 → <code>/stories</code></p><p>내부 경로 제안. 승인 글이 없어 빈 목록일 수 있으며 이 초안을 게시한 것으로 표현하지 않는다.</p>
+        <h4>이미지 원본·권리</h4><p>선택 제안: 당사자가 제공한 준비 과정 원본 자료. 촬영 시점과 실제 준비 맥락 확인 필요. 없으면 텍스트 검토 유지.</p><p>원본 미수령 · 사용권 미확인 · 공개 동의 미확인 · 이미지 필수 여부 미확인</p>
+        <h4>채널 기능</h4><p>프로그램 미수령 · 미연결. 서비스·계정 유형 미확인, 글자 수 미확인, 미디어 미확인, API·예약 미확인.</p>
+      </details>
+    </article></div></div></section><section class="topic-panel" data-topic="2" hidden aria-labelledby="topic-2"><h2 id="topic-2">3. 도전의 이야기를 책으로 나누려는 계획</h2><div class="comparison"><article class="draft-panel" data-kind="original" aria-labelledby="title-2-original">
+      <p class="panel-label">원문 초안</p>
+      <p class="badge">draft · 공개승인 false · 외부 미게시</p>
+      <h3 id="title-2-original">도전의 이야기를 책으로 나누려는 계획</h3>
+      <div class="draft-body" tabindex="0" aria-label="원문 본문 · 읽기 전용">자전거 세계일주를 계획하는 프로젝트에는 출판 방향도 함께 들어 있습니다. 기획서에 적힌 형식은 전자책과 종이책입니다.
+
+여정의 이야기와 출판을 연결해 소개하되, 아직 확인하지 않은 원고나 완성된 책이 있는 것처럼 쓰지 않는 방향을 제안합니다. 어떤 내용을 책에 담으려는지에 대해서는 당사자의 설명과 실제 자료를 먼저 확인해야 합니다.
+
+지금 전할 수 있는 것은 출판을 구상하고 있다는 방향입니다. 책의 제목·목차·가격·출간일을 확정한 안내가 아니며, 구매나 예약을 받는 글로 사용하지 않습니다.</div>
+      <button type="button" class="copy-button">원문 본문 복사</button>
+      <details><summary>출처·확인사항 보기</summary>
+        <h4>원문 출처 셀</h4><ul><li>1_비즈니스 플랜!E17</li><li>1_비즈니스 플랜!E19</li><li>1_비즈니스 플랜!E49</li><li>1_비즈니스 플랜!E48</li></ul>
+        <h4>주장별 근거와 제한</h4><div class="claim"><p><strong>T3-C1 · 기획서에 기재된 계획</strong></p><p>전자책·종이책 발간 방향이 기획서에 포함되어 있다.</p><ul><li>1_비즈니스 플랜!E17</li></ul><p>책 제목·목차·원고·출판 계약·제작·가격·출간일 확정을 뜻하지 않는다.</p></div><div class="claim"><p><strong>T3-C2 · 검토된 계획에 따른 편집 제안</strong></p><p>자전거 세계일주와 출판을 연결해 이야기하는 방향을 제안한다.</p><ul><li>1_비즈니스 플랜!E17</li><li>1_비즈니스 플랜!E19</li><li>1_비즈니스 플랜!E49</li></ul><ul><li>MASTER_DEVELOPMENT_PLAN 1·9절</li><li>MARKETING_DELIVERY_PLAN 첫 콘텐츠 가설</li></ul><p>당사자의 출판 동기·감정·직접 발언이나 완성된 여행 기록을 만들어 넣지 않는다.</p></div><div class="claim"><p><strong>T3-C3 · 검토된 계획에 따른 편집 원칙</strong></p><p>책 정보와 제작 조건은 확인 후 별도 안내하는 구성을 제안한다.</p><ul><li>1_비즈니스 플랜!E17</li><li>1_비즈니스 플랜!E48</li></ul><ul><li>MASTER_DEVELOPMENT_PLAN 20절 AS03·AS04</li></ul><p>구매·후원·신청 개시, 확정된 출판 일정을 약속하지 않는다.</p></div>
+        <h4>공개 전 확인 필요</h4><ul><li>당사자가 확인한 출판 목적과 설명 문구</li><li>실제 원고 유무·책 제목·목차·책 형식·제작 진행 상태</li><li>책 정보와 권리자·공개 가능한 샘플 범위</li><li>가격·일정·제작 및 참여 조건을 안내할 경우 별도 확정 자료</li></ul>
+        <h4>제안 CTA · 미승인</h4><p>도전 소개에서 출판 계획의 배경 살펴보기 → <code>/about</code></p><p>내부 소개 경로 제안이며 판매·예약·후원으로 연결하지 않는다.</p>
+        <h4>이미지 원본·권리</h4><p>선택 제안: 실제 제공된 원고·표지 자료가 있다면 권리자와 공개 범위를 확인. 없으면 책 표지·실물 사진을 만들지 않고 텍스트 검토 유지.</p><p>원본 미수령 · 사용권 미확인 · 공개 동의 미확인 · 이미지 필수 여부 미확인</p>
+        <h4>채널 기능</h4><p>프로그램 미수령 · 미연결. 서비스·계정 유형 미확인, 글자 수 미확인, 미디어 미확인, API·예약 미확인.</p>
+      </details>
+    </article><div class="channel-column"><article class="draft-panel" data-kind="blog" aria-labelledby="title-2-blog">
+      <p class="panel-label">블로그 변형</p>
+      <p class="badge">draft · 공개승인 false · 외부 미게시</p>
+      <h3 id="title-2-blog">세계일주 계획과 함께 적힌 두 가지 출판 형식</h3>
+      <div class="draft-body" tabindex="0" aria-label="블로그 본문 · 읽기 전용">기획서에는 자전거 세계일주와 함께 전자책·종이책 발간 방향이 적혀 있습니다.
+
+도전의 이야기를 책으로 나누는 계획을 소개할 수 있지만, 책의 구체적인 내용은 당사자 설명과 실제 자료를 확인해야 합니다. 이미 완성한 원고가 있다거나 여행의 교훈을 얻었다는 이야기를 덧붙이지 않습니다.
+
+이 글은 출판 구상의 방향을 다루는 초안입니다. 제목·목차·가격·출간일이나 참여 조건이 확정되었다는 뜻은 아닙니다. 먼저 도전 소개에서 전체 계획을 살펴보는 흐름을 제안합니다.</div>
+      <button type="button" class="copy-button">블로그 본문 복사</button>
+      <details><summary>출처·확인사항 보기</summary>
+        <h4>원문 출처 셀</h4><ul><li>1_비즈니스 플랜!E17</li><li>1_비즈니스 플랜!E19</li><li>1_비즈니스 플랜!E49</li><li>1_비즈니스 플랜!E48</li></ul>
+        <h4>주장별 근거와 제한</h4><div class="claim"><p><strong>T3-C1 · 기획서에 기재된 계획</strong></p><p>전자책·종이책 발간 방향이 기획서에 포함되어 있다.</p><ul><li>1_비즈니스 플랜!E17</li></ul><p>책 제목·목차·원고·출판 계약·제작·가격·출간일 확정을 뜻하지 않는다.</p></div><div class="claim"><p><strong>T3-C2 · 검토된 계획에 따른 편집 제안</strong></p><p>자전거 세계일주와 출판을 연결해 이야기하는 방향을 제안한다.</p><ul><li>1_비즈니스 플랜!E17</li><li>1_비즈니스 플랜!E19</li><li>1_비즈니스 플랜!E49</li></ul><ul><li>MASTER_DEVELOPMENT_PLAN 1·9절</li><li>MARKETING_DELIVERY_PLAN 첫 콘텐츠 가설</li></ul><p>당사자의 출판 동기·감정·직접 발언이나 완성된 여행 기록을 만들어 넣지 않는다.</p></div><div class="claim"><p><strong>T3-C3 · 검토된 계획에 따른 편집 원칙</strong></p><p>책 정보와 제작 조건은 확인 후 별도 안내하는 구성을 제안한다.</p><ul><li>1_비즈니스 플랜!E17</li><li>1_비즈니스 플랜!E48</li></ul><ul><li>MASTER_DEVELOPMENT_PLAN 20절 AS03·AS04</li></ul><p>구매·후원·신청 개시, 확정된 출판 일정을 약속하지 않는다.</p></div>
+        <h4>공개 전 확인 필요</h4><ul><li>당사자가 확인한 출판 목적과 설명 문구</li><li>실제 원고 유무·책 제목·목차·책 형식·제작 진행 상태</li><li>책 정보와 권리자·공개 가능한 샘플 범위</li><li>가격·일정·제작 및 참여 조건을 안내할 경우 별도 확정 자료</li></ul>
+        <h4>제안 CTA · 미승인</h4><p>도전 소개에서 출판 계획의 배경 살펴보기 → <code>/about</code></p><p>내부 소개 경로 제안이며 판매·예약·후원으로 연결하지 않는다.</p>
+        <h4>이미지 원본·권리</h4><p>선택 제안: 실제 제공된 원고·표지 자료가 있다면 권리자와 공개 범위를 확인. 없으면 책 표지·실물 사진을 만들지 않고 텍스트 검토 유지.</p><p>원본 미수령 · 사용권 미확인 · 공개 동의 미확인 · 이미지 필수 여부 미확인</p>
+        <h4>채널 기능</h4><p>프로그램 미수령 · 미연결. 서비스·계정 유형 미확인, 글자 수 미확인, 미디어 미확인, API·예약 미확인.</p>
+      </details>
+    </article><article class="draft-panel" data-kind="threads" hidden aria-labelledby="title-2-threads">
+      <p class="panel-label">Threads 변형</p>
+      <p class="badge">draft · 공개승인 false · 외부 미게시</p>
+      <h3 id="title-2-threads">도전 계획 옆에 놓인 출판 계획</h3>
+      <div class="draft-body" tabindex="0" aria-label="Threads 본문 · 읽기 전용">자전거 세계일주와 출판을 함께 구상하는 프로젝트입니다. 기획서에는 전자책·종이책 발간 방향이 적혀 있습니다.
+
+아직 책 제목이나 출간일을 확정한 소식은 아닙니다. 어떤 이야기를 담을지는 당사자의 설명과 자료를 확인한 뒤 소개하는 방향을 제안합니다.</div>
+      <button type="button" class="copy-button">Threads 본문 복사</button>
+      <details><summary>출처·확인사항 보기</summary>
+        <h4>원문 출처 셀</h4><ul><li>1_비즈니스 플랜!E17</li><li>1_비즈니스 플랜!E19</li><li>1_비즈니스 플랜!E49</li><li>1_비즈니스 플랜!E48</li></ul>
+        <h4>주장별 근거와 제한</h4><div class="claim"><p><strong>T3-C1 · 기획서에 기재된 계획</strong></p><p>전자책·종이책 발간 방향이 기획서에 포함되어 있다.</p><ul><li>1_비즈니스 플랜!E17</li></ul><p>책 제목·목차·원고·출판 계약·제작·가격·출간일 확정을 뜻하지 않는다.</p></div><div class="claim"><p><strong>T3-C2 · 검토된 계획에 따른 편집 제안</strong></p><p>자전거 세계일주와 출판을 연결해 이야기하는 방향을 제안한다.</p><ul><li>1_비즈니스 플랜!E17</li><li>1_비즈니스 플랜!E19</li><li>1_비즈니스 플랜!E49</li></ul><ul><li>MASTER_DEVELOPMENT_PLAN 1·9절</li><li>MARKETING_DELIVERY_PLAN 첫 콘텐츠 가설</li></ul><p>당사자의 출판 동기·감정·직접 발언이나 완성된 여행 기록을 만들어 넣지 않는다.</p></div><div class="claim"><p><strong>T3-C3 · 검토된 계획에 따른 편집 원칙</strong></p><p>책 정보와 제작 조건은 확인 후 별도 안내하는 구성을 제안한다.</p><ul><li>1_비즈니스 플랜!E17</li><li>1_비즈니스 플랜!E48</li></ul><ul><li>MASTER_DEVELOPMENT_PLAN 20절 AS03·AS04</li></ul><p>구매·후원·신청 개시, 확정된 출판 일정을 약속하지 않는다.</p></div>
+        <h4>공개 전 확인 필요</h4><ul><li>당사자가 확인한 출판 목적과 설명 문구</li><li>실제 원고 유무·책 제목·목차·책 형식·제작 진행 상태</li><li>책 정보와 권리자·공개 가능한 샘플 범위</li><li>가격·일정·제작 및 참여 조건을 안내할 경우 별도 확정 자료</li></ul>
+        <h4>제안 CTA · 미승인</h4><p>도전 소개에서 출판 계획의 배경 살펴보기 → <code>/about</code></p><p>내부 소개 경로 제안이며 판매·예약·후원으로 연결하지 않는다.</p>
+        <h4>이미지 원본·권리</h4><p>선택 제안: 실제 제공된 원고·표지 자료가 있다면 권리자와 공개 범위를 확인. 없으면 책 표지·실물 사진을 만들지 않고 텍스트 검토 유지.</p><p>원본 미수령 · 사용권 미확인 · 공개 동의 미확인 · 이미지 필수 여부 미확인</p>
+        <h4>채널 기능</h4><p>프로그램 미수령 · 미연결. 서비스·계정 유형 미확인, 글자 수 미확인, 미디어 미확인, API·예약 미확인.</p>
+      </details>
+    </article><article class="draft-panel" data-kind="instagram" hidden aria-labelledby="title-2-instagram">
+      <p class="panel-label">Instagram 변형</p>
+      <p class="badge">draft · 공개승인 false · 외부 미게시</p>
+      <h3 id="title-2-instagram">길의 이야기, 책으로 나누려는 구상</h3>
+      <div class="draft-body" tabindex="0" aria-label="Instagram 본문 · 읽기 전용">자전거 세계일주 계획과 함께 놓인 전자책·종이책 발간 방향.
+
+기획서에 담긴 출판 구상을 소개하는 초안입니다. 표지나 실물 책이 완성되었다는 소식은 아닙니다.
+
+책의 구체적인 내용과 제작 조건은 확인이 필요합니다. 도전 소개에서 큰 계획부터 살펴보는 흐름을 제안합니다.</div>
+      <button type="button" class="copy-button">Instagram 본문 복사</button>
+      <details><summary>출처·확인사항 보기</summary>
+        <h4>원문 출처 셀</h4><ul><li>1_비즈니스 플랜!E17</li><li>1_비즈니스 플랜!E19</li><li>1_비즈니스 플랜!E49</li><li>1_비즈니스 플랜!E48</li></ul>
+        <h4>주장별 근거와 제한</h4><div class="claim"><p><strong>T3-C1 · 기획서에 기재된 계획</strong></p><p>전자책·종이책 발간 방향이 기획서에 포함되어 있다.</p><ul><li>1_비즈니스 플랜!E17</li></ul><p>책 제목·목차·원고·출판 계약·제작·가격·출간일 확정을 뜻하지 않는다.</p></div><div class="claim"><p><strong>T3-C2 · 검토된 계획에 따른 편집 제안</strong></p><p>자전거 세계일주와 출판을 연결해 이야기하는 방향을 제안한다.</p><ul><li>1_비즈니스 플랜!E17</li><li>1_비즈니스 플랜!E19</li><li>1_비즈니스 플랜!E49</li></ul><ul><li>MASTER_DEVELOPMENT_PLAN 1·9절</li><li>MARKETING_DELIVERY_PLAN 첫 콘텐츠 가설</li></ul><p>당사자의 출판 동기·감정·직접 발언이나 완성된 여행 기록을 만들어 넣지 않는다.</p></div><div class="claim"><p><strong>T3-C3 · 검토된 계획에 따른 편집 원칙</strong></p><p>책 정보와 제작 조건은 확인 후 별도 안내하는 구성을 제안한다.</p><ul><li>1_비즈니스 플랜!E17</li><li>1_비즈니스 플랜!E48</li></ul><ul><li>MASTER_DEVELOPMENT_PLAN 20절 AS03·AS04</li></ul><p>구매·후원·신청 개시, 확정된 출판 일정을 약속하지 않는다.</p></div>
+        <h4>공개 전 확인 필요</h4><ul><li>당사자가 확인한 출판 목적과 설명 문구</li><li>실제 원고 유무·책 제목·목차·책 형식·제작 진행 상태</li><li>책 정보와 권리자·공개 가능한 샘플 범위</li><li>가격·일정·제작 및 참여 조건을 안내할 경우 별도 확정 자료</li></ul>
+        <h4>제안 CTA · 미승인</h4><p>도전 소개에서 출판 계획의 배경 살펴보기 → <code>/about</code></p><p>내부 소개 경로 제안이며 판매·예약·후원으로 연결하지 않는다.</p>
+        <h4>이미지 원본·권리</h4><p>선택 제안: 실제 제공된 원고·표지 자료가 있다면 권리자와 공개 범위를 확인. 없으면 책 표지·실물 사진을 만들지 않고 텍스트 검토 유지.</p><p>원본 미수령 · 사용권 미확인 · 공개 동의 미확인 · 이미지 필수 여부 미확인</p>
+        <h4>채널 기능</h4><p>프로그램 미수령 · 미연결. 서비스·계정 유형 미확인, 글자 수 미확인, 미디어 미확인, API·예약 미확인.</p>
+      </details>
+    </article></div></div></section><div class="footer"><details><summary>전체 출처와 검토 제한</summary><p>(원민철)드림AI_바이브코딩_비즈니스_사이트_기획서_디자인_v2_개발용.xlsx</p><p>1_비즈니스 플랜 · planning-source-extracted.txt</p><p>입력 E열과 예시 D열의 중복은 총괄 계획 2절에 기록되어 있다. 셀 내용은 계획 근거이며 사실 확인·당사자 공개 동의·출판 및 게시 승인을 대신하지 않는다.</p><p>실제 경험·인용·공식 인증·성과를 새로 만들지 않았습니다. 공개 전에 사실 확인·당사자 동의·이미지 권리·채널 규격을 별도로 확인해야 합니다.</p></details><p>텍스트 비교와 복사만 제공합니다. 외부 요청·브라우저 저장·분석 태그 없음.</p></div></main>
+<script>
+(() => {
+  const topicSelect = document.getElementById('topic-select');
+  const status = document.getElementById('selection-status');
+  const copyStatus = document.getElementById('copy-status');
+  let selectionVersion = 0;
+  function updateSelection() {
+    selectionVersion += 1;
+    const channel = document.querySelector('input[name=channel]:checked').value;
+    for (const section of document.querySelectorAll('.topic-panel')) {
+      section.hidden = section.dataset.topic !== topicSelect.value;
+      for (const article of section.querySelectorAll('[data-kind]')) article.hidden = article.dataset.kind !== 'original' && article.dataset.kind !== channel;
+    }
+    for (const body of document.querySelectorAll('.manual-selection')) body.classList.remove('manual-selection');
+    copyStatus.textContent = '';
+    const label = document.querySelector('input[name=channel]:checked').parentElement.textContent.trim();
+    status.textContent = topicSelect.options[topicSelect.selectedIndex].text + ' · ' + label + ' 변형을 비교합니다.';
+  }
+  topicSelect.addEventListener('change', updateSelection);
+  for (const radio of document.querySelectorAll('input[name=channel]')) radio.addEventListener('change', updateSelection);
+  for (const button of document.querySelectorAll('.copy-button')) button.addEventListener('click', async () => {
+    const body = button.closest('article').querySelector('.draft-body');
+    const currentSelection = selectionVersion;
+    const label = button.closest('article').querySelector('.panel-label').textContent;
+    try {
+      if (!navigator.clipboard || !navigator.clipboard.writeText) throw new Error('Clipboard unavailable');
+      await navigator.clipboard.writeText(body.textContent);
+      if (currentSelection === selectionVersion) copyStatus.textContent = label + ' 본문을 복사했습니다. 공개 승인이나 게시를 수행하지 않았습니다.';
+    } catch {
+      if (currentSelection !== selectionVersion) return;
+      body.classList.add('manual-selection');
+      body.focus();
+      const range = document.createRange(); range.selectNodeContents(body);
+      const selection = window.getSelection(); selection.removeAllRanges(); selection.addRange(range);
+      copyStatus.textContent = '자동 복사를 사용할 수 없습니다. 선택된 ' + label + ' 본문에서 Ctrl+C 또는 기기의 복사 메뉴를 사용해 주세요.';
+    }
+  });
+})();
+</script></body></html>

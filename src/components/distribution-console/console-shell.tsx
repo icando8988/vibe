@@ -21,7 +21,7 @@ export function DistributionDenied({ reason }: { reason: DistributionDenyReason 
     <PageMain title="관리자 전용">
       <StatusNotice tone="warning" title="관리자 확인이 필요합니다">
         <p>{message[reason]}</p>
-        {reason === "unauthenticated" ? <p><Link href="/login">회원 이용 안내로 이동</Link></p> : null}
+        {reason === "unauthenticated" ? <p><Link className="ds-text-link" href="/login">회원 이용 안내로 이동</Link></p> : null}
       </StatusNotice>
     </PageMain>
   );

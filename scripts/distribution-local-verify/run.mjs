@@ -69,12 +69,10 @@ const U = {
   seller: "00000000-0000-4000-8000-0000000000d2", // approved, seller 역할
   ghost: "00000000-0000-4000-8000-0000000000ee", // auth.users에 없음
 };
-const ASSET = [
-  "11111111-1111-4111-8111-111111111111",
-  "22222222-2222-4222-8222-222222222222",
-  "33333333-3333-4333-8333-333333333333",
-];
-const VARIANT = "44444444-4444-4444-8444-444444444444";
+// BE-BASE-023: 120000(M4)부터 리비전 미디어는 실제 ready 자산만 참조할 수 있다(FK + MEDIA_NOT_READY 트리거).
+// 고정 가짜 uuid 대신 그룹 4 시작 시 현재 M4 RPC(create → mark_received → complete_processing)로 만든 자산·변형 id를 채운다.
+const ASSET = [];
+let VARIANT;
 const CHECK_OK = JSON.stringify({ facts_checked: true, links_checked: true });
 
 // ---------------------------------------------------------------- result bookkeeping
@@ -445,6 +443,27 @@ expectEq("리비전 2 revision_no", r2.revision_no, 2);
 
 // ---- 4. 초안 + 미디어 원자성
 group("4. 리비전 + 미디어 원자성");
+{
+  // fixture: M4 RPC로 ready 자산 3개(+ 2번째 자산의 feed_jpeg 변형). 검사·FK·트리거는 그대로 둔다.
+  const shaOf = (s) => sha(`be-base-023 fixture ${s}`);
+  for (let i = 0; i < 3; i++) {
+    const created = json(expectOk(`fixture: 미디어 자산 ${i + 1} 생성(M4 RPC)`, await svc(
+      "select public.distribution_create_media_asset($1::uuid, 'own_creation', null) as r", [U.admin])));
+    const received = json(expectOk(`fixture: 자산 ${i + 1} 원본 수신 → processing`, await svc(
+      `select public.distribution_mark_media_received($1::uuid, $2::uuid, $3, 'jpeg', 2048, 1080, 1350, $4) as r`,
+      [U.admin, created?.id, created?.row_version, shaOf(`original ${i}`)])));
+    const ready = json(expectOk(`fixture: 자산 ${i + 1} 변환 완료 → ready`, await svc(
+      `select public.distribution_complete_media_processing($1::uuid, $2::uuid, $3, 1024, 1080, 1350, $4) as r`,
+      [U.admin, created?.id, received?.row_version, shaOf(`variant ${i}`)])));
+    expectEq(`fixture: 자산 ${i + 1} status = ready + 변형 있음`, [ready?.status, typeof ready?.variant?.id], ["ready", "string"]);
+    ASSET.push(ready?.id);
+    if (i === 1) VARIANT = ready?.variant?.id;
+  }
+  if (ASSET.some((a) => typeof a !== "string") || typeof VARIANT !== "string") {
+    record("fixture: 미디어 자산 준비 실패 → 이후 시나리오 중단", false, "");
+    finish(1);
+  }
+}
 const tD = json(expectOk("threads 초안 생성", await api.createDraft(U.admin, A.content_id, "threads")));
 const mediaOk = JSON.stringify([
   { asset_id: ASSET[0].toUpperCase(), alt_text: "첫 장" },

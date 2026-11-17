@@ -1,0 +1,445 @@
+{
+  "v1Hashes": {
+    "first-content-pack.json": "65abb8a39be1a10da13af08d9ceddd258a59df4d4b1bd620fc735eaf204b1c6c",
+    "first-content-pack.md": "4f4603cde3f6d3217c6441b7f726420764d66abb5a140fb8c44c69b82f40f9f6",
+    "render-content-review.cjs": "ce64858ca0384c1dba8418a04c3da1e8c9e929a90ca2344f4aaf0f6fcc5aeb99",
+    "content-review.html": "5009733756beb90787a84b08efb131187074dde3b7c2994f97b36d46cb8a5740"
+  },
+  "exactTextPairs": 12,
+  "unapprovedV2Items": 12,
+  "heldV2Items": 6,
+  "checks": [
+    {
+      "width": 320,
+      "scroll": 320,
+      "topic": "0",
+      "kind": "original",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 0,
+      "overflow": []
+    },
+    {
+      "width": 320,
+      "scroll": 320,
+      "topic": "0",
+      "kind": "blog",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 0,
+      "overflow": []
+    },
+    {
+      "width": 320,
+      "scroll": 320,
+      "topic": "0",
+      "kind": "threads",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 0,
+      "overflow": []
+    },
+    {
+      "width": 320,
+      "scroll": 320,
+      "topic": "0",
+      "kind": "instagram",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 1,
+      "overflow": []
+    },
+    {
+      "width": 320,
+      "scroll": 320,
+      "topic": "1",
+      "kind": "original",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 1,
+      "overflow": []
+    },
+    {
+      "width": 320,
+      "scroll": 320,
+      "topic": "1",
+      "kind": "blog",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 1,
+      "overflow": []
+    },
+    {
+      "width": 320,
+      "scroll": 320,
+      "topic": "1",
+      "kind": "threads",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 1,
+      "overflow": []
+    },
+    {
+      "width": 320,
+      "scroll": 320,
+      "topic": "1",
+      "kind": "instagram",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 1,
+      "overflow": []
+    },
+    {
+      "width": 320,
+      "scroll": 320,
+      "topic": "2",
+      "kind": "original",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 0,
+      "overflow": []
+    },
+    {
+      "width": 320,
+      "scroll": 320,
+      "topic": "2",
+      "kind": "blog",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 0,
+      "overflow": []
+    },
+    {
+      "width": 320,
+      "scroll": 320,
+      "topic": "2",
+      "kind": "threads",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 0,
+      "overflow": []
+    },
+    {
+      "width": 320,
+      "scroll": 320,
+      "topic": "2",
+      "kind": "instagram",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 1,
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "topic": "0",
+      "kind": "original",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 0,
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "topic": "0",
+      "kind": "blog",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 0,
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "topic": "0",
+      "kind": "threads",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 0,
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "topic": "0",
+      "kind": "instagram",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 1,
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "topic": "1",
+      "kind": "original",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 1,
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "topic": "1",
+      "kind": "blog",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 1,
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "topic": "1",
+      "kind": "threads",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 1,
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "topic": "1",
+      "kind": "instagram",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 1,
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "topic": "2",
+      "kind": "original",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 0,
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "topic": "2",
+      "kind": "blog",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 0,
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "topic": "2",
+      "kind": "threads",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 0,
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "topic": "2",
+      "kind": "instagram",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 1,
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "scroll": 1425,
+      "topic": "0",
+      "kind": "original",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 0,
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "scroll": 1425,
+      "topic": "0",
+      "kind": "blog",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 0,
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "scroll": 1425,
+      "topic": "0",
+      "kind": "threads",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 0,
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "scroll": 1425,
+      "topic": "0",
+      "kind": "instagram",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 1,
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "scroll": 1425,
+      "topic": "1",
+      "kind": "original",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 1,
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "scroll": 1425,
+      "topic": "1",
+      "kind": "blog",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 1,
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "scroll": 1425,
+      "topic": "1",
+      "kind": "threads",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 1,
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "scroll": 1425,
+      "topic": "1",
+      "kind": "instagram",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 1,
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "scroll": 1425,
+      "topic": "2",
+      "kind": "original",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 0,
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "scroll": 1425,
+      "topic": "2",
+      "kind": "blog",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 0,
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "scroll": 1425,
+      "topic": "2",
+      "kind": "threads",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 0,
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "scroll": 1425,
+      "topic": "2",
+      "kind": "instagram",
+      "versions": [
+        "v1",
+        "v2"
+      ],
+      "hold": 1,
+      "overflow": []
+    }
+  ]
+}

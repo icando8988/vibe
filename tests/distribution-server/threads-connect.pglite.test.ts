@@ -84,7 +84,7 @@ describe.skipIf(!PROJECT)("PGlite 왕복: Threads 모의 실행 작업 생성·�
     if (d.status !== "ok" || !d.data) throw new Error("detail");
     expect(d.data.job).toMatchObject({ channel: "threads", mode: "dry_run", status: "scheduled", externalUrl: null });
     expect(d.data.evidence).toEqual([]);
-    expect(jobStatusText(d.data.job)).toBe("모의 실행 대기(실행기 없음)");
+    expect(jobStatusText(d.data.job)).toBe("모의 실행 대기(수동 실행)");
     const acts = jobActions(d.data.job, null);
     expect(acts).toMatchObject({ cancel: true, markPosted: false, recordEvidence: false, requestHandoff: false, reconcile: false });
 

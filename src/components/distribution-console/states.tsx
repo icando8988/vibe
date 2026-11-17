@@ -75,7 +75,7 @@ export function ChannelCards({ hrefFor }: { hrefFor?: (channel: Channel) => stri
             <div className="dc-channel-row">
               <div>
                 <ChannelMark channel={channel} />
-                <h3>{hrefFor ? <Link href={hrefFor(channel)}>{info.label}</Link> : info.label}</h3>
+                <h3>{hrefFor ? <Link className="ds-text-link" href={hrefFor(channel)}>{info.label}</Link> : info.label}</h3>
               </div>
               <span className="dc-tag">{info.methodTag}</span>
             </div>

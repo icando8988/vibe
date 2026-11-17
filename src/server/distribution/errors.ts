@@ -58,7 +58,40 @@ const TOKEN_MAP: Readonly<Record<string, ConsoleErrorCode>> = {
   CONTAINER_NOT_READY: "worker_error",
   CONTAINER_FAILED: "worker_error",
   PUBLISH_NOT_REQUESTED: "worker_error",
+  // M4 미디어(120000, check_violation): 확정 거절 → 기존 invalid_input 유지(새 code를 만들면 공용 write-notice가 uncertain으로 오분류).
+  // 세부 사유는 mediaErrorReason()으로 구분한다.
+  MEDIA_PENDING_LIMIT: "invalid_input",
+  ASSET_REFERENCED: "invalid_input",
+  MEDIA_NOT_READY: "invalid_input",
+  VARIANT_MISMATCH: "invalid_input",
+  RIGHTS_NOT_APPROVED: "invalid_input",
+  RIGHTS_EXPIRED: "invalid_input",
+  CHANNEL_NOT_ALLOWED: "invalid_input",
 };
+
+/** M4 미디어 거절 세부 사유(허용 목록). BE-MEDIA-024. */
+const MEDIA_REASON_BY_TOKEN = {
+  MEDIA_PENDING_LIMIT: "pending_limit",
+  ASSET_REFERENCED: "asset_referenced",
+  MEDIA_NOT_READY: "media_not_ready",
+  VARIANT_MISMATCH: "variant_mismatch",
+  RIGHTS_NOT_APPROVED: "rights_not_approved",
+  RIGHTS_EXPIRED: "rights_expired",
+  CHANNEL_NOT_ALLOWED: "channel_not_allowed",
+} as const;
+export type MediaErrorReason = (typeof MEDIA_REASON_BY_TOKEN)[keyof typeof MEDIA_REASON_BY_TOKEN];
+export const MEDIA_ERROR_REASONS: readonly MediaErrorReason[] = Object.freeze(Object.values(MEDIA_REASON_BY_TOKEN));
+
+/**
+ * 허용 목록 token + SQLSTATE 23514(check_violation)일 때만 사유를 돌려준다. 그 외(응답 유실·다른 SQLSTATE·모르는 token)는 null.
+ * null은 "미디어 세부 사유 없음"이지 성공·불명 판정이 아니다 — 불명 여부는 code(unavailable 등)로 판단한다.
+ */
+export function mediaErrorReason(error: MappedDbError | null | undefined): MediaErrorReason | null {
+  if (!error || error.sqlstate !== "23514" || typeof error.token !== "string") return null;
+  return Object.prototype.hasOwnProperty.call(MEDIA_REASON_BY_TOKEN, error.token)
+    ? MEDIA_REASON_BY_TOKEN[error.token as keyof typeof MEDIA_REASON_BY_TOKEN]
+    : null;
+}
 
 const SQLSTATE_MAP: Readonly<Record<string, ConsoleErrorCode>> = {
   "42501": "forbidden", // insufficient_privilege (distribution_assert_admin_actor)

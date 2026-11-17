@@ -1,0 +1,82 @@
+﻿[
+    {
+        "url":  "http://127.0.0.1:3312/",
+        "width":  320,
+        "scroll":  305,
+        "main":  1,
+        "h1":  1,
+        "overflow":  [
+
+                     ]
+    },
+    {
+        "url":  "http://127.0.0.1:3313/",
+        "width":  320,
+        "scroll":  305,
+        "main":  1,
+        "h1":  1,
+        "overflow":  [
+
+                     ]
+    },
+    {
+        "url":  "http://127.0.0.1:3312/",
+        "width":  390,
+        "scroll":  375,
+        "main":  1,
+        "h1":  1,
+        "overflow":  [
+
+                     ]
+    },
+    {
+        "url":  "http://127.0.0.1:3313/",
+        "width":  390,
+        "scroll":  375,
+        "main":  1,
+        "h1":  1,
+        "overflow":  [
+
+                     ]
+    },
+    {
+        "url":  "http://127.0.0.1:3312/",
+        "width":  768,
+        "scroll":  753,
+        "main":  1,
+        "h1":  1,
+        "overflow":  [
+
+                     ]
+    },
+    {
+        "url":  "http://127.0.0.1:3313/",
+        "width":  768,
+        "scroll":  753,
+        "main":  1,
+        "h1":  1,
+        "overflow":  [
+
+                     ]
+    },
+    {
+        "url":  "http://127.0.0.1:3312/",
+        "width":  1440,
+        "scroll":  1425,
+        "main":  1,
+        "h1":  1,
+        "overflow":  [
+
+                     ]
+    },
+    {
+        "url":  "http://127.0.0.1:3313/",
+        "width":  1440,
+        "scroll":  1425,
+        "main":  1,
+        "h1":  1,
+        "overflow":  [
+
+                     ]
+    }
+]

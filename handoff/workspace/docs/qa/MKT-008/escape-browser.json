@@ -1,0 +1,11 @@
+﻿{
+  "id": "12d367aa-71b2-4a41-9841-7518d72322c1",
+  "ok": true,
+  "result": {
+    "result": "{\"injected\":false,\"scripts\":1,\"images\":0,\"title\":\"</script><img src=x onerror=\\\"window.injected=true\\\"><script>window.injected=true</script> & \\\"  \",\"body\":\"</script><img src=x onerror=\\\"window.injected=true\\\"><script>window.injected=true</script> & \\\"  \"}",
+    "origin": "file:///D:/Vibe/docs/qa/MKT-008/escape-review.html"
+  },
+  "_meta": {
+    "runtimeId": "f75515d2-8fb3-4d95-b496-b122d0c02680"
+  }
+}

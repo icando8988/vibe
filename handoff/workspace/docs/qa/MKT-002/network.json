@@ -1,0 +1,26 @@
+﻿{
+  "id": "9ee84b7d-e8a2-4c96-b2aa-151ec092cced",
+  "ok": true,
+  "result": {
+    "entries": [
+      {
+        "url": "http://127.0.0.1:3313/",
+        "method": "GET",
+        "status": 200,
+        "mimeType": "text/html",
+        "timestamp": 1794800189796
+      },
+      {
+        "url": "http://127.0.0.1:3313/preview.js",
+        "method": "GET",
+        "status": 200,
+        "mimeType": "application/javascript",
+        "timestamp": 1794800189796
+      }
+    ],
+    "truncated": false
+  },
+  "_meta": {
+    "runtimeId": "f75515d2-8fb3-4d95-b496-b122d0c02680"
+  }
+}

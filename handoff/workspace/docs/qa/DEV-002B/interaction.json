@@ -1,0 +1,124 @@
+{
+  "keyboard": [
+    {
+      "label": "Tab to skip link",
+      "url": "http://127.0.0.1:3312/",
+      "focus": "A#",
+      "focusText": "본문 바로가기",
+      "hasFocus": false,
+      "outline": "rgb(30, 64, 175) none 3px",
+      "scrollY": 0
+    },
+    {
+      "label": "Enter skip -> main",
+      "url": "http://127.0.0.1:3312/#main-content",
+      "focus": "MAIN#main-content",
+      "focusText": "자전거 세계일주 · 출판 프로젝트한 번의 도전이,함께 읽는 이야기로.원민철의 자전거 세계일주 도전 계획과, 그 여정을 책으로 나누기 위한 준비를",
+      "hasFocus": false,
+      "outline": "rgb(23, 43, 77) none 3px",
+      "scrollY": 175.5
+    },
+    {
+      "label": "Shift+Tab -> final header link",
+      "url": "http://127.0.0.1:3312/#main-content",
+      "focus": "A#",
+      "focusText": "회원 이용 안내",
+      "hasFocus": false,
+      "outline": "rgb(30, 64, 175) none 3px",
+      "scrollY": 0
+    },
+    {
+      "label": "Tab -> first main action",
+      "url": "http://127.0.0.1:3312/#main-content",
+      "focus": "A#",
+      "focusText": "책과 참여 살펴보기 →",
+      "hasFocus": false,
+      "outline": "rgb(255, 255, 255) none 3px",
+      "scrollY": 0
+    },
+    {
+      "label": "Enter books CTA -> /books",
+      "url": "http://127.0.0.1:3312/books",
+      "focus": "BODY#",
+      "focusText": "본문 바로가기↗세계일주 · 출판프로젝트 · 임시 이름도전 이야기책과 참여참여 안내회원 이용 안내홈/책과 참여이야기를 담을 책책과 참여책의 내용과",
+      "hasFocus": false,
+      "outline": "rgb(23, 43, 77) none 3px",
+      "scrollY": 0
+    },
+    {
+      "label": "Enter contact anchor -> contact",
+      "url": "http://127.0.0.1:3312/books#contact",
+      "focus": "DIV#contact",
+      "focusText": "문의와 정책공식 문의 연락처는 준비 중입니다. 현재 이 화면에서는 문의를 접수하지 않습니다.이용약관·개인정보 처리방침·취소 및 환불 정책은 확정",
+      "hasFocus": false,
+      "outline": "rgb(23, 43, 77) none 3px",
+      "scrollY": 1259.5
+    }
+  ],
+  "cssZoomSupplement": [
+    {
+      "route": "/",
+      "zoom": "2",
+      "width": 768,
+      "scroll": 753,
+      "main": 1,
+      "h1": 1
+    },
+    {
+      "route": "/books",
+      "zoom": "2",
+      "width": 768,
+      "scroll": 753,
+      "main": 1,
+      "h1": 1
+    },
+    {
+      "route": "/about",
+      "zoom": "2",
+      "width": 768,
+      "scroll": 753,
+      "main": 1,
+      "h1": 1
+    },
+    {
+      "route": "/how-it-works",
+      "zoom": "2",
+      "width": 768,
+      "scroll": 753,
+      "main": 1,
+      "h1": 1
+    },
+    {
+      "route": "/login",
+      "zoom": "2",
+      "width": 768,
+      "scroll": 753,
+      "main": 1,
+      "h1": 1
+    },
+    {
+      "route": "/me",
+      "zoom": "2",
+      "width": 768,
+      "scroll": 753,
+      "main": 1,
+      "h1": 1
+    },
+    {
+      "route": "/admin",
+      "zoom": "2",
+      "width": 768,
+      "scroll": 753,
+      "main": 1,
+      "h1": 1
+    },
+    {
+      "route": "/missing-page-dev-002b",
+      "zoom": "2",
+      "width": 768,
+      "scroll": 753,
+      "main": 1,
+      "h1": 1
+    }
+  ]
+}

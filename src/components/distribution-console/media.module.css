@@ -1,0 +1,71 @@
+/* 미디어 화면 전용(FE-MEDIA-024, Design 검토 M025-01·04 반영). 공용 globals·dc-* 토큰은 바꾸지 않는다. */
+.selectedRow {
+  background: var(--ds-blue-soft);
+}
+
+.selectedRow th,
+.selectedRow td {
+  font-weight: 650;
+}
+
+.axisPair {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+/* 숫자 정렬만 — 좁은 화면(320px)에서 긴 규격이 넘치지 않도록 줄바꿈 허용 */
+.spec {
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+/*
+ * 공용 `.ds-editor-fields input:not([type=radio])`(design.css)는 체크박스에도 폭 100%·48px 높이·안쪽 여백을 준다.
+ * 미디어 폼 범위에서만 radio·checkbox를 텍스트 입력 규칙과 분리한다(.mediaForm 접두로 특정성 확보).
+ */
+.mediaForm .choice input[type="checkbox"],
+.mediaForm .choice input[type="radio"] {
+  inline-size: auto;
+  width: auto;
+  min-width: 0;
+  min-height: 0;
+  min-block-size: 0;
+  margin: 0;
+  padding: 0;
+  flex-shrink: 0;
+  inline-size: 1.15rem;
+  block-size: 1.15rem;
+}
+
+/* 라벨 전체가 44px 이상 터치 대상 */
+.mediaForm .choice {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  font-weight: 650;
+}
+
+/* 공용 `.dc-console .ds-editor-fields fieldset`의 grid·여백보다 특정성을 높여 선택지 배치를 이 범위에서 정한다 */
+.mediaForm fieldset.choiceGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 1.2rem;
+  margin: 0;
+  padding: 0.6rem 0.8rem;
+}
+
+.mediaForm fieldset.choiceGroup legend {
+  font-weight: 700;
+}
+
+.formHint {
+  margin: 0.2rem 0 0.8rem;
+}
+
+/* 목록 표 가로 스크롤 영역(키보드로 초점·스크롤 가능) */
+.tableRegion:focus-visible {
+  outline: 3px solid var(--ds-blue, #2f6fe4);
+  outline-offset: 2px;
+}

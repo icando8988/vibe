@@ -1,0 +1,988 @@
+{
+  "packId": "MKT-010-reader-content-pack-v2",
+  "purpose": "검토 초안·외부 미게시",
+  "format": "editorial_review_only",
+  "status": "draft",
+  "publicApproval": false,
+  "externallyPosted": false,
+  "runtimeImportAllowed": false,
+  "officialBrand": "미확정",
+  "sourceWorkbook": "(원민철)드림AI_바이브코딩_비즈니스_사이트_기획서_디자인_v2_개발용.xlsx",
+  "sourceExtraction": "planning-source-extracted.txt",
+  "sourceSheet": "1_비즈니스 플랜",
+  "reviewedPlans": [
+    "docs/MASTER_DEVELOPMENT_PLAN.md",
+    "docs/MARKETING_DELIVERY_PLAN.md"
+  ],
+  "sourceCaution": "입력 E열과 예시 D열의 중복은 총괄 계획 2절에 기록되어 있다. 셀 내용은 계획 근거이며 사실 확인·당사자 공개 동의·출판 및 게시 승인을 대신하지 않는다.",
+  "topics": [
+    {
+      "id": "topic-01-project-introduction",
+      "topic": "프로젝트 소개",
+      "claims": [
+        {
+          "id": "T1-C1",
+          "claim": "원민철의 자전거 세계일주는 도전 계획이다.",
+          "classification": "기획서에 기재된 계획",
+          "sourceRefs": [
+            "1_비즈니스 플랜!E19",
+            "1_비즈니스 플랜!E49"
+          ],
+          "qualification": "출발·완주·기록 달성 사실이나 공식 인증을 주장하지 않는다."
+        },
+        {
+          "id": "T1-C2",
+          "claim": "전자책과 종이책 발간 방향이 기획서에 포함되어 있다.",
+          "classification": "기획서에 기재된 계획",
+          "sourceRefs": [
+            "1_비즈니스 플랜!E17"
+          ],
+          "qualification": "책의 제작·출간 확정이나 판매 개시를 뜻하지 않는다."
+        },
+        {
+          "id": "T1-C3",
+          "claim": "도전 소개와 계획을 먼저 전달하는 콘텐츠를 제안한다.",
+          "classification": "편집 제안",
+          "sourceRefs": [
+            "1_비즈니스 플랜!E19",
+            "1_비즈니스 플랜!E49"
+          ],
+          "planRefs": [
+            "MASTER_DEVELOPMENT_PLAN 1·9절",
+            "MARKETING_DELIVERY_PLAN 첫 콘텐츠 가설"
+          ],
+          "qualification": "기록 자료가 이미 확보되었거나 콘텐츠가 발행되었다는 뜻이 아니다."
+        },
+        {
+          "id": "T1-C4",
+          "claim": "2029년 3월 15일 부산항 출발·13구간·단독 탐방 후 귀향이 원문에 계획으로 기재되어 있다.",
+          "classification": "기획서에 기재된 계획",
+          "sourceRefs": [
+            "1_비즈니스 플랜!E49"
+          ],
+          "qualification": "현재 일정 확정이나 실제 출발·실적을 뜻하지 않는다. 거리 수치는 사용하지 않는다."
+        }
+      ],
+      "sourceRefs": [
+        "1_비즈니스 플랜!E17",
+        "1_비즈니스 플랜!E19",
+        "1_비즈니스 플랜!E49"
+      ],
+      "confirmBeforePublication": [
+        "원민철 이름·소개 공개 동의와 현재 계획의 유효성",
+        "공식 브랜드와 도전 소개 문구",
+        "이 초안의 주장·표현에 대한 당사자 사실 확인 및 공개 승인"
+      ],
+      "suggestedCTA": {
+        "label": "도전 소개에서 계획 살펴보기",
+        "path": "/about",
+        "approval": false,
+        "note": "내부 경로 제안이며 실제 외부 게시 링크가 아니다."
+      },
+      "image": {
+        "originalNeeded": "선택 제안: 당사자가 제공한 소개용 원본 사진과 촬영 정보. 없으면 텍스트 검토 유지.",
+        "sourceRefs": [
+          "1_비즈니스 플랜!E48"
+        ],
+        "originalReceived": false,
+        "rightsStatus": "미확인",
+        "consentStatus": "미확인",
+        "altTextStatus": "실제 원본 확보 후 작성",
+        "platformImageRequirement": "미확인"
+      },
+      "original": {
+        "title": "2029년 봄, 부산항에서 시작하는 세계일주 계획",
+        "body": "원민철은 2029년 3월 15일 부산항을 떠나 자전거로 세계를 일주하는 여정을 계획하고 있습니다.\n\n13개 구간으로 잇는 여정\n자전거로 달리는 구간과 비행기·배로 이동하는 구간을 이어, 혼자 탐방한 뒤 귀향하는 계획입니다.\n\n이야기를 담을 책\n이 여정의 이야기는 전자책과 종이책으로 펴낼 계획입니다.\n\n도전 소개에서 여정과 출판의 구상을 살펴보세요.",
+        "claimIds": [
+          "T1-C1",
+          "T1-C2",
+          "T1-C3",
+          "T1-C4"
+        ],
+        "status": "draft",
+        "publicApproval": false,
+        "externallyPosted": false,
+        "label": "검토 초안·외부 미게시",
+        "sourceRefs": [
+          "1_비즈니스 플랜!E19",
+          "1_비즈니스 플랜!E49",
+          "1_비즈니스 플랜!E17"
+        ],
+        "confirmBeforePublication": [
+          "원민철 이름·소개 공개 동의와 현재 계획의 유효성",
+          "공식 브랜드와 도전 소개 문구",
+          "이 초안의 주장·표현에 대한 당사자 사실 확인 및 공개 승인"
+        ],
+        "suggestedCTA": {
+          "label": "도전 소개에서 계획 살펴보기",
+          "path": "/about",
+          "approval": false,
+          "note": "현재 빈 이야기 목록 대신 내부 소개 경로를 제안한다. 외부 게시 링크가 아니다."
+        },
+        "image": {
+          "originalNeeded": "선택 제안: 당사자가 제공한 소개용 원본 사진과 촬영 정보. 없으면 텍스트 검토 유지.",
+          "sourceRefs": [
+            "1_비즈니스 플랜!E48"
+          ],
+          "originalReceived": false,
+          "rightsStatus": "미확인",
+          "consentStatus": "미확인",
+          "altTextStatus": "실제 원본 확보 후 작성",
+          "platformImageRequirement": "미확인"
+        },
+        "channelFeatures": {
+          "connected": false,
+          "serviceAndAccountType": "미확인",
+          "textLimit": "미확인",
+          "mediaSupport": "미확인",
+          "imageRequired": "미확인",
+          "apiAndScheduling": "미확인",
+          "programReceived": false
+        },
+        "runtimeImportAllowed": false,
+        "editorialNotes": [
+          "독자 본문과 내부 근거를 분리했다. 모든 일정·구간·단독 여정은 원문에 기재된 계획일 뿐 현재 확정·실적이 아니다.",
+          "실제 준비·경험·감정·동기·인용·인증·거리 수치·성과·게시 주기·후속 안내 약속을 추가하지 않았다.",
+          "공개 저장소 실명 유지 승인과 게시물별 발행 승인은 별개다. Q1~Q6는 확인 대기이며 이 항목은 공개 미승인이다."
+        ],
+        "editorialHold": false,
+        "editorialHoldReasons": []
+      },
+      "variants": [
+        {
+          "channel": "blog",
+          "title": "부산항에서 출발해 돌아오는 자전거 세계일주 계획",
+          "body": "2029년 3월 15일 부산항 출발. 원민철이 계획하는 자전거 세계일주의 출발 예정일과 출발지입니다.\n\n여정의 구성\n계획은 13개 구간으로 이루어집니다. 자전거·항공·선박 이동을 나누고, 혼자 탐방한 뒤 귀향하는 여정입니다.\n\n출판의 구상\n여정의 이야기를 전자책과 종이책으로 펴낼 계획도 함께 있습니다.\n\n도전 소개에서 전체 계획을 살펴보세요.",
+          "claimIds": [
+            "T1-C1",
+            "T1-C2",
+            "T1-C3",
+            "T1-C4"
+          ],
+          "status": "draft",
+          "publicApproval": false,
+          "externallyPosted": false,
+          "label": "검토 초안·외부 미게시",
+          "sourceRefs": [
+            "1_비즈니스 플랜!E19",
+            "1_비즈니스 플랜!E49",
+            "1_비즈니스 플랜!E17"
+          ],
+          "confirmBeforePublication": [
+            "원민철 이름·소개 공개 동의와 현재 계획의 유효성",
+            "공식 브랜드와 도전 소개 문구",
+            "이 초안의 주장·표현에 대한 당사자 사실 확인 및 공개 승인"
+          ],
+          "suggestedCTA": {
+            "label": "도전 소개에서 계획 살펴보기",
+            "path": "/about",
+            "approval": false,
+            "note": "현재 빈 이야기 목록 대신 내부 소개 경로를 제안한다. 외부 게시 링크가 아니다."
+          },
+          "image": {
+            "originalNeeded": "선택 제안: 당사자가 제공한 소개용 원본 사진과 촬영 정보. 없으면 텍스트 검토 유지.",
+            "sourceRefs": [
+              "1_비즈니스 플랜!E48"
+            ],
+            "originalReceived": false,
+            "rightsStatus": "미확인",
+            "consentStatus": "미확인",
+            "altTextStatus": "실제 원본 확보 후 작성",
+            "platformImageRequirement": "미확인"
+          },
+          "channelFeatures": {
+            "connected": false,
+            "serviceAndAccountType": "미확인",
+            "textLimit": "미확인",
+            "mediaSupport": "미확인",
+            "imageRequired": "미확인",
+            "apiAndScheduling": "미확인",
+            "programReceived": false
+          },
+          "runtimeImportAllowed": false,
+          "editorialNotes": [
+            "독자 본문과 내부 근거를 분리했다. 모든 일정·구간·단독 여정은 원문에 기재된 계획일 뿐 현재 확정·실적이 아니다.",
+            "실제 준비·경험·감정·동기·인용·인증·거리 수치·성과·게시 주기·후속 안내 약속을 추가하지 않았다.",
+            "공개 저장소 실명 유지 승인과 게시물별 발행 승인은 별개다. Q1~Q6는 확인 대기이며 이 항목은 공개 미승인이다."
+          ],
+          "editorialHold": false,
+          "editorialHoldReasons": []
+        },
+        {
+          "channel": "threads",
+          "title": "2029년 봄의 출발 계획",
+          "body": "원민철은 2029년 3월 15일 부산항 출발을 계획하고 있습니다. 자전거·항공·선박 이동으로 잇는 13개 구간의 단독 세계일주 계획입니다.\n\n이 여정은 어떤 이야기로 이어질까요? 도전 소개에서 큰 계획부터 살펴보세요.",
+          "claimIds": [
+            "T1-C1",
+            "T1-C2",
+            "T1-C3",
+            "T1-C4"
+          ],
+          "status": "draft",
+          "publicApproval": false,
+          "externallyPosted": false,
+          "label": "검토 초안·외부 미게시",
+          "sourceRefs": [
+            "1_비즈니스 플랜!E19",
+            "1_비즈니스 플랜!E49",
+            "1_비즈니스 플랜!E17"
+          ],
+          "confirmBeforePublication": [
+            "원민철 이름·소개 공개 동의와 현재 계획의 유효성",
+            "공식 브랜드와 도전 소개 문구",
+            "이 초안의 주장·표현에 대한 당사자 사실 확인 및 공개 승인"
+          ],
+          "suggestedCTA": {
+            "label": "도전 소개에서 계획 살펴보기",
+            "path": "/about",
+            "approval": false,
+            "note": "현재 빈 이야기 목록 대신 내부 소개 경로를 제안한다. 외부 게시 링크가 아니다."
+          },
+          "image": {
+            "originalNeeded": "선택 제안: 당사자가 제공한 소개용 원본 사진과 촬영 정보. 없으면 텍스트 검토 유지.",
+            "sourceRefs": [
+              "1_비즈니스 플랜!E48"
+            ],
+            "originalReceived": false,
+            "rightsStatus": "미확인",
+            "consentStatus": "미확인",
+            "altTextStatus": "실제 원본 확보 후 작성",
+            "platformImageRequirement": "미확인"
+          },
+          "channelFeatures": {
+            "connected": false,
+            "serviceAndAccountType": "미확인",
+            "textLimit": "미확인",
+            "mediaSupport": "미확인",
+            "imageRequired": "미확인",
+            "apiAndScheduling": "미확인",
+            "programReceived": false
+          },
+          "runtimeImportAllowed": false,
+          "editorialNotes": [
+            "독자 본문과 내부 근거를 분리했다. 모든 일정·구간·단독 여정은 원문에 기재된 계획일 뿐 현재 확정·실적이 아니다.",
+            "실제 준비·경험·감정·동기·인용·인증·거리 수치·성과·게시 주기·후속 안내 약속을 추가하지 않았다.",
+            "공개 저장소 실명 유지 승인과 게시물별 발행 승인은 별개다. Q1~Q6는 확인 대기이며 이 항목은 공개 미승인이다."
+          ],
+          "editorialHold": false,
+          "editorialHoldReasons": []
+        },
+        {
+          "channel": "instagram",
+          "title": "부산항에서 시작할 여정",
+          "body": "2029년 3월 15일, 부산항.\n원민철의 자전거 세계일주 출발 계획입니다.\n\n자전거·항공·선박으로 잇는 13개 구간. 혼자 탐방한 뒤 귀향하는 여정을 구상하고 있습니다.\n\n도전 소개에서 전체 계획을 만나보세요.",
+          "claimIds": [
+            "T1-C1",
+            "T1-C2",
+            "T1-C3",
+            "T1-C4"
+          ],
+          "status": "draft",
+          "publicApproval": false,
+          "externallyPosted": false,
+          "label": "검토 초안·외부 미게시",
+          "sourceRefs": [
+            "1_비즈니스 플랜!E19",
+            "1_비즈니스 플랜!E49",
+            "1_비즈니스 플랜!E17"
+          ],
+          "confirmBeforePublication": [
+            "원민철 이름·소개 공개 동의와 현재 계획의 유효성",
+            "공식 브랜드와 도전 소개 문구",
+            "이 초안의 주장·표현에 대한 당사자 사실 확인 및 공개 승인"
+          ],
+          "suggestedCTA": {
+            "label": "도전 소개에서 계획 살펴보기",
+            "path": "/about",
+            "approval": false,
+            "note": "현재 빈 이야기 목록 대신 내부 소개 경로를 제안한다. 외부 게시 링크가 아니다."
+          },
+          "image": {
+            "originalNeeded": "선택 제안: 당사자가 제공한 소개용 원본 사진과 촬영 정보. 없으면 텍스트 검토 유지.",
+            "sourceRefs": [
+              "1_비즈니스 플랜!E48"
+            ],
+            "originalReceived": false,
+            "rightsStatus": "미확인",
+            "consentStatus": "미확인",
+            "altTextStatus": "실제 원본 확보 후 작성",
+            "platformImageRequirement": "미확인"
+          },
+          "channelFeatures": {
+            "connected": false,
+            "serviceAndAccountType": "미확인",
+            "textLimit": "미확인",
+            "mediaSupport": "미확인",
+            "imageRequired": "미확인",
+            "apiAndScheduling": "미확인",
+            "programReceived": false
+          },
+          "runtimeImportAllowed": false,
+          "editorialNotes": [
+            "독자 본문과 내부 근거를 분리했다. 모든 일정·구간·단독 여정은 원문에 기재된 계획일 뿐 현재 확정·실적이 아니다.",
+            "실제 준비·경험·감정·동기·인용·인증·거리 수치·성과·게시 주기·후속 안내 약속을 추가하지 않았다.",
+            "공개 저장소 실명 유지 승인과 게시물별 발행 승인은 별개다. Q1~Q6는 확인 대기이며 이 항목은 공개 미승인이다."
+          ],
+          "editorialHold": true,
+          "editorialHoldReasons": [
+            "이미지 원본·권리 미확보. 채널 규격·이미지 조건 미확인으로 발행 보류."
+          ]
+        }
+      ],
+      "status": "draft",
+      "publicApproval": false,
+      "externallyPosted": false,
+      "editorialHold": false,
+      "editorialHoldReasons": []
+    },
+    {
+      "id": "topic-02-preparation-records",
+      "topic": "출발 전 어떤 준비를 기록할지",
+      "claims": [
+        {
+          "id": "T2-C1",
+          "claim": "기획서에는 여정 구간과 자전거·항공·선박의 이동 계획이 적혀 있다.",
+          "classification": "기획서에 기재된 계획",
+          "sourceRefs": [
+            "1_비즈니스 플랜!E49"
+          ],
+          "qualification": "실제 이동 경로나 구간별 자료가 확보되었다는 뜻이 아니다. 거리·구간·일정을 확정 정보로 옮기지 않는다."
+        },
+        {
+          "id": "T2-C2",
+          "claim": "구간·이동 수단·일정으로 계획을 이해하는 질문을 제안한다.",
+          "classification": "편집 제안",
+          "sourceRefs": [
+            "1_비즈니스 플랜!E49"
+          ],
+          "planRefs": [
+            "MASTER_DEVELOPMENT_PLAN 4·9·20절",
+            "MARKETING_DELIVERY_PLAN 첫 콘텐츠 가설"
+          ],
+          "qualification": "실제 장비·훈련·답사·여권·예약 준비 완료를 주장하지 않는다."
+        },
+        {
+          "id": "T2-C3",
+          "claim": "사진·소개 자료는 원본과 공개 가능 여부를 확인한 뒤 쓰는 구성을 제안한다.",
+          "classification": "검토된 계획에 따른 편집 원칙",
+          "sourceRefs": [],
+          "planRefs": [
+            "MASTER_DEVELOPMENT_PLAN 20절 자산대장"
+          ],
+          "qualification": "여행 사진·준비 자료의 근거는 E48이 아니다. 총괄 계획 20절 자산대장의 편집 원칙으로만 기록한다."
+        }
+      ],
+      "sourceRefs": [
+        "1_비즈니스 플랜!E49"
+      ],
+      "confirmBeforePublication": [
+        "실제 준비 중인 항목과 완료 여부에 대한 당사자 자료",
+        "구간별 경로·이동 수단·예정 일정의 최신 원문",
+        "소개·사진 원본의 사실 확인과 사용권·공개 동의",
+        "제안한 기록 항목을 실제 콘텐츠로 채택할지 여부"
+      ],
+      "suggestedCTA": {
+        "label": "이야기 목록에서 공개된 글 확인하기",
+        "path": "/stories",
+        "approval": false,
+        "note": "내부 경로 제안. 승인 글이 없어 빈 목록일 수 있으며 이 초안을 게시한 것으로 표현하지 않는다."
+      },
+      "image": {
+        "originalNeeded": "선택 제안: 당사자가 제공한 준비 과정 원본 자료. 촬영 시점과 실제 준비 맥락 확인 필요. 없으면 텍스트 검토 유지.",
+        "sourceRefs": [],
+        "originalReceived": false,
+        "rightsStatus": "미확인",
+        "consentStatus": "미확인",
+        "altTextStatus": "실제 원본 확보 후 작성",
+        "platformImageRequirement": "미확인",
+        "provenanceNote": "여행/준비 사진의 실재 근거 없음. 총괄 계획 20절 AS02 편집 원칙만 적용. E48은 로고·상품 사진."
+      },
+      "original": {
+        "title": "출발 전, 여정을 이해하는 세 가지 질문",
+        "body": "13개 구간으로 계획된 자전거 세계일주. 여정을 이해하기 위해 세 가지 질문을 살펴봅니다.\n\n구간은 어떻게 이어질까요?\n각 구간의 출발과 도착을 살펴보는 질문입니다.\n\n어떤 수단으로 이동할까요?\n자전거·항공·선박 이동이 각각 어떤 구간을 잇는지 궁금해집니다.\n\n일정은 어떻게 나뉠까요?\n전체 계획과 구간별 일정을 함께 이해하기 위한 질문입니다.\n\n도전 소개에서 현재의 큰 계획을 살펴보세요.",
+        "claimIds": [
+          "T2-C1",
+          "T2-C2",
+          "T2-C3"
+        ],
+        "status": "draft",
+        "publicApproval": false,
+        "externallyPosted": false,
+        "label": "검토 초안·외부 미게시",
+        "sourceRefs": [
+          "1_비즈니스 플랜!E49"
+        ],
+        "confirmBeforePublication": [
+          "실제 준비 중인 항목과 완료 여부에 대한 당사자 자료",
+          "구간별 경로·이동 수단·예정 일정의 최신 원문",
+          "소개·사진 원본의 사실 확인과 사용권·공개 동의",
+          "제안한 기록 항목을 실제 콘텐츠로 채택할지 여부"
+        ],
+        "suggestedCTA": {
+          "label": "도전 소개에서 계획 살펴보기",
+          "path": "/about",
+          "approval": false,
+          "note": "현재 빈 이야기 목록 대신 내부 소개 경로를 제안한다. 외부 게시 링크가 아니다."
+        },
+        "image": {
+          "originalNeeded": "선택 제안: 당사자가 제공한 준비 과정 원본 자료. 촬영 시점과 실제 준비 맥락 확인 필요. 없으면 텍스트 검토 유지.",
+          "sourceRefs": [],
+          "originalReceived": false,
+          "rightsStatus": "미확인",
+          "consentStatus": "미확인",
+          "altTextStatus": "실제 원본 확보 후 작성",
+          "platformImageRequirement": "미확인",
+          "provenanceNote": "여행/준비 사진의 실재 근거 없음. 총괄 계획 20절 AS02 편집 원칙만 적용. E48은 로고·상품 사진."
+        },
+        "channelFeatures": {
+          "connected": false,
+          "serviceAndAccountType": "미확인",
+          "textLimit": "미확인",
+          "mediaSupport": "미확인",
+          "imageRequired": "미확인",
+          "apiAndScheduling": "미확인",
+          "programReceived": false
+        },
+        "runtimeImportAllowed": false,
+        "editorialNotes": [
+          "독자 본문과 내부 근거를 분리했다. 모든 일정·구간·단독 여정은 원문에 기재된 계획일 뿐 현재 확정·실적이 아니다.",
+          "실제 준비·경험·감정·동기·인용·인증·거리 수치·성과·게시 주기·후속 안내 약속을 추가하지 않았다.",
+          "공개 저장소 실명 유지 승인과 게시물별 발행 승인은 별개다. Q1~Q6는 확인 대기이며 이 항목은 공개 미승인이다.",
+          "E48은 여정 준비·여행 사진 근거로 인용하지 않는다. 자료·권리 원칙은 총괄 계획 20절의 편집 주석이다."
+        ],
+        "editorialHold": true,
+        "editorialHoldReasons": [
+          "실제 준비 항목·진행 자료 미제공. 계획을 이해하는 질문으로만 유지하며 발행 보류."
+        ]
+      },
+      "variants": [
+        {
+          "channel": "blog",
+          "title": "세계일주 계획을 읽는 세 가지 질문",
+          "body": "자전거 세계일주는 13개 구간으로 계획되어 있습니다. 이 여정을 어떻게 이해할 수 있을까요?\n\n구간의 연결\n각 구간은 어디서 시작해 어디로 이어질까요?\n\n이동 수단\n자전거·항공·선박은 어떤 구간을 맡을까요?\n\n일정의 구성\n구간별 일정은 전체 여정 안에서 어떻게 나뉠까요?\n\n도전 소개에서 전체 계획부터 살펴보세요.",
+          "claimIds": [
+            "T2-C1",
+            "T2-C2",
+            "T2-C3"
+          ],
+          "status": "draft",
+          "publicApproval": false,
+          "externallyPosted": false,
+          "label": "검토 초안·외부 미게시",
+          "sourceRefs": [
+            "1_비즈니스 플랜!E49"
+          ],
+          "confirmBeforePublication": [
+            "실제 준비 중인 항목과 완료 여부에 대한 당사자 자료",
+            "구간별 경로·이동 수단·예정 일정의 최신 원문",
+            "소개·사진 원본의 사실 확인과 사용권·공개 동의",
+            "제안한 기록 항목을 실제 콘텐츠로 채택할지 여부"
+          ],
+          "suggestedCTA": {
+            "label": "도전 소개에서 계획 살펴보기",
+            "path": "/about",
+            "approval": false,
+            "note": "현재 빈 이야기 목록 대신 내부 소개 경로를 제안한다. 외부 게시 링크가 아니다."
+          },
+          "image": {
+            "originalNeeded": "선택 제안: 당사자가 제공한 준비 과정 원본 자료. 촬영 시점과 실제 준비 맥락 확인 필요. 없으면 텍스트 검토 유지.",
+            "sourceRefs": [],
+            "originalReceived": false,
+            "rightsStatus": "미확인",
+            "consentStatus": "미확인",
+            "altTextStatus": "실제 원본 확보 후 작성",
+            "platformImageRequirement": "미확인",
+            "provenanceNote": "여행/준비 사진의 실재 근거 없음. 총괄 계획 20절 AS02 편집 원칙만 적용. E48은 로고·상품 사진."
+          },
+          "channelFeatures": {
+            "connected": false,
+            "serviceAndAccountType": "미확인",
+            "textLimit": "미확인",
+            "mediaSupport": "미확인",
+            "imageRequired": "미확인",
+            "apiAndScheduling": "미확인",
+            "programReceived": false
+          },
+          "runtimeImportAllowed": false,
+          "editorialNotes": [
+            "독자 본문과 내부 근거를 분리했다. 모든 일정·구간·단독 여정은 원문에 기재된 계획일 뿐 현재 확정·실적이 아니다.",
+            "실제 준비·경험·감정·동기·인용·인증·거리 수치·성과·게시 주기·후속 안내 약속을 추가하지 않았다.",
+            "공개 저장소 실명 유지 승인과 게시물별 발행 승인은 별개다. Q1~Q6는 확인 대기이며 이 항목은 공개 미승인이다.",
+            "E48은 여정 준비·여행 사진 근거로 인용하지 않는다. 자료·권리 원칙은 총괄 계획 20절의 편집 주석이다."
+          ],
+          "editorialHold": true,
+          "editorialHoldReasons": [
+            "실제 준비 항목·진행 자료 미제공. 계획을 이해하는 질문으로만 유지하며 발행 보류."
+          ]
+        },
+        {
+          "channel": "threads",
+          "title": "13개 구간의 세계일주, 무엇이 궁금한가요?",
+          "body": "세계일주 계획에는 13개 구간이 있습니다.\n\n각 구간은 어떻게 이어지고, 자전거·항공·선박은 어떤 이동을 맡을까요? 전체 일정을 이해하는 데에서 시작하는 질문입니다.\n\n도전 소개에서 큰 계획부터 살펴보세요.",
+          "claimIds": [
+            "T2-C1",
+            "T2-C2",
+            "T2-C3"
+          ],
+          "status": "draft",
+          "publicApproval": false,
+          "externallyPosted": false,
+          "label": "검토 초안·외부 미게시",
+          "sourceRefs": [
+            "1_비즈니스 플랜!E49"
+          ],
+          "confirmBeforePublication": [
+            "실제 준비 중인 항목과 완료 여부에 대한 당사자 자료",
+            "구간별 경로·이동 수단·예정 일정의 최신 원문",
+            "소개·사진 원본의 사실 확인과 사용권·공개 동의",
+            "제안한 기록 항목을 실제 콘텐츠로 채택할지 여부"
+          ],
+          "suggestedCTA": {
+            "label": "도전 소개에서 계획 살펴보기",
+            "path": "/about",
+            "approval": false,
+            "note": "현재 빈 이야기 목록 대신 내부 소개 경로를 제안한다. 외부 게시 링크가 아니다."
+          },
+          "image": {
+            "originalNeeded": "선택 제안: 당사자가 제공한 준비 과정 원본 자료. 촬영 시점과 실제 준비 맥락 확인 필요. 없으면 텍스트 검토 유지.",
+            "sourceRefs": [],
+            "originalReceived": false,
+            "rightsStatus": "미확인",
+            "consentStatus": "미확인",
+            "altTextStatus": "실제 원본 확보 후 작성",
+            "platformImageRequirement": "미확인",
+            "provenanceNote": "여행/준비 사진의 실재 근거 없음. 총괄 계획 20절 AS02 편집 원칙만 적용. E48은 로고·상품 사진."
+          },
+          "channelFeatures": {
+            "connected": false,
+            "serviceAndAccountType": "미확인",
+            "textLimit": "미확인",
+            "mediaSupport": "미확인",
+            "imageRequired": "미확인",
+            "apiAndScheduling": "미확인",
+            "programReceived": false
+          },
+          "runtimeImportAllowed": false,
+          "editorialNotes": [
+            "독자 본문과 내부 근거를 분리했다. 모든 일정·구간·단독 여정은 원문에 기재된 계획일 뿐 현재 확정·실적이 아니다.",
+            "실제 준비·경험·감정·동기·인용·인증·거리 수치·성과·게시 주기·후속 안내 약속을 추가하지 않았다.",
+            "공개 저장소 실명 유지 승인과 게시물별 발행 승인은 별개다. Q1~Q6는 확인 대기이며 이 항목은 공개 미승인이다.",
+            "E48은 여정 준비·여행 사진 근거로 인용하지 않는다. 자료·권리 원칙은 총괄 계획 20절의 편집 주석이다."
+          ],
+          "editorialHold": true,
+          "editorialHoldReasons": [
+            "실제 준비 항목·진행 자료 미제공. 계획을 이해하는 질문으로만 유지하며 발행 보류."
+          ]
+        },
+        {
+          "channel": "instagram",
+          "title": "여정을 읽는 질문들",
+          "body": "구간의 연결.\n자전거·항공·선박의 이동.\n전체 여정 속 일정.\n\n13개 구간으로 계획된 자전거 세계일주를 살펴보는 질문입니다.\n\n도전 소개에서 큰 계획을 만나보세요.",
+          "claimIds": [
+            "T2-C1",
+            "T2-C2",
+            "T2-C3"
+          ],
+          "status": "draft",
+          "publicApproval": false,
+          "externallyPosted": false,
+          "label": "검토 초안·외부 미게시",
+          "sourceRefs": [
+            "1_비즈니스 플랜!E49"
+          ],
+          "confirmBeforePublication": [
+            "실제 준비 중인 항목과 완료 여부에 대한 당사자 자료",
+            "구간별 경로·이동 수단·예정 일정의 최신 원문",
+            "소개·사진 원본의 사실 확인과 사용권·공개 동의",
+            "제안한 기록 항목을 실제 콘텐츠로 채택할지 여부"
+          ],
+          "suggestedCTA": {
+            "label": "도전 소개에서 계획 살펴보기",
+            "path": "/about",
+            "approval": false,
+            "note": "현재 빈 이야기 목록 대신 내부 소개 경로를 제안한다. 외부 게시 링크가 아니다."
+          },
+          "image": {
+            "originalNeeded": "선택 제안: 당사자가 제공한 준비 과정 원본 자료. 촬영 시점과 실제 준비 맥락 확인 필요. 없으면 텍스트 검토 유지.",
+            "sourceRefs": [],
+            "originalReceived": false,
+            "rightsStatus": "미확인",
+            "consentStatus": "미확인",
+            "altTextStatus": "실제 원본 확보 후 작성",
+            "platformImageRequirement": "미확인",
+            "provenanceNote": "여행/준비 사진의 실재 근거 없음. 총괄 계획 20절 AS02 편집 원칙만 적용. E48은 로고·상품 사진."
+          },
+          "channelFeatures": {
+            "connected": false,
+            "serviceAndAccountType": "미확인",
+            "textLimit": "미확인",
+            "mediaSupport": "미확인",
+            "imageRequired": "미확인",
+            "apiAndScheduling": "미확인",
+            "programReceived": false
+          },
+          "runtimeImportAllowed": false,
+          "editorialNotes": [
+            "독자 본문과 내부 근거를 분리했다. 모든 일정·구간·단독 여정은 원문에 기재된 계획일 뿐 현재 확정·실적이 아니다.",
+            "실제 준비·경험·감정·동기·인용·인증·거리 수치·성과·게시 주기·후속 안내 약속을 추가하지 않았다.",
+            "공개 저장소 실명 유지 승인과 게시물별 발행 승인은 별개다. Q1~Q6는 확인 대기이며 이 항목은 공개 미승인이다.",
+            "E48은 여정 준비·여행 사진 근거로 인용하지 않는다. 자료·권리 원칙은 총괄 계획 20절의 편집 주석이다."
+          ],
+          "editorialHold": true,
+          "editorialHoldReasons": [
+            "실제 준비 항목·진행 자료 미제공. 계획을 이해하는 질문으로만 유지하며 발행 보류.",
+            "이미지 원본·권리 미확보. 채널 규격·이미지 조건 미확인으로 발행 보류."
+          ]
+        }
+      ],
+      "status": "draft",
+      "publicApproval": false,
+      "externallyPosted": false,
+      "editorialHold": true,
+      "editorialHoldReasons": [
+        "실제 준비 자료 미제공. 발행 보류."
+      ]
+    },
+    {
+      "id": "topic-03-publication-plan",
+      "topic": "도전의 이야기를 책으로 나누려는 계획",
+      "claims": [
+        {
+          "id": "T3-C1",
+          "claim": "전자책·종이책 발간 방향이 기획서에 포함되어 있다.",
+          "classification": "기획서에 기재된 계획",
+          "sourceRefs": [
+            "1_비즈니스 플랜!E17"
+          ],
+          "qualification": "책 제목·목차·원고·출판 계약·제작·가격·출간일 확정을 뜻하지 않는다."
+        },
+        {
+          "id": "T3-C2",
+          "claim": "자전거 세계일주와 출판을 연결해 이야기하는 방향을 제안한다.",
+          "classification": "검토된 계획에 따른 편집 제안",
+          "sourceRefs": [
+            "1_비즈니스 플랜!E17",
+            "1_비즈니스 플랜!E19",
+            "1_비즈니스 플랜!E49"
+          ],
+          "planRefs": [
+            "MASTER_DEVELOPMENT_PLAN 1·9절",
+            "MARKETING_DELIVERY_PLAN 첫 콘텐츠 가설"
+          ],
+          "qualification": "당사자의 출판 동기·감정·직접 발언이나 완성된 여행 기록을 만들어 넣지 않는다."
+        },
+        {
+          "id": "T3-C3",
+          "claim": "책 정보와 제작 조건은 확인 후 별도 안내하는 구성을 제안한다.",
+          "classification": "검토된 계획에 따른 편집 원칙",
+          "sourceRefs": [
+            "1_비즈니스 플랜!E17",
+            "1_비즈니스 플랜!E48"
+          ],
+          "planRefs": [
+            "MASTER_DEVELOPMENT_PLAN 20절 AS03·AS04"
+          ],
+          "qualification": "구매·후원·신청 개시, 확정된 출판 일정을 약속하지 않는다."
+        }
+      ],
+      "sourceRefs": [
+        "1_비즈니스 플랜!E17",
+        "1_비즈니스 플랜!E19",
+        "1_비즈니스 플랜!E48",
+        "1_비즈니스 플랜!E49"
+      ],
+      "confirmBeforePublication": [
+        "당사자가 확인한 출판 목적과 설명 문구",
+        "실제 원고 유무·책 제목·목차·책 형식·제작 진행 상태",
+        "책 정보와 권리자·공개 가능한 샘플 범위",
+        "가격·일정·제작 및 참여 조건을 안내할 경우 별도 확정 자료"
+      ],
+      "suggestedCTA": {
+        "label": "도전 소개에서 출판 계획의 배경 살펴보기",
+        "path": "/about",
+        "approval": false,
+        "note": "내부 소개 경로 제안이며 판매·예약·후원으로 연결하지 않는다."
+      },
+      "image": {
+        "originalNeeded": "선택 제안: 실제 제공된 원고·표지 자료가 있다면 권리자와 공개 범위를 확인. 없으면 책 표지·실물 사진을 만들지 않고 텍스트 검토 유지.",
+        "sourceRefs": [
+          "1_비즈니스 플랜!E17",
+          "1_비즈니스 플랜!E48"
+        ],
+        "originalReceived": false,
+        "rightsStatus": "미확인",
+        "consentStatus": "미확인",
+        "altTextStatus": "실제 원본 확보 후 작성",
+        "platformImageRequirement": "미확인"
+      },
+      "original": {
+        "title": "도전의 이야기를 전자책과 종이책으로",
+        "body": "자전거 세계일주의 이야기를 전자책과 종이책으로 펴낼 계획입니다.\n\n두 가지 책의 형식\n여정의 이야기와 함께 구상하는 출판의 형태는 전자책과 종이책입니다.\n\n어떤 이야기가 책으로 이어질까요? 도전 소개에서 여정과 출판의 구상을 살펴보세요.",
+        "claimIds": [
+          "T3-C1",
+          "T3-C2",
+          "T3-C3"
+        ],
+        "status": "draft",
+        "publicApproval": false,
+        "externallyPosted": false,
+        "label": "검토 초안·외부 미게시",
+        "sourceRefs": [
+          "1_비즈니스 플랜!E17",
+          "1_비즈니스 플랜!E19",
+          "1_비즈니스 플랜!E49",
+          "1_비즈니스 플랜!E48"
+        ],
+        "confirmBeforePublication": [
+          "당사자가 확인한 출판 목적과 설명 문구",
+          "실제 원고 유무·책 제목·목차·책 형식·제작 진행 상태",
+          "책 정보와 권리자·공개 가능한 샘플 범위",
+          "가격·일정·제작 및 참여 조건을 안내할 경우 별도 확정 자료"
+        ],
+        "suggestedCTA": {
+          "label": "도전 소개에서 계획 살펴보기",
+          "path": "/about",
+          "approval": false,
+          "note": "현재 빈 이야기 목록 대신 내부 소개 경로를 제안한다. 외부 게시 링크가 아니다."
+        },
+        "image": {
+          "originalNeeded": "선택 제안: 실제 제공된 원고·표지 자료가 있다면 권리자와 공개 범위를 확인. 없으면 책 표지·실물 사진을 만들지 않고 텍스트 검토 유지.",
+          "sourceRefs": [
+            "1_비즈니스 플랜!E17",
+            "1_비즈니스 플랜!E48"
+          ],
+          "originalReceived": false,
+          "rightsStatus": "미확인",
+          "consentStatus": "미확인",
+          "altTextStatus": "실제 원본 확보 후 작성",
+          "platformImageRequirement": "미확인"
+        },
+        "channelFeatures": {
+          "connected": false,
+          "serviceAndAccountType": "미확인",
+          "textLimit": "미확인",
+          "mediaSupport": "미확인",
+          "imageRequired": "미확인",
+          "apiAndScheduling": "미확인",
+          "programReceived": false
+        },
+        "runtimeImportAllowed": false,
+        "editorialNotes": [
+          "독자 본문과 내부 근거를 분리했다. 모든 일정·구간·단독 여정은 원문에 기재된 계획일 뿐 현재 확정·실적이 아니다.",
+          "실제 준비·경험·감정·동기·인용·인증·거리 수치·성과·게시 주기·후속 안내 약속을 추가하지 않았다.",
+          "공개 저장소 실명 유지 승인과 게시물별 발행 승인은 별개다. Q1~Q6는 확인 대기이며 이 항목은 공개 미승인이다."
+        ],
+        "editorialHold": false,
+        "editorialHoldReasons": []
+      },
+      "variants": [
+        {
+          "channel": "blog",
+          "title": "세계일주 이야기와 두 가지 출판 형식",
+          "body": "자전거 세계일주의 이야기를 전자책과 종이책으로 펴낼 계획입니다.\n\n여정과 출판\n여행 계획과 함께 살펴볼 또 하나의 구상은 책입니다. 출판의 형식은 전자책과 종이책, 두 가지입니다.\n\n도전 소개에서 전체 계획을 살펴보세요.",
+          "claimIds": [
+            "T3-C1",
+            "T3-C2",
+            "T3-C3"
+          ],
+          "status": "draft",
+          "publicApproval": false,
+          "externallyPosted": false,
+          "label": "검토 초안·외부 미게시",
+          "sourceRefs": [
+            "1_비즈니스 플랜!E17",
+            "1_비즈니스 플랜!E19",
+            "1_비즈니스 플랜!E49",
+            "1_비즈니스 플랜!E48"
+          ],
+          "confirmBeforePublication": [
+            "당사자가 확인한 출판 목적과 설명 문구",
+            "실제 원고 유무·책 제목·목차·책 형식·제작 진행 상태",
+            "책 정보와 권리자·공개 가능한 샘플 범위",
+            "가격·일정·제작 및 참여 조건을 안내할 경우 별도 확정 자료"
+          ],
+          "suggestedCTA": {
+            "label": "도전 소개에서 계획 살펴보기",
+            "path": "/about",
+            "approval": false,
+            "note": "현재 빈 이야기 목록 대신 내부 소개 경로를 제안한다. 외부 게시 링크가 아니다."
+          },
+          "image": {
+            "originalNeeded": "선택 제안: 실제 제공된 원고·표지 자료가 있다면 권리자와 공개 범위를 확인. 없으면 책 표지·실물 사진을 만들지 않고 텍스트 검토 유지.",
+            "sourceRefs": [
+              "1_비즈니스 플랜!E17",
+              "1_비즈니스 플랜!E48"
+            ],
+            "originalReceived": false,
+            "rightsStatus": "미확인",
+            "consentStatus": "미확인",
+            "altTextStatus": "실제 원본 확보 후 작성",
+            "platformImageRequirement": "미확인"
+          },
+          "channelFeatures": {
+            "connected": false,
+            "serviceAndAccountType": "미확인",
+            "textLimit": "미확인",
+            "mediaSupport": "미확인",
+            "imageRequired": "미확인",
+            "apiAndScheduling": "미확인",
+            "programReceived": false
+          },
+          "runtimeImportAllowed": false,
+          "editorialNotes": [
+            "독자 본문과 내부 근거를 분리했다. 모든 일정·구간·단독 여정은 원문에 기재된 계획일 뿐 현재 확정·실적이 아니다.",
+            "실제 준비·경험·감정·동기·인용·인증·거리 수치·성과·게시 주기·후속 안내 약속을 추가하지 않았다.",
+            "공개 저장소 실명 유지 승인과 게시물별 발행 승인은 별개다. Q1~Q6는 확인 대기이며 이 항목은 공개 미승인이다."
+          ],
+          "editorialHold": false,
+          "editorialHoldReasons": []
+        },
+        {
+          "channel": "threads",
+          "title": "도전의 이야기를 책으로",
+          "body": "자전거 세계일주의 이야기를 전자책과 종이책으로 펴낼 계획입니다.\n\n어떤 이야기가 책으로 이어질까요? 도전 소개에서 출판 구상의 큰 배경을 살펴보세요.",
+          "claimIds": [
+            "T3-C1",
+            "T3-C2",
+            "T3-C3"
+          ],
+          "status": "draft",
+          "publicApproval": false,
+          "externallyPosted": false,
+          "label": "검토 초안·외부 미게시",
+          "sourceRefs": [
+            "1_비즈니스 플랜!E17",
+            "1_비즈니스 플랜!E19",
+            "1_비즈니스 플랜!E49",
+            "1_비즈니스 플랜!E48"
+          ],
+          "confirmBeforePublication": [
+            "당사자가 확인한 출판 목적과 설명 문구",
+            "실제 원고 유무·책 제목·목차·책 형식·제작 진행 상태",
+            "책 정보와 권리자·공개 가능한 샘플 범위",
+            "가격·일정·제작 및 참여 조건을 안내할 경우 별도 확정 자료"
+          ],
+          "suggestedCTA": {
+            "label": "도전 소개에서 계획 살펴보기",
+            "path": "/about",
+            "approval": false,
+            "note": "현재 빈 이야기 목록 대신 내부 소개 경로를 제안한다. 외부 게시 링크가 아니다."
+          },
+          "image": {
+            "originalNeeded": "선택 제안: 실제 제공된 원고·표지 자료가 있다면 권리자와 공개 범위를 확인. 없으면 책 표지·실물 사진을 만들지 않고 텍스트 검토 유지.",
+            "sourceRefs": [
+              "1_비즈니스 플랜!E17",
+              "1_비즈니스 플랜!E48"
+            ],
+            "originalReceived": false,
+            "rightsStatus": "미확인",
+            "consentStatus": "미확인",
+            "altTextStatus": "실제 원본 확보 후 작성",
+            "platformImageRequirement": "미확인"
+          },
+          "channelFeatures": {
+            "connected": false,
+            "serviceAndAccountType": "미확인",
+            "textLimit": "미확인",
+            "mediaSupport": "미확인",
+            "imageRequired": "미확인",
+            "apiAndScheduling": "미확인",
+            "programReceived": false
+          },
+          "runtimeImportAllowed": false,
+          "editorialNotes": [
+            "독자 본문과 내부 근거를 분리했다. 모든 일정·구간·단독 여정은 원문에 기재된 계획일 뿐 현재 확정·실적이 아니다.",
+            "실제 준비·경험·감정·동기·인용·인증·거리 수치·성과·게시 주기·후속 안내 약속을 추가하지 않았다.",
+            "공개 저장소 실명 유지 승인과 게시물별 발행 승인은 별개다. Q1~Q6는 확인 대기이며 이 항목은 공개 미승인이다."
+          ],
+          "editorialHold": false,
+          "editorialHoldReasons": []
+        },
+        {
+          "channel": "instagram",
+          "title": "이야기를 담을 두 가지 형태",
+          "body": "전자책과 종이책.\n자전거 세계일주의 이야기를 담으려는 출판 계획입니다.\n\n도전 소개에서 여정과 책의 구상을 만나보세요.",
+          "claimIds": [
+            "T3-C1",
+            "T3-C2",
+            "T3-C3"
+          ],
+          "status": "draft",
+          "publicApproval": false,
+          "externallyPosted": false,
+          "label": "검토 초안·외부 미게시",
+          "sourceRefs": [
+            "1_비즈니스 플랜!E17",
+            "1_비즈니스 플랜!E19",
+            "1_비즈니스 플랜!E49",
+            "1_비즈니스 플랜!E48"
+          ],
+          "confirmBeforePublication": [
+            "당사자가 확인한 출판 목적과 설명 문구",
+            "실제 원고 유무·책 제목·목차·책 형식·제작 진행 상태",
+            "책 정보와 권리자·공개 가능한 샘플 범위",
+            "가격·일정·제작 및 참여 조건을 안내할 경우 별도 확정 자료"
+          ],
+          "suggestedCTA": {
+            "label": "도전 소개에서 계획 살펴보기",
+            "path": "/about",
+            "approval": false,
+            "note": "현재 빈 이야기 목록 대신 내부 소개 경로를 제안한다. 외부 게시 링크가 아니다."
+          },
+          "image": {
+            "originalNeeded": "선택 제안: 실제 제공된 원고·표지 자료가 있다면 권리자와 공개 범위를 확인. 없으면 책 표지·실물 사진을 만들지 않고 텍스트 검토 유지.",
+            "sourceRefs": [
+              "1_비즈니스 플랜!E17",
+              "1_비즈니스 플랜!E48"
+            ],
+            "originalReceived": false,
+            "rightsStatus": "미확인",
+            "consentStatus": "미확인",
+            "altTextStatus": "실제 원본 확보 후 작성",
+            "platformImageRequirement": "미확인"
+          },
+          "channelFeatures": {
+            "connected": false,
+            "serviceAndAccountType": "미확인",
+            "textLimit": "미확인",
+            "mediaSupport": "미확인",
+            "imageRequired": "미확인",
+            "apiAndScheduling": "미확인",
+            "programReceived": false
+          },
+          "runtimeImportAllowed": false,
+          "editorialNotes": [
+            "독자 본문과 내부 근거를 분리했다. 모든 일정·구간·단독 여정은 원문에 기재된 계획일 뿐 현재 확정·실적이 아니다.",
+            "실제 준비·경험·감정·동기·인용·인증·거리 수치·성과·게시 주기·후속 안내 약속을 추가하지 않았다.",
+            "공개 저장소 실명 유지 승인과 게시물별 발행 승인은 별개다. Q1~Q6는 확인 대기이며 이 항목은 공개 미승인이다."
+          ],
+          "editorialHold": true,
+          "editorialHoldReasons": [
+            "이미지 원본·권리 미확보. 채널 규격·이미지 조건 미확인으로 발행 보류."
+          ]
+        }
+      ],
+      "status": "draft",
+      "publicApproval": false,
+      "externallyPosted": false,
+      "editorialHold": false,
+      "editorialHoldReasons": []
+    }
+  ],
+  "edition": "v2-reader-review",
+  "comparisonSource": "docs/marketing/first-content-pack.json",
+  "repositoryNameUseApproval": {
+    "scope": "공개 저장소의 실명 유지",
+    "basis": "MKT-010 배정의 사용자 승인 범위",
+    "grantsPostPublicationApproval": false
+  },
+  "editorialReviewStatus": "Claude MKT-009 최종 검토 및 Master msg_370aac04936f 반영",
+  "pendingQuestions": [
+    "Q1 호칭과 성명·소개 공개 동의",
+    "Q2 거리 수치와 구간 계획의 현재 유효성",
+    "Q3 실제 준비 자료·진행 상황",
+    "Q4 크라우드펀딩 언급 여부",
+    "Q5 기록·안내 운영 약속과 게시 주기",
+    "Q6 E48 상품 사진 표기의 의미·연도"
+  ]
+}

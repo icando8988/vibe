@@ -1,0 +1,11 @@
+﻿{
+  "id": "7ada2cc4-9cc1-49ba-a3d0-c2016516195a",
+  "ok": true,
+  "result": {
+    "result": "{\"checked\":\"instagram\",\"preview\":\"검증용 로컬 본문입니다. 실제 발행 내용이 아닙니다.\\n\\n검증 샘플 제목\"}",
+    "origin": "http://127.0.0.1:3313/"
+  },
+  "_meta": {
+    "runtimeId": "f75515d2-8fb3-4d95-b496-b122d0c02680"
+  }
+}

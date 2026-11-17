@@ -8,7 +8,17 @@ import { ReadStateNotice, WriteNoticeView } from "@/components/distribution-cons
 import { StatusNotice } from "@/components/status-notice";
 import { isWriteConfigured, loadHandoffs, loadJobDetail } from "@/server/distribution/content-page";
 import { jobActions } from "@/server/distribution/jobs-dto";
-import { cancelJobAction } from "../actions";
+import { parseDryRunResult, type DryRunResult } from "@/server/distribution/dry-run/executor";
+import { cancelJobAction, runDryRunAction } from "../actions";
+
+/** 모의 실행 결과 안내(허용 목록 코드만, DRYRUN-EXEC-020). 아래 작업 상태가 최종 사실이다. */
+const DRY_RUN_TEXT: Record<DryRunResult["status"], { tone: "info" | "warning" | "error"; title: string; body: string }> = {
+  succeeded: { tone: "info", title: "모의 실행을 마쳤습니다", body: "검사만 통과했고 외부에 게시하지 않았습니다. 실제 게시(live)는 닫혀 있습니다." },
+  held: { tone: "warning", title: "모의 실행하지 않고 보류했습니다", body: "승인 철회·원문 변경·보관 등으로 근거가 맞지 않습니다. 이 작업은 취소하고 새로 만드세요." },
+  failed: { tone: "error", title: "모의 실행이 실패로 끝났습니다", body: "아래 안내에서 이유를 확인하세요. 외부 게시는 없었습니다. 자동으로 다시 실행하지 않습니다." },
+  interrupted: { tone: "warning", title: "모의 실행이 중간에 멈췄습니다", body: "작업이 '모의 실행 중'으로 남을 수 있습니다. 실행 권한 시간 만료 뒤 운영 회수로 실패 처리됩니다. 성공으로 보지 마세요." },
+  uncertain: { tone: "warning", title: "완료 응답을 확인하지 못했습니다", body: "아래 작업 상태를 새로 불러와 확인하세요. 자동으로 다시 보내지 않았습니다." },
+};
 import { JobFacts, kst } from "./job-common";
 
 export const dynamic = "force-dynamic";
@@ -45,10 +55,16 @@ export default async function JobDetailPage({
   const actions = detail ? jobActions(detail.job, handoff?.status ?? null) : null;
   const canWrite = isWriteConfigured();
   const base = `/admin/distribution/jobs/${jobId}`;
+  const dryRun = parseDryRunResult(sp.dryrun);
 
   return (
     <ConsoleShell section="jobs" eyebrow="실행 상세" title="실행 상세" crumbs={[...crumbs, { label: "실행 상세" }]}>
       <WriteNoticeView notice={sp.notice} />
+      {dryRun ? (
+        <StatusNotice tone={DRY_RUN_TEXT[dryRun].tone} title={DRY_RUN_TEXT[dryRun].title} announce>
+          <p>{DRY_RUN_TEXT[dryRun].body}</p>
+        </StatusNotice>
+      ) : null}
       <IdLine label="작업 ID" value={jobId} />
       {loaded.status !== "ok" ? (
         <ReadStateNotice status={loaded.status} what="작업" />
@@ -91,6 +107,25 @@ export default async function JobDetailPage({
             ) : null}
             {detail.job.status === "failed" ? <p className="ds-muted">실패 작업의 재실행 승인은 아직 화면에 연결되지 않았습니다(운영자 승인 기능 준비 중).</p> : null}
           </section>
+
+          {actions.runDryRun ? (
+            <section aria-labelledby="jd-dryrun" className="dc-panel dc-block">
+              <h2 id="jd-dryrun">모의 실행</h2>
+              <p className="ds-muted">
+                승인된 본문을 Threads 텍스트 조건으로 검사하고 실행 단계를 기록합니다. Threads·Meta를 호출하지 않으며 외부에 게시하지 않습니다. 자동 실행기는 없어 이 버튼으로만 진행됩니다.
+              </p>
+              <ActionForm action={runDryRunAction} disabled={!canWrite} fieldLabels={{ confirmDryRun: "모의 실행 확인", expectedVersion: "작업 버전" }}>
+                <input type="hidden" name="jobId" value={jobId} />
+                <input type="hidden" name="expectedVersion" value={String(detail.job.version)} />
+                <label>
+                  <input type="checkbox" name="confirmDryRun" /> 외부 게시 없이 모의 실행만 합니다
+                </label>
+                <button type="submit" className="ds-button ds-button--primary">
+                  모의 실행
+                </button>
+              </ActionForm>
+            </section>
+          ) : null}
 
           {actions.cancel ? (
             <section aria-labelledby="jd-cancel" className="dc-panel dc-block">

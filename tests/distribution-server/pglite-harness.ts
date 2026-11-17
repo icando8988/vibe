@@ -36,7 +36,20 @@ export async function openDb(project: string, users: string[], pending: string[]
   return { db, applied };
 }
 
-export async function inTx<T>(db: Db, role: string, sub: string | null, fn: () => Promise<T>): Promise<T> {
+/**
+ * PGlite는 연결이 하나라 비동기 호출이 겹치면 서로의 begin/commit이 섞인다(실제 DB는 요청마다 별도 연결·트랜잭션).
+ * 그래서 트랜잭션 단위로 직렬화한다. 이 때문에 "동시" 시험은 다중 connection 동시성 증명이 아니다(행 잠금·버전 검사 논리만 확인).
+ */
+const txQueue = new WeakMap<Db, Promise<unknown>>();
+
+export function inTx<T>(db: Db, role: string, sub: string | null, fn: () => Promise<T>): Promise<T> {
+  const prev = txQueue.get(db) ?? Promise.resolve();
+  const next = prev.catch(() => undefined).then(() => runTx(db, role, sub, fn));
+  txQueue.set(db, next);
+  return next;
+}
+
+async function runTx<T>(db: Db, role: string, sub: string | null, fn: () => Promise<T>): Promise<T> {
   await db.exec("begin");
   try {
     if (sub) await db.query("select set_config('request.jwt.claim.sub', $1, true)", [sub]);

@@ -1,0 +1,19 @@
+﻿{
+  "id": "c0af6300-7ddf-4158-bc76-a767334cb684",
+  "ok": true,
+  "result": {
+    "entries": [
+      {
+        "url": "file:///D:/Vibe/docs/marketing/reader-review.html",
+        "method": "GET",
+        "status": 200,
+        "mimeType": "text/html",
+        "timestamp": 1794803523552
+      }
+    ],
+    "truncated": false
+  },
+  "_meta": {
+    "runtimeId": "f75515d2-8fb3-4d95-b496-b122d0c02680"
+  }
+}

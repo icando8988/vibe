@@ -8,7 +8,7 @@ import { toEvent, toEvidence, toJob, toReconciliation, type EventDto, type Evide
 export const JOB_COLS = {
   jobs: [
     "id", "content_id", "content_version_id", "content_version_no", "draft_id", "draft_revision_id", "channel", "mode", "status",
-    "hold_reason", "retry_policy", "last_error", "reconciliation_required", "has_issues", "external_id", "external_url", "version",
+    "hold_reason", "retry_policy", "last_error", "phase", "scheduled_at", "lease_expires_at", "attempts", "reconciliation_required", "has_issues", "external_id", "external_url", "version",
     "created_at", "updated_at",
   ],
   evidence: ["id", "job_id", "source", "status", "external_post_id", "external_url", "observed_at", "method_note", "created_at"],

@@ -1,0 +1,150 @@
+[
+  {
+    "url": "/",
+    "width": 768,
+    "height": 900,
+    "scrollWidth": 753,
+    "main": 1,
+    "h1": 1,
+    "mainTarget": 1,
+    "contactTarget": 1,
+    "bodyFont": "18px",
+    "title": "한 번의 도전이,함께 읽는 이야기로.",
+    "notice": [
+      "공개할 책 정보를 준비 중입니다표지, 목차, 출간 일정과 참여 조건이 확정되면 안내합니다. 현재 공개된 상품이나 진행 중인 모집은 없습니다."
+    ],
+    "overflow": [],
+    "smallTargets": []
+  },
+  {
+    "url": "/books",
+    "width": 768,
+    "height": 900,
+    "scrollWidth": 753,
+    "main": 1,
+    "h1": 1,
+    "mainTarget": 1,
+    "contactTarget": 1,
+    "bodyFont": "18px",
+    "title": "책과 참여",
+    "notice": [
+      "신청·입금·외부 펀딩은 아직 연결되지 않았습니다현재 구매 신청이나 회원 가입을 접수하지 않습니다. 실제 판매 조건과 취소·환불 정책은 참여 기능을 열기 전에 안내합니다."
+    ],
+    "overflow": [],
+    "smallTargets": []
+  },
+  {
+    "url": "/about",
+    "width": 768,
+    "height": 900,
+    "scrollWidth": 753,
+    "main": 1,
+    "h1": 1,
+    "mainTarget": 1,
+    "contactTarget": 1,
+    "bodyFont": "18px",
+    "title": "도전 이야기",
+    "notice": [
+      "소개 자료를 준비 중입니다도전자 소개·사진·이력은 공개 동의와 사실 확인을 마친 자료가 들어오면 표시합니다."
+    ],
+    "overflow": [],
+    "smallTargets": []
+  },
+  {
+    "url": "/how-it-works",
+    "width": 768,
+    "height": 900,
+    "scrollWidth": 753,
+    "main": 1,
+    "h1": 1,
+    "mainTarget": 1,
+    "contactTarget": 1,
+    "bodyFont": "18px",
+    "title": "참여 안내",
+    "notice": [
+      "참여 규칙이 아직 확정되지 않았습니다입금 순서·목표 기준·취소와 환불 규칙은 정해지는 대로 안내합니다. 아래는 앞으로의 공통 흐름 초안이며, 지금은 신청과 입금을 받지 않습니다."
+    ],
+    "overflow": [],
+    "smallTargets": []
+  },
+  {
+    "url": "/login",
+    "width": 768,
+    "height": 900,
+    "scrollWidth": 753,
+    "main": 1,
+    "h1": 1,
+    "mainTarget": 1,
+    "contactTarget": 1,
+    "bodyFont": "18px",
+    "title": "회원 이용 안내",
+    "notice": [
+      "로그인은 아직 연결되지 않았습니다이메일·카카오 로그인이 연결되기 전에는 회원 가입과 로그인을 받을 수 없습니다."
+    ],
+    "overflow": [],
+    "smallTargets": []
+  },
+  {
+    "url": "/me",
+    "width": 768,
+    "height": 900,
+    "scrollWidth": 753,
+    "main": 1,
+    "h1": 1,
+    "mainTarget": 1,
+    "contactTarget": 1,
+    "bodyFont": "18px",
+    "title": "내 참여",
+    "notice": [
+      "로그인 기능이 아직 연결되지 않았습니다내 참여 내역은 본인 확인 후에만 볼 수 있습니다."
+    ],
+    "overflow": [],
+    "smallTargets": [
+      {
+        "text": "회원 이용 안내로 이동",
+        "height": 24
+      }
+    ]
+  },
+  {
+    "url": "/admin",
+    "width": 768,
+    "height": 900,
+    "scrollWidth": 753,
+    "main": 1,
+    "h1": 1,
+    "mainTarget": 1,
+    "contactTarget": 1,
+    "bodyFont": "18px",
+    "title": "관리자 전용",
+    "notice": [
+      "관리자 확인이 필요합니다관리자 인증이 아직 연결되지 않았습니다. 이 화면은 관리자 확인 후에만 열립니다."
+    ],
+    "overflow": [],
+    "smallTargets": []
+  },
+  {
+    "url": "/missing-page-dev-002b",
+    "width": 768,
+    "height": 900,
+    "scrollWidth": 768,
+    "main": 1,
+    "h1": 1,
+    "mainTarget": 1,
+    "contactTarget": 1,
+    "bodyFont": "18px",
+    "title": "페이지를 찾을 수 없습니다",
+    "notice": [],
+    "overflow": [],
+    "smallTargets": [
+      {
+        "text": "홈으로",
+        "height": 24
+      },
+      {
+        "text": "책과 참여",
+        "height": 24
+      }
+    ]
+  }
+]

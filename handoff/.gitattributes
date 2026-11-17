@@ -1,0 +1,2 @@
+# Preserve original source/document bytes so FILE_MANIFEST SHA-256 remains valid.
+* -text

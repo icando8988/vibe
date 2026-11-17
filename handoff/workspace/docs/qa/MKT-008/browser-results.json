@@ -1,0 +1,308 @@
+{
+  "sourceHashes": {
+    "json": "65abb8a39be1a10da13af08d9ceddd258a59df4d4b1bd620fc735eaf204b1c6c",
+    "markdown": "4f4603cde3f6d3217c6441b7f726420764d66abb5a140fb8c44c69b82f40f9f6"
+  },
+  "exactItems": 12,
+  "unapprovedBadges": 12,
+  "escapeChecks": "pass",
+  "widths": [
+    {
+      "width": 320,
+      "scroll": 320,
+      "topic": "0",
+      "visible": [
+        "original",
+        "blog"
+      ],
+      "status": "1. 프로젝트 소개 · 블로그 변형을 비교합니다.",
+      "overflow": []
+    },
+    {
+      "width": 320,
+      "scroll": 320,
+      "topic": "0",
+      "visible": [
+        "original",
+        "threads"
+      ],
+      "status": "1. 프로젝트 소개 · Threads 변형을 비교합니다.",
+      "overflow": []
+    },
+    {
+      "width": 320,
+      "scroll": 320,
+      "topic": "0",
+      "visible": [
+        "original",
+        "instagram"
+      ],
+      "status": "1. 프로젝트 소개 · Instagram 변형을 비교합니다.",
+      "overflow": []
+    },
+    {
+      "width": 320,
+      "scroll": 320,
+      "topic": "1",
+      "visible": [
+        "original",
+        "blog"
+      ],
+      "status": "2. 출발 전 어떤 준비를 기록할지 · 블로그 변형을 비교합니다.",
+      "overflow": []
+    },
+    {
+      "width": 320,
+      "scroll": 320,
+      "topic": "1",
+      "visible": [
+        "original",
+        "threads"
+      ],
+      "status": "2. 출발 전 어떤 준비를 기록할지 · Threads 변형을 비교합니다.",
+      "overflow": []
+    },
+    {
+      "width": 320,
+      "scroll": 320,
+      "topic": "1",
+      "visible": [
+        "original",
+        "instagram"
+      ],
+      "status": "2. 출발 전 어떤 준비를 기록할지 · Instagram 변형을 비교합니다.",
+      "overflow": []
+    },
+    {
+      "width": 320,
+      "scroll": 320,
+      "topic": "2",
+      "visible": [
+        "original",
+        "blog"
+      ],
+      "status": "3. 도전의 이야기를 책으로 나누려는 계획 · 블로그 변형을 비교합니다.",
+      "overflow": []
+    },
+    {
+      "width": 320,
+      "scroll": 320,
+      "topic": "2",
+      "visible": [
+        "original",
+        "threads"
+      ],
+      "status": "3. 도전의 이야기를 책으로 나누려는 계획 · Threads 변형을 비교합니다.",
+      "overflow": []
+    },
+    {
+      "width": 320,
+      "scroll": 320,
+      "topic": "2",
+      "visible": [
+        "original",
+        "instagram"
+      ],
+      "status": "3. 도전의 이야기를 책으로 나누려는 계획 · Instagram 변형을 비교합니다.",
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "topic": "0",
+      "visible": [
+        "original",
+        "blog"
+      ],
+      "status": "1. 프로젝트 소개 · 블로그 변형을 비교합니다.",
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "topic": "0",
+      "visible": [
+        "original",
+        "threads"
+      ],
+      "status": "1. 프로젝트 소개 · Threads 변형을 비교합니다.",
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "topic": "0",
+      "visible": [
+        "original",
+        "instagram"
+      ],
+      "status": "1. 프로젝트 소개 · Instagram 변형을 비교합니다.",
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "topic": "1",
+      "visible": [
+        "original",
+        "blog"
+      ],
+      "status": "2. 출발 전 어떤 준비를 기록할지 · 블로그 변형을 비교합니다.",
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "topic": "1",
+      "visible": [
+        "original",
+        "threads"
+      ],
+      "status": "2. 출발 전 어떤 준비를 기록할지 · Threads 변형을 비교합니다.",
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "topic": "1",
+      "visible": [
+        "original",
+        "instagram"
+      ],
+      "status": "2. 출발 전 어떤 준비를 기록할지 · Instagram 변형을 비교합니다.",
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "topic": "2",
+      "visible": [
+        "original",
+        "blog"
+      ],
+      "status": "3. 도전의 이야기를 책으로 나누려는 계획 · 블로그 변형을 비교합니다.",
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "topic": "2",
+      "visible": [
+        "original",
+        "threads"
+      ],
+      "status": "3. 도전의 이야기를 책으로 나누려는 계획 · Threads 변형을 비교합니다.",
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "scroll": 390,
+      "topic": "2",
+      "visible": [
+        "original",
+        "instagram"
+      ],
+      "status": "3. 도전의 이야기를 책으로 나누려는 계획 · Instagram 변형을 비교합니다.",
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "scroll": 1425,
+      "topic": "0",
+      "visible": [
+        "original",
+        "blog"
+      ],
+      "status": "1. 프로젝트 소개 · 블로그 변형을 비교합니다.",
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "scroll": 1425,
+      "topic": "0",
+      "visible": [
+        "original",
+        "threads"
+      ],
+      "status": "1. 프로젝트 소개 · Threads 변형을 비교합니다.",
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "scroll": 1425,
+      "topic": "0",
+      "visible": [
+        "original",
+        "instagram"
+      ],
+      "status": "1. 프로젝트 소개 · Instagram 변형을 비교합니다.",
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "scroll": 1425,
+      "topic": "1",
+      "visible": [
+        "original",
+        "blog"
+      ],
+      "status": "2. 출발 전 어떤 준비를 기록할지 · 블로그 변형을 비교합니다.",
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "scroll": 1425,
+      "topic": "1",
+      "visible": [
+        "original",
+        "threads"
+      ],
+      "status": "2. 출발 전 어떤 준비를 기록할지 · Threads 변형을 비교합니다.",
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "scroll": 1425,
+      "topic": "1",
+      "visible": [
+        "original",
+        "instagram"
+      ],
+      "status": "2. 출발 전 어떤 준비를 기록할지 · Instagram 변형을 비교합니다.",
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "scroll": 1425,
+      "topic": "2",
+      "visible": [
+        "original",
+        "blog"
+      ],
+      "status": "3. 도전의 이야기를 책으로 나누려는 계획 · 블로그 변형을 비교합니다.",
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "scroll": 1425,
+      "topic": "2",
+      "visible": [
+        "original",
+        "threads"
+      ],
+      "status": "3. 도전의 이야기를 책으로 나누려는 계획 · Threads 변형을 비교합니다.",
+      "overflow": []
+    },
+    {
+      "width": 1440,
+      "scroll": 1425,
+      "topic": "2",
+      "visible": [
+        "original",
+        "instagram"
+      ],
+      "status": "3. 도전의 이야기를 책으로 나누려는 계획 · Instagram 변형을 비교합니다.",
+      "overflow": []
+    }
+  ]
+}
