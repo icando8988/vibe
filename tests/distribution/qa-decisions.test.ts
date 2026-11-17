@@ -20,7 +20,8 @@ import {
 
 const NOW = "2026-11-16T03:00:00.000Z";
 const content = (version: number): ContentItem => ({ id: "c1", version, title: "t", body: "b", targetPath: "/about", mediaRefs: [], updatedAt: NOW });
-const draft = (version: number, channel: ChannelDraft["channel"] = "blog"): ChannelDraft => ({
+// REGRESSION-004: 이 파일의 결정 시험은 live 작업 기준. M2 CHANNEL_MODES상 blog는 live 불가 → 기본 채널 threads.
+const draft = (version: number, channel: ChannelDraft["channel"] = "threads"): ChannelDraft => ({
   contentId: "c1", contentVersion: version, channel, text: "x", mediaRefs: [], link: null, reviewStatus: "approved",
 });
 function must<T>(r: { ok: true; value: T } | { ok: false; error: { code: string; message: string } }): T {
@@ -54,7 +55,7 @@ describe("#1 live 결과에는 유효한 시도 번호 필수, dry_run은 생략
 
   it("dry_run: 시도 번호 없이도 반영(기존 UI 호출 방식), 주면 검사", () => {
     const dry = must(startDispatch(newJob("dry_run"), NOW));
-    const preview = { kind: "dry_run_ok" as const, preview: { channel: "blog" as const, text: "x", mediaCount: 0, link: null } };
+    const preview = { kind: "dry_run_ok" as const, preview: { channel: "threads" as const, text: "x", mediaCount: 0, link: null } };
     expect(must(applyResult(dry, preview)).status).toBe("dry_run_succeeded");
     expect(code(applyResult(dry, preview, { attempt: 2 }))).toBe("STALE_RESULT");
   });
@@ -74,7 +75,8 @@ describe("#2 늦은 게시 근거 보존 — 작업 상태는 그대로, 대사 
 
   it("실패 후 재예약된 작업 / 실행 중 이전 시도 / 시도 번호 없음", () => {
     const first = must(startDispatch(newJob(), NOW));
-    const failed = must(applyResult(first, { kind: "failed", error: { code: "T", message: "", retryable: true } }, { attempt: 1 }));
+    // REGRESSION-004: "재예약된 작업" 상황은 자동 재시도 가능한 실패(게시 요청 전, M2 retry_policy=auto)에서만 생긴다.
+    const failed = must(applyResult(first, { kind: "failed", error: { code: "T", message: "", retryable: true } }, { attempt: 1, publishRequested: false }));
     expect(must(preserveLateEvidence(failed, evidence())).reason).toBe("job_not_dispatching");
     const second = must(startDispatch(must(retryFailed(failed)), NOW));
     expect(must(preserveLateEvidence(second, evidence({ attempt: 1 }))).reason).toBe("older_attempt");
@@ -129,10 +131,14 @@ describe("#4 작업 ID", () => {
 });
 
 describe("#5 전체 이력 요약과 콘텐츠·버전 요약 분리", () => {
-  const j = (contentVersion: number, channel: PublishJob["channel"], status: PublishJob["status"]): PublishJob => ({
-    ...newJob(), id: `j-${contentVersion}-${channel}`, contentVersion, channel, status,
-    idempotencyKey: `pub:c1:v${contentVersion}:${channel}:live`,
-  });
+  // REGRESSION-004: 실제 게시 대상 중 blog는 manual 모드(M2 CHANNEL_MODES). 요약은 live+manual을 함께 센다.
+  const j = (contentVersion: number, channel: PublishJob["channel"], status: PublishJob["status"]): PublishJob => {
+    const mode: PublishJob["mode"] = channel === "blog" ? "manual" : "live";
+    return {
+      ...newJob(), id: `j-${contentVersion}-${channel}`, contentVersion, channel, status, mode,
+      idempotencyKey: `pub:c1:v${contentVersion}:${channel}:${mode}`,
+    };
+  };
   const history = [j(1, "blog", "published"), j(2, "blog", "failed"), j(2, "threads", "published")];
 
   it("전체 이력은 기존처럼 모두 세고 mixedScope로 섞임을 알린다", () => {

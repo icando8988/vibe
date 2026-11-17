@@ -20,6 +20,9 @@ const applyLive = (j: PublishJob, r: PublishResult) => applyResult(j, r, { attem
 const NOW = "2026-11-16T03:00:00.000Z";
 const content: ContentItem = { id: "c1", version: 1, title: "t", body: "b", targetPath: "/about", mediaRefs: [], updatedAt: NOW };
 const draft: ChannelDraft = { contentId: "c1", contentVersion: 1, channel: "blog", text: "샘플", mediaRefs: ["m1"], link: null, reviewStatus: "approved" };
+// AUTOPOST-DOMAIN-REGRESSION-004: M2 CHANNEL_MODES(distribution_jobs_blog_modes) — blog는 manual/dry_run만.
+// live 경로 시험은 live를 허용하는 채널(threads)로 한다. blog live 거절은 아래 별도 시험으로 고정한다.
+const liveDraft: ChannelDraft = { ...draft, channel: "threads" };
 
 describe("어댑터 — 미연결·모의 실행", () => {
   it("모든 채널의 기능은 unverified, 연결 false, 제한값 null", () => {
@@ -36,11 +39,11 @@ describe("어댑터 — 미연결·모의 실행", () => {
   });
 
   it("live 어댑터는 NOT_CONNECTED로 거절 → 작업은 재시도 불가 failed", async () => {
-    const job = createJob({ id: "j", content, draft, mode: "live", scheduledAt: null, now: NOW, existing: [] });
+    const job = createJob({ id: "j", content, draft: liveDraft, mode: "live", scheduledAt: null, now: NOW, existing: [] });
     if (!job.ok) throw new Error(job.error.code);
     const running = startDispatch(job.value, NOW);
     if (!running.ok) throw new Error(running.error.code);
-    const result = await getAdapter("blog", "live").publish(running.value, draft);
+    const result = await getAdapter("threads", "live").publish(running.value, liveDraft);
     expect(result.kind).toBe("rejected");
     const after = applyLive(running.value, result);
     expect(after.ok && after.value.status).toBe("failed");
@@ -53,10 +56,19 @@ describe("어댑터 — 미연결·모의 실행", () => {
     const r = await getAdapter("blog", "dry_run").publish(dry.value, draft);
     expect(r).toEqual({ kind: "dry_run_ok", preview: { channel: "blog", text: "샘플", mediaCount: 1, link: null } });
 
-    const live = createJob({ id: "j2", content, draft, mode: "live", scheduledAt: null, now: NOW, existing: [] });
+    const live = createJob({ id: "j2", content, draft: liveDraft, mode: "live", scheduledAt: null, now: NOW, existing: [] });
     if (!live.ok) throw new Error(live.error.code);
-    const wrong = await getAdapter("blog", "dry_run").publish(live.value, draft);
+    const wrong = await getAdapter("threads", "dry_run").publish(live.value, liveDraft);
     expect(wrong.kind).toBe("rejected");
+  });
+
+  it("채널별 허용 모드(M2): blog live·비blog manual은 작업 생성 단계에서 거절", () => {
+    const blogLive = createJob({ id: "j", content, draft, mode: "live", scheduledAt: null, now: NOW, existing: [] });
+    expect(blogLive.ok ? "OK" : blogLive.error.code).toBe("MODE_MISMATCH");
+    const threadsManual = createJob({ id: "j", content, draft: liveDraft, mode: "manual", scheduledAt: null, now: NOW, existing: [] });
+    expect(threadsManual.ok ? "OK" : threadsManual.error.code).toBe("MODE_MISMATCH");
+    const blogManual = createJob({ id: "j", content, draft, mode: "manual", scheduledAt: null, now: NOW, existing: [] });
+    expect(blogManual.ok && blogManual.value.status).toBe("manual_ready");
   });
 });
 

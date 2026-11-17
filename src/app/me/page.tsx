@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { StatusNotice } from "../../components/status-notice";
 import { decideAccess, getViewer } from "@/lib/auth/viewer";
+import { showAdminEntry } from "@/components/distribution-console/access";
 import { PageMain } from "../_components/page-main";
 
 export const metadata: Metadata = { title: "내 참여", robots: { index: false, follow: false } };
@@ -60,6 +61,12 @@ export default async function MyPage() {
     <PageMain title="내 참여">
       <p>참여 내역이 없습니다.</p>
       <div className="ds-actions">
+        {/* DQ-04: 승인된 관리자(D1)에게만 관리 진입. /admin과 콘솔은 각자 다시 판정한다. */}
+        {showAdminEntry(viewer) ? (
+          <Link className="ds-button ds-button--secondary" href="/admin">
+            관리
+          </Link>
+        ) : null}
         <SignOut />
       </div>
     </PageMain>

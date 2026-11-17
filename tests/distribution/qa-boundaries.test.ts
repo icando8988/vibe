@@ -23,7 +23,9 @@ const applyLive = (j: PublishJob, r: PublishResult) => applyResult(j, r, { attem
 
 const NOW = "2026-11-16T03:00:00.000Z";
 const content = (version: number): ContentItem => ({ id: "c1", version, title: "t", body: "b", targetPath: "/about", mediaRefs: [], updatedAt: NOW });
-const draft = (version: number, channel: ChannelDraft["channel"] = "blog"): ChannelDraft => ({
+// REGRESSION-004: 이 파일의 시험은 live 작업 경계값을 본다. M2 CHANNEL_MODES상 blog는 live 불가라
+// 기본 채널을 live 가능한 threads로 둔다(이전에는 모든 시험이 MODE_MISMATCH에서 먼저 끝나 경계값이 검사되지 않았다).
+const draft = (version: number, channel: ChannelDraft["channel"] = "threads"): ChannelDraft => ({
   contentId: "c1", contentVersion: version, channel, text: "x", mediaRefs: [], link: null, reviewStatus: "approved",
 });
 function must<T>(r: { ok: true; value: T } | { ok: false; error: { code: string; message: string } }): T {
@@ -74,7 +76,7 @@ describe("D3 같은 콘텐츠·채널의 다른 버전 동시 게시 방지", ()
   it("v1을 취소하면 v2 생성 가능, 다른 채널·dry-run은 영향 없음", () => {
     const v1 = job();
     expect(code(createJob({ id: "j2", content: content(2), draft: draft(2), mode: "live", scheduledAt: null, now: NOW, existing: [must(cancelJob(v1))] }))).toBe("OK");
-    expect(code(createJob({ id: "j3", content: content(2), draft: draft(2, "threads"), mode: "live", scheduledAt: null, now: NOW, existing: [v1] }))).toBe("OK");
+    expect(code(createJob({ id: "j3", content: content(2), draft: draft(2, "instagram"), mode: "live", scheduledAt: null, now: NOW, existing: [v1] }))).toBe("OK");
     expect(code(createJob({ id: "j4", content: content(2), draft: draft(2), mode: "dry_run", scheduledAt: null, now: NOW, existing: [v1] }))).toBe("OK");
   });
 });
@@ -88,8 +90,17 @@ describe("D4 시도 횟수 오염", () => {
     { maxAttempts: 3, attempts: 5 },
   ])("%o → 실행·재시도 거절", (over) => {
     expect(startDispatch({ ...job(), ...over }, NOW).ok).toBe(false);
-    const failed: PublishJob = { ...job(), ...over, status: "failed", lastError: { code: "X", message: "", retryable: true } };
-    expect(retryFailed(failed).ok).toBe(false);
+    // REGRESSION-004: 정책상 자동 재시도 가능한(auto) 실패로 만들어, 거절 사유가 정책이 아니라 시도 횟수 오염임을 보장한다.
+    const failed: PublishJob = {
+      ...job(),
+      ...over,
+      status: "failed",
+      lastError: { code: "X", message: "", retryable: true, autoRetry: true },
+      retryPolicy: "auto",
+    };
+    const r = retryFailed(failed);
+    expect(r.ok).toBe(false);
+    expect(code(r)).toMatch(/^(INVALID_INPUT|RETRY_NOT_ALLOWED)$/);
   });
 
   it.each([0, -1, 1.5, Number.NaN, 11])("생성 시 maxAttempts %s 거절", (maxAttempts) => {
@@ -100,7 +111,8 @@ describe("D4 시도 횟수 오염", () => {
 describe("D5 이전 시도의 늦은 결과", () => {
   it("attempt를 넘기면 이전 시도의 결과는 STALE_RESULT, 현재 시도의 결과는 반영", () => {
     const first = must(startDispatch(job(), NOW));
-    const failed = must(applyResult(first, { kind: "failed", error: { code: "TIMEOUT", message: "", retryable: true } }, { attempt: 1 }));
+    // REGRESSION-004: 자동 재시도는 게시 요청 전 실패만(M2) → publishRequested:false 명시.
+    const failed = must(applyResult(first, { kind: "failed", error: { code: "TIMEOUT", message: "", retryable: true } }, { attempt: 1, publishRequested: false }));
     const second = must(startDispatch(must(retryFailed(failed)), NOW));
     expect(second.attempts).toBe(2);
     const late = applyResult(second, { kind: "failed", error: { code: "TIMEOUT", message: "", retryable: true } }, { attempt: 1 });

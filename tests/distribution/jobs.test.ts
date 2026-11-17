@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   applyResult,
+  approveRerun,
   cancelJob,
   createJob,
   isDue,
@@ -69,7 +70,8 @@ describe("작업 생성", () => {
 
   it("다른 채널·dry-run은 별도 키", () => {
     const first = newJob();
-    expect(code(createJob({ id: "j2", content, draft: draft({ channel: "blog" }), mode: "live", scheduledAt: null, now: NOW, existing: [first] }))).toBe("OK");
+    // REGRESSION-004: blog는 live 불가(M2 CHANNEL_MODES). "다른 채널은 별도 키" 의도는 live 가능한 instagram으로 유지.
+    expect(code(createJob({ id: "j2", content, draft: draft({ channel: "instagram" }), mode: "live", scheduledAt: null, now: NOW, existing: [first] }))).toBe("OK");
     expect(code(createJob({ id: "j3", content, draft: draft(), mode: "dry_run", scheduledAt: null, now: NOW, existing: [first] }))).toBe("OK");
   });
 
@@ -127,11 +129,16 @@ describe("응답 유실(unknown)과 재시도", () => {
     expect(code(cancelJob(unknownJob()))).toBe("INVALID_TRANSITION");
   });
 
-  it("대사: 게시 확인 → published, 부재 확인 → 재시도 가능, 여전히 모름 → 그대로", () => {
+  // REGRESSION-004: DEC-AUTOPOST-DATA-001 D2 / M2 distribution_approve_rerun —
+  // 부재 확인은 자동 재시도 허가가 아니다(operator_only). 재실행은 대사 기록을 인용한 운영자 승인으로만.
+  it("대사: 게시 확인 → published, 부재 확인 → 운영자 승인 후에만 재실행, 여전히 모름 → 그대로", () => {
     expect(must(reconcileUnknown(unknownJob(), { kind: "found_published", externalId: "ext-9", externalUrl: null })).status).toBe("published");
-    const absent = must(reconcileUnknown(unknownJob(), { kind: "confirmed_absent" }));
-    expect(absent.status).toBe("failed");
-    expect(must(retryFailed(absent)).status).toBe("scheduled");
+    const absent = must(reconcileUnknown(unknownJob(), { kind: "confirmed_absent", reconciliationId: "rec-1" }));
+    expect(absent).toMatchObject({ status: "failed", retryPolicy: "operator_only", lastReconciliationId: "rec-1" });
+    expect(code(retryFailed(absent))).toBe("RETRY_NOT_ALLOWED");
+    const approval = { actorId: "admin-1", reason: "부재 확인 후 재실행", basisRechecked: true as const, now: NOW };
+    expect(code(approveRerun(absent, { ...approval, reconciliationId: "rec-other" }))).toBe("RECONCILE_REQUIRED");
+    expect(must(approveRerun(absent, { ...approval, reconciliationId: "rec-1" })).status).toBe("scheduled");
     expect(must(reconcileUnknown(unknownJob(), { kind: "still_unknown" })).status).toBe("unknown");
   });
 
@@ -144,15 +151,26 @@ describe("응답 유실(unknown)과 재시도", () => {
     expect(code(retryFailed(rejected))).toBe("RETRY_NOT_ALLOWED");
   });
 
-  it("retryable 실패는 최대 시도 횟수까지만", () => {
+  // REGRESSION-004: M2 retry_policy — auto는 게시 요청 전 실패에만. publishRequested:false를 명시해야 자동 재시도 대상.
+  it("게시 요청 전 retryable 실패는 최대 시도 횟수까지만 자동 재시도", () => {
     let job = newJob({ maxAttempts: 2 });
     for (let i = 0; i < 2; i++) {
       job = must(startDispatch(job, NOW));
-      job = must(applyLive(job, { kind: "failed", error: { code: "RATE", message: "m", retryable: true } }));
+      job = must(applyResult(job, { kind: "failed", error: { code: "RATE", message: "m", retryable: true } }, { attempt: job.attempts, publishRequested: false }));
+      expect(job.retryPolicy).toBe("auto");
       if (i === 0) job = must(retryFailed(job));
     }
     expect(job.attempts).toBe(2);
     expect(code(retryFailed(job))).toBe("RETRY_NOT_ALLOWED");
+  });
+
+  it("게시 요청 이후(또는 요청 여부 모름)의 retryable 실패는 자동 재시도 불가(operator_only)", () => {
+    const running = must(startDispatch(newJob(), NOW));
+    for (const publishRequested of [true, undefined]) {
+      const failed = must(applyResult(running, { kind: "failed", error: { code: "RATE", message: "m", retryable: true } }, { attempt: 1, publishRequested }));
+      expect(failed.retryPolicy).toBe("operator_only");
+      expect(code(retryFailed(failed))).toBe("RETRY_NOT_ALLOWED");
+    }
   });
 });
 

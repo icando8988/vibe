@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { StatusNotice } from "../../components/status-notice";
+import { decideDistributionAccess } from "@/components/distribution-console/access";
 import { decideAccess, getViewer } from "@/lib/auth/viewer";
 import { PageMain } from "../_components/page-main";
 
@@ -26,10 +28,25 @@ export default async function AdminPage() {
     );
   }
 
+  // 콘텐츠 배포 진입 카드는 D1(admin + 승인됨)일 때만 보인다. 승인되지 않은 admin에게는 메뉴 존재도 숨긴다.
+  const distribution = decideDistributionAccess(viewer);
+
   // DEV-007: 승인 대기·입금 대기·알림 실패 요약 (서버에서 역할 재확인 후 조회)
   return (
     <PageMain title="관리">
       <p>관리 기능은 DEV-007에서 연결합니다.</p>
+      {distribution.allowed ? (
+        <section aria-labelledby="admin-distribution" className="dc-admin-entry">
+          <h2 id="admin-distribution">콘텐츠 배포</h2>
+          <p>
+            <span className="ds-tag">준비 전 · 실제 게시 gate 닫힘</span>
+          </p>
+          <p>원문 하나로 Blog·Threads·Instagram 초안을 준비하는 콘솔입니다. 운영 저장소·계정 연결·실행기가 아직 연결되지 않아 저장·예약·게시는 할 수 없습니다.</p>
+          <Link className="ds-text-link" href="/admin/distribution">
+            콘텐츠 배포 콘솔 열기
+          </Link>
+        </section>
+      ) : null}
     </PageMain>
   );
 }
