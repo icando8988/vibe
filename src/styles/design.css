@@ -214,3 +214,51 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   .ds-hero-globe-facts { border-top-color: CanvasText; }
   .ds-hero-globe-canvas { forced-color-adjust: none; }
 }
+/* DESIGN-HOME-PHOTO-REVISION-102: 홈 실사 사진(분위기 연출용). 추가 전용 — 097 .ds-hero--globe 규칙은 남겨 두고(미사용) 새 수정자 클래스로 그린다.
+   사진 위 글자 대비: 왼쪽(데스크톱)·아래쪽(모바일) 남색 덮개 0.78~0.94 위의 #f4f7fb·#d3dceb·금색. 초점선은 금색. */
+.ds-hero.ds-hero--photo { --photo-bg: #07111f; --photo-ink: #f4f7fb; --photo-sub: #d3dceb; --photo-gold: #ffcf5a; position: relative; isolation: isolate; overflow: hidden; padding-block: 5rem 3.6rem; border-bottom: 0; background: var(--photo-bg); color: var(--photo-ink); }
+.ds-hero-photo-media { position: absolute; inset: 0; z-index: -2; }
+.ds-hero-photo-media img { width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: 70% 55%; display: block; }
+.ds-hero--photo::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(7, 17, 31, .92) 0%, rgba(7, 17, 31, .78) 38%, rgba(7, 17, 31, .25) 70%, rgba(7, 17, 31, .05) 100%), linear-gradient(0deg, rgba(7, 17, 31, .55), rgba(7, 17, 31, 0) 35%); }
+.ds-hero-photo-grid { display: grid; grid-template-columns: minmax(0, 36rem); }
+.ds-hero-photo-copy { min-width: 0; }
+.ds-hero-photo-kicker { display: inline-flex; align-items: center; gap: .55rem; margin: 0; font-size: .85rem; font-weight: 750; letter-spacing: .06em; color: var(--photo-gold); }
+.ds-hero-photo-kicker::before { content: ""; width: .55rem; height: .55rem; border-radius: 50%; background: var(--photo-gold); box-shadow: 0 0 0 4px #ffcf5a33; }
+.ds-main .ds-hero--photo h1 { margin-block: .9rem 0; color: var(--photo-ink); font-size: clamp(2.2rem, 5.4vw, 3.8rem); line-height: 1.13; letter-spacing: -.035em; text-shadow: 0 2px 18px rgba(0, 0, 0, .35); }
+.ds-hero-photo-line { display: block; }
+.ds-hero-photo-accent { color: var(--photo-gold); }
+.ds-main .ds-hero--photo .ds-lead { color: var(--photo-sub); margin-top: 1.1rem; }
+.ds-hero-photo-facts { display: flex; flex-wrap: wrap; gap: 1rem 2.2rem; margin: 1.6rem 0 0; padding-top: 1.1rem; border-top: 1px solid rgba(255, 255, 255, .22); }
+.ds-hero-photo-facts div { display: flex; flex-direction: column-reverse; gap: .1rem; }
+.ds-hero-photo-facts dt { font-size: .82rem; color: var(--photo-sub); }
+.ds-hero-photo-facts dd { margin: 0; font-size: 1.3rem; font-weight: 750; font-variant-numeric: tabular-nums; color: var(--photo-ink); }
+.ds-main .ds-hero--photo .ds-button--primary { background: var(--photo-gold); color: #1c1400; border-color: var(--photo-gold); }
+.ds-main .ds-hero--photo .ds-button--primary:hover { background: #ffdb85; border-color: #ffdb85; }
+.ds-main .ds-hero--photo .ds-button--secondary { background: rgba(7, 17, 31, .35); color: var(--photo-ink); border-color: rgba(255, 255, 255, .6); }
+.ds-main .ds-hero--photo .ds-button--secondary:hover { background: rgba(255, 255, 255, .12); }
+.ds-main .ds-hero--photo a:focus-visible { outline-color: var(--photo-gold); box-shadow: 0 0 0 2px var(--photo-bg); }
+.ds-main .ds-hero--photo .ds-hero-note { color: var(--photo-sub); }
+.ds-hero-photo-credit { position: absolute; right: max(16px, env(safe-area-inset-right, 0px)); bottom: .7rem; max-width: calc(100% - 32px); margin: 0; font-size: .72rem; line-height: 1.5; text-align: right; color: rgba(244, 247, 251, .88); }
+.ds-main .ds-hero-photo-credit a { color: inherit; }
+.ds-photo-band { position: relative; height: clamp(9rem, 22vw, 15rem); margin: 0; overflow: hidden; background: #24324a; }
+.ds-photo-band picture, .ds-photo-band img { display: block; width: 100%; height: 100%; }
+.ds-photo-band img { max-width: none; object-fit: cover; object-position: 50% 40%; }
+.ds-photo-band figcaption { position: absolute; inset: auto 0 0; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: .3rem 1rem; padding: 2.4rem max(16px, env(safe-area-inset-right, 0px)) .8rem max(16px, env(safe-area-inset-left, 0px)); background: linear-gradient(0deg, rgba(7, 17, 31, .8), rgba(7, 17, 31, 0)); color: #f4f7fb; }
+.ds-photo-band-title { font-weight: 750; font-size: 1.05rem; }
+.ds-photo-band small { font-size: .72rem; }
+.ds-main .ds-photo-band a { color: inherit; }
+.ds-photo-prep { display: grid; gap: .4rem; margin: 1.6rem 0 0; }
+.ds-photo-prep img { display: block; width: 100%; max-width: 100%; height: auto; aspect-ratio: 21 / 9; object-fit: cover; object-position: 50% 60%; border-radius: var(--ds-radius); }
+.ds-photo-prep figcaption { font-size: .78rem; color: var(--ds-muted); }
+@media (max-width: 700px) {
+  .ds-hero.ds-hero--photo { padding-block: 3.2rem 4.4rem; }
+  .ds-hero-photo-media img { object-position: 62% 50%; }
+  .ds-hero--photo::before { background: linear-gradient(0deg, rgba(7, 17, 31, .94) 0%, rgba(7, 17, 31, .82) 55%, rgba(7, 17, 31, .4) 100%); }
+  .ds-hero-photo-credit { left: max(16px, env(safe-area-inset-left, 0px)); text-align: left; }
+  .ds-photo-prep img { aspect-ratio: 4 / 3; }
+}
+@media (forced-colors: active) {
+  .ds-hero-photo-media, .ds-hero--photo::before { display: none; }
+  .ds-hero.ds-hero--photo { background: Canvas; color: CanvasText; }
+  .ds-photo-band figcaption { background: Canvas; color: CanvasText; }
+}
