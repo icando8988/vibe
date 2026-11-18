@@ -18,6 +18,7 @@ export function SiteHeader() {
           </Link>
           <nav aria-label="주요 메뉴" className="ds-nav">
             {navigation.map(({ href, label }) => <Link key={href} href={href}>{label}</Link>)}
+            <Link href="/admin/distribution" prefetch={false}>SNS 관리</Link>
             <Link className="ds-account-link" href="/login">로그인/가입</Link>
           </nav>
         </div>
