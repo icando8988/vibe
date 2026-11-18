@@ -11,6 +11,8 @@ export const metadata = { title: "SNS 관리" };
 
 const routes = {
   newContent: "/admin/distribution/contents/new",
+  quick: "/admin/distribution/quick",
+  topics: "/admin/distribution/topics",
   library: "/admin/distribution/contents",
   jobs: "/admin/distribution/jobs",
   connections: "/admin/distribution/connections",
@@ -80,13 +82,13 @@ export default async function DistributionOverviewPage() {
           </article>
           <article className="dc-card">
             <h3>글감 수집</h3>
-            <p>출처가 있는 글감 후보를 모아 원고로 가져오는 기능입니다.</p>
-            <span className="dc-tag">준비 중</span>
+            <p>메모나 출처 링크로 글감 후보를 모으고, 고른 후보를 원고로 전환합니다.</p>
+            <Link className="ds-button ds-button--secondary" href={routes.topics}>글감 후보 보기</Link>
           </article>
           <article className="dc-card">
             <h3>주제로 바로 만들기</h3>
-            <p>주제만 입력해 제목과 기본 원고를 제안받는 기능입니다.</p>
-            <span className="dc-tag">준비 중</span>
+            <p>주제만 입력해 제목과 기본 원고를 제안받고, 검토한 뒤 원고로 저장합니다.</p>
+            {canWrite ? <Link className="ds-button ds-button--secondary" href={routes.quick}>주제로 시작</Link> : <p className="ds-muted">원고 저장 연결을 확인해 주세요.</p>}
           </article>
         </div>
       </section>

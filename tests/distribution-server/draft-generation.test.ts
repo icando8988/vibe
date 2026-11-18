@@ -8,6 +8,7 @@ import { afterAll, describe, expect, it, vi } from "vitest";
 import type { ActorResult } from "@/server/distribution/actor-core";
 import { DEFAULT_GENERATION_MODEL, GENERATION_ENV, loadGenerationConfig } from "@/server/distribution/generation/config";
 import { OPENAI_CHAT_URL, type GenerationHttpDeps } from "@/server/distribution/generation/openai-chat";
+import { generateOriginal, ORIGINAL_TOPIC_MAX } from "@/server/distribution/generation/original";
 import { parseGeneratedOutput } from "@/server/distribution/generation/output";
 import { buildMessages, CHANNEL_LIMITS } from "@/server/distribution/generation/prompts";
 import { generateChannelDraft, type GenerateDraftDeps } from "@/server/distribution/generation/service";
@@ -72,6 +73,42 @@ function deps(over: Partial<GenerateDraftDeps> & { s?: ReturnType<typeof source>
   };
 }
 const noKey = (...xs: unknown[]) => xs.forEach((x) => expect(JSON.stringify(x)).not.toContain(KEY));
+
+describe("주제에서 공용 원고 생성", () => {
+  const input = form({ topic: "  자전거 여행 준비  ", confirmGenerate: "on" });
+
+  it("공용 한도 1건을 예약한 뒤 편집용 제목과 본문만 반환한다", async () => {
+    const result = provider(completion({ title: " 여행 준비 ", body: " 첫 문단\r\n다음 문단 " }));
+    const acquireQuota = vi.fn(async () => ({ ok: true as const }));
+    const outcome = await generateOriginal(deps({ acquireQuota, http: result.http }), input);
+    expect(outcome).toEqual({ status: "ok", prefill: { title: "여행 준비", body: "첫 문단\n다음 문단" } });
+    expect(acquireQuota).toHaveBeenCalledExactlyOnceWith({ actorId: ADMIN, channel: "common", model: DEFAULT_GENERATION_MODEL });
+    expect(result.calls).toHaveLength(1);
+    expect(JSON.parse(String(result.calls[0]?.init.body)).messages.at(-1)).toEqual({ role: "user", content: "자전거 여행 준비" });
+    noKey(outcome);
+  });
+
+  it("항목 초과, 동의 누락, 설정 누락, 한도 거절 시 공급자를 호출하지 않는다", async () => {
+    const result = provider(completion({ title: "제목", body: "본문" }));
+    const acquireQuota = vi.fn(async () => ({ ok: false as const, retryAfterSeconds: 30 }));
+    const d = deps({ acquireQuota, http: result.http });
+    expect(await generateOriginal(d, form({ topic: "가".repeat(ORIGINAL_TOPIC_MAX + 1), confirmGenerate: "on" }))).toMatchObject({ status: "invalid" });
+    expect(await generateOriginal(d, form({ topic: "여행" }))).toMatchObject({ status: "invalid" });
+    expect(await generateOriginal({ ...d, getConfig: () => loadGenerationConfig({}) }, input)).toMatchObject({ status: "not_configured" });
+    expect(await generateOriginal(d, input)).toEqual({ status: "quota_exceeded", retryAfterSeconds: 30 });
+    expect(acquireQuota).toHaveBeenCalledTimes(1);
+    expect(result.calls).toHaveLength(0);
+  });
+
+  it.each([
+    completion({ title: "제목", body: "본문" }, "length"),
+    completion({ title: "제목" }),
+    completion({ title: "제목", body: "가".repeat(4001) }),
+  ])("불완전하거나 제한을 넘는 공급자 응답은 거절한다", async (reply) => {
+    const result = provider(reply);
+    expect(await generateOriginal(deps({ http: result.http }), input)).toEqual({ status: "output_invalid" });
+  });
+});
 
 describe("설정(기본 닫힘)", () => {
   it("스위치가 정확히 true가 아니거나 키가 없으면 not_configured", () => {

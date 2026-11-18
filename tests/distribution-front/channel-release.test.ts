@@ -140,6 +140,11 @@ describe("동선: 진입·내부 링크", () => {
   it("개요의 작업 영역은 '운영 데이터 미연결'을 단정하지 않고 실제 작업 화면으로 안내", () => {
     const ov = readFileSync(join(root, "src", "app", "admin", "distribution", "page.tsx"), "utf8");
     expect(ov).not.toContain("<NotConnected");
-    expect(ov).toContain('href="/admin/distribution/jobs"');
+    // 리터럴 href 또는 경로 상수(`const routes = { jobs: "/admin/distribution/jobs" }` + `href={routes.jobs}`) 둘 다 인정한다.
+    // (QA-SNS-QUICK-131: 대시보드 개편으로 href가 상수 참조가 됐다. 계약 — 개요에서 작업 목록으로 가는 링크 존재 — 은 같다)
+    const literal = ov.includes('href="/admin/distribution/jobs"');
+    const routeKey = /\b(\w+)\s*:\s*["']\/admin\/distribution\/jobs["']/.exec(ov)?.[1];
+    const viaRoute = routeKey !== undefined && new RegExp(`href=\\{\\s*routes\\.${routeKey}\\s*\\}`).test(ov);
+    expect(literal || viaRoute).toBe(true);
   });
 });

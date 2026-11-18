@@ -18,6 +18,7 @@ const serviceClient = vi.fn<() => { rpc: typeof serviceRpc } | null>();
 vi.mock("@/server/distribution/blog/service", () => ({ getServiceRpcClient: () => serviceClient() }));
 
 const { generateChannelDraftAction } = await import("@/app/admin/distribution/generation-actions");
+const { generateOriginalAction } = await import("@/app/admin/distribution/original-generation-action");
 const { createGenerationRuntimeDeps } = await import("@/server/distribution/generation/runtime");
 const { generateChannelDraft } = await import("@/server/distribution/generation/service");
 
@@ -96,6 +97,33 @@ const setLimits = (o: Partial<Record<string, string>> = {}) => {
   const v = { DISTRIBUTION_AI_ACTOR_PER_MINUTE: "2", DISTRIBUTION_AI_ACTOR_PER_DAY: "20", DISTRIBUTION_AI_GLOBAL_PER_MINUTE: "5", DISTRIBUTION_AI_GLOBAL_PER_DAY: "100", ...o };
   for (const [k, val] of Object.entries(v)) vi.stubEnv(k, val as string);
 };
+
+describe("서버 액션 generateOriginalAction", () => {
+  it.each(["not_approved", "unauthenticated", "forbidden"] as const)("%s이면 사용량 차감과 공급자 호출을 하지 않는다", async (reason) => {
+    setEnv();
+    setLimits();
+    actor.mockResolvedValueOnce({ ok: false, reason });
+    expect(await generateOriginalAction(fd({ topic: "여행 원고", confirmGenerate: "on" }))).toEqual({ status: "denied", reason });
+    expect(serviceRpc).not.toHaveBeenCalled();
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("공용 원고 한도만 예약하고 편집용 제목·본문을 반환한다", async () => {
+    setEnv();
+    setLimits();
+    fetchMock.mockResolvedValueOnce(new Response(JSON.stringify({
+      choices: [{ message: { content: JSON.stringify({ title: "여행 원고", body: "여행 이야기" }) }, finish_reason: "stop" }],
+    })));
+
+    expect(await generateOriginalAction(fd({ topic: "여행 원고", confirmGenerate: "on" }))).toEqual({
+      status: "ok",
+      prefill: { title: "여행 원고", body: "여행 이야기" },
+    });
+    expect(serviceRpc).toHaveBeenCalledExactlyOnceWith("distribution_reserve_generation_quota", expect.objectContaining({ p_actor_id: ADMIN, p_channel: "common" }));
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(readSource).not.toHaveBeenCalled();
+  });
+});
 
 describe("서버 액션 — 한도 env·service RPC 배선(모의)", () => {
   it("한도 env 4개가 모두 맞고 service RPC가 있으면 예약 RPC 1회 후 공급자(모의) 1회", async () => {
