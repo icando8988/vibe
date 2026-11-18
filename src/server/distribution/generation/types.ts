@@ -86,5 +86,5 @@ export type GenerationConfigMissing = "enabled_flag" | "api_key" | "model" | "ht
 
 /** 사용량 한도 확인·차감(공급자 호출 직전 1회). 저장소(DB 등)는 런타임이 정한다. */
 export type GenerationQuotaResult = { ok: true } | { ok: false; retryAfterSeconds: number | null };
-export type AcquireGenerationQuota = (input: { actorId: string; channel: GenerationChannel; model: string }) => Promise<GenerationQuotaResult>;
+export type AcquireGenerationQuota = (input: { actorId: string; channel: GenerationChannel | "common"; model: string }) => Promise<GenerationQuotaResult>;
 export type OutputInvalidReason = "not_json" | "missing_body" | "empty" | "too_long" | "control_chars" | "bad_hashtags" | "finish_length";
