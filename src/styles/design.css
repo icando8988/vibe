@@ -262,3 +262,59 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   .ds-hero.ds-hero--photo { background: Canvas; color: CanvasText; }
   .ds-photo-band figcaption { background: Canvas; color: CanvasText; }
 }
+
+/* DESIGN-LOGIN-PHOTO-SPLIT (주인님 선택 C안): 로그인·가입·비밀번호 찾기 — 왼쪽 실사 사진 + 오른쪽 폼 */
+.ds-main.ds-auth { background: #eef1f6; }
+.ds-auth-wrap { padding-block: 2.5rem; }
+.ds-auth-split { max-width: 60rem; margin-inline: auto; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); background: #fff; border-radius: 26px; overflow: hidden; box-shadow: 0 30px 70px rgba(23, 43, 77, .14); }
+.ds-auth-photo { position: relative; isolation: isolate; min-height: 40rem; display: flex; flex-direction: column; justify-content: flex-end; padding: 2rem; background: #24324a; color: #fff; }
+.ds-auth-photo picture, .ds-auth-photo img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; }
+.ds-auth-photo img { object-fit: cover; object-position: 70% 50%; z-index: -2; }
+.ds-auth-photo::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(0deg, rgba(7, 17, 31, .92) 0%, rgba(7, 17, 31, .4) 55%, rgba(7, 17, 31, .1) 100%); }
+.ds-auth-quote { margin: 0; font-size: 1.55rem; font-weight: 700; line-height: 1.3; letter-spacing: -.03em; color: #fff; }
+.ds-auth-quote span { display: block; color: #ffcf5a; }
+.ds-auth-photo-sub { margin: .6rem 0 0; color: #d3dceb; font-size: .9rem; }
+.ds-auth-credit { margin: 1.2rem 0 0; font-size: .72rem; color: #d3dceb; }
+.ds-auth-credit a { color: #fff; }
+.ds-auth-credit a:focus-visible { outline: 3px solid #ffcf5a; outline-offset: 2px; }
+.ds-auth-panel { padding: 2.4rem 2.2rem; display: grid; align-content: center; gap: 0; grid-column: 2; grid-row: 1; }
+.ds-auth-photo { grid-column: 1; grid-row: 1; }
+.ds-auth-head { display: grid; justify-items: start; gap: .5rem; margin-bottom: 1.3rem; }
+.ds-auth-badge { width: 3rem; height: 3rem; border-radius: 12px; display: grid; place-items: center; background: #eef3ff; color: #1e40af; }
+.ds-auth-badge svg { width: 1.6rem; height: 1.6rem; }
+.ds-main .ds-auth-head h1 { font-size: clamp(1.6rem, 3.4vw, 2rem); margin: 0; }
+.ds-auth-head p { margin: 0; color: var(--ds-muted, #526178); font-size: .95rem; }
+.ds-auth-tabs { display: grid; grid-template-columns: 1fr 1fr; padding: .3rem; border-radius: 12px; background: #eef1f6; margin-bottom: 1.3rem; }
+.ds-auth-tab { min-height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 9px; font-weight: 700; color: #526178; text-decoration: none; }
+.ds-auth-tab[aria-current="page"] { background: #fff; color: var(--ds-ink, #172b4d); box-shadow: 0 2px 8px rgba(23, 43, 77, .1); }
+.ds-auth-form { display: grid; }
+.ds-auth-field { display: grid; gap: .4rem; margin-bottom: 1.05rem; }
+.ds-auth-field label { font-weight: 700; font-size: .92rem; }
+.ds-auth-box { position: relative; display: flex; align-items: center; }
+.ds-auth-box > svg { position: absolute; left: .95rem; width: 1.15rem; height: 1.15rem; color: #6b7a90; pointer-events: none; }
+.ds-auth-box input { width: 100%; min-height: 50px; padding: .7rem 3rem .7rem 2.8rem; border: 1.5px solid #c5cfdc; border-radius: 12px; background: #fff; color: var(--ds-ink, #172b4d); font: inherit; }
+.ds-auth-box input:focus { border-color: #2563eb; }
+.ds-auth-eye { position: absolute; right: .35rem; width: 42px; height: 42px; border: 0; border-radius: 9px; background: transparent; color: #526178; display: grid; place-items: center; cursor: pointer; }
+.ds-auth-eye svg { width: 1.2rem; height: 1.2rem; }
+.ds-auth-eye:hover { background: #eef1f6; }
+.ds-auth-help { margin: 0; font-size: .82rem; color: #526178; }
+.ds-auth-sep { height: 1px; background: #e3e8ef; margin: .2rem 0 1.1rem; }
+.ds-auth-row { display: flex; justify-content: flex-end; margin: -.3rem 0 1rem; font-size: .88rem; }
+.ds-auth-submit { width: 100%; min-height: 54px; margin-top: .4rem; border: 0; border-radius: 13px; background: var(--ds-ink, #172b4d); color: #fff; font: inherit; font-weight: 700; font-size: 1.02rem; display: inline-flex; align-items: center; justify-content: center; gap: .6rem; cursor: pointer; }
+.ds-auth-submit:hover { background: #0f1e36; }
+.ds-auth-foot { margin: 1rem 0 0; font-size: .82rem; color: #526178; }
+.ds-auth-panel .ds-status-notice, .ds-auth-panel [role="status"], .ds-auth-panel [role="alert"] { margin-bottom: 1.1rem; }
+@media (max-width: 760px) {
+  .ds-auth-wrap { padding-block: 1.2rem; }
+  .ds-auth-split { grid-template-columns: minmax(0, 1fr); border-radius: 20px; }
+  .ds-auth-photo { min-height: 15rem; padding: 1.3rem; }
+  .ds-auth-quote { font-size: 1.25rem; }
+  .ds-auth-panel { padding: 1.6rem 1.2rem; grid-column: auto; grid-row: auto; }
+  .ds-auth-photo { grid-column: auto; grid-row: auto; }
+}
+@media (forced-colors: active) {
+  .ds-auth-photo picture, .ds-auth-photo::before { display: none; }
+  .ds-auth-photo { background: Canvas; color: CanvasText; }
+  .ds-auth-quote, .ds-auth-quote span { color: CanvasText; }
+  .ds-auth-tab[aria-current="page"], .ds-auth-submit, .ds-auth-box input { border: 1px solid ButtonText; }
+}
