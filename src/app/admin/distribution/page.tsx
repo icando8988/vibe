@@ -5,14 +5,17 @@ import { CONTENT_FLOW } from "@/components/distribution-console/nav";
 import { ChannelCards } from "@/components/distribution-console/states";
 import { ReadStateNotice } from "@/components/distribution-console/write-notice-view";
 import { loadContentList } from "@/server/distribution/content-page";
+import type { Channel } from "@/lib/distribution/types";
 
 export const dynamic = "force-dynamic";
+export const metadata = { title: "SNS 관리" };
 
-/**
- * W1 통합 개요 — 디자인 A(콘텐츠 중심). 첫 질문은 "무엇을 전할까?".
- * 콘텐츠 보관함 → 공통 원문 → 3채널 초안·검토 → 실행 준비 흐름을 보여 준다.
- * 운영 데이터는 연결 전이므로 보관함·작업은 "미연결"로 둔다(예시 원문·건수·성과 없음).
- */
+const connectionHref: Record<Channel, string> = {
+  blog: "/admin/distribution/connections/blog-extension",
+  threads: "/admin/distribution/connections/threads",
+  instagram: "/admin/distribution/connections/instagram",
+};
+
 export default async function DistributionOverviewPage() {
   const denied = await denyUnlessDistributionAdmin();
   if (denied) return denied;
@@ -22,13 +25,14 @@ export default async function DistributionOverviewPage() {
     <ConsoleShell
       section="overview"
       isRoot
-      eyebrow="콘텐츠 중심"
-      title="이야기 하나에서, 세 채널로"
-      description="원문을 먼저 다듬고, Blog·Threads·Instagram에 맞게 펼친 뒤 채널마다 따로 검토합니다."
+      title="SNS 관리"
+      description="Threads, Instagram, 네이버 블로그의 원고와 채널별 초안을 작성하고 게시 작업을 관리합니다."
       actions={
-        <Link className="ds-button ds-button--primary" href="/admin/distribution/contents">
-          콘텐츠 보관함 열기
-        </Link>
+        <div className="ds-actions">
+          <Link className="ds-button ds-button--primary" href="/admin/distribution/contents/new">새 원고 작성</Link>
+          <Link className="ds-button ds-button--secondary" href="/admin/distribution/contents">콘텐츠 보관함</Link>
+          <Link className="ds-button ds-button--secondary" href="/admin/distribution/jobs">게시 작업 관리</Link>
+        </div>
       }
     >
       <section aria-labelledby="ov-flow" className="dc-panel dc-hero">
@@ -88,12 +92,12 @@ export default async function DistributionOverviewPage() {
 
       <section aria-labelledby="ov-channels" className="dc-block">
         <div className="dc-panel-head">
-          <h2 id="ov-channels">채널별 방식</h2>
+          <h2 id="ov-channels">채널 연결 및 게시 상태</h2>
           <Link className="dc-action" href="/admin/distribution/connections">
             연결·준비도 →
           </Link>
         </div>
-        <ChannelCards />
+        <ChannelCards hrefFor={(channel) => connectionHref[channel]} />
       </section>
 
       <section aria-labelledby="ov-attention" className="dc-panel dc-block">
