@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ActionForm } from "@/components/distribution-console/action-form";
 import { ConsoleShell } from "@/components/distribution-console/console-shell";
+import { DraftGenerationPanel } from "@/components/distribution-console/draft-generation-panel";
 import { denyUnlessDistributionAdmin } from "@/components/distribution-console/guard";
 import { CHANNEL_INFO, CHANNELS, isChannel, isWellFormedId } from "@/components/distribution-console/readiness";
 import { MEDIA_REASON_FIELD_LABELS, requestNow } from "@/components/distribution-console/media-labels";
@@ -110,6 +111,18 @@ export default async function ChannelDraftPage({
             {draft?.basedOnLatest === false ? (
               <p className="dc-tag dc-tag-amber">원문이 새 버전으로 바뀌었습니다 — 최신 원문 기준으로 다시 저장한 뒤 검토하세요</p>
             ) : null}
+
+            {/* AI 초안 제안(task_b2f8b2d176d4): 저장 전 제안만 보여 주고, 편집란에 넣은 뒤 아래 기존 "초안 저장"으로만 저장한다. */}
+            <DraftGenerationPanel
+              contentId={contentId}
+              channel={channel}
+              channelLabel={info.label}
+              sourceVersionId={current.id}
+              sourceVersionNo={current.versionNo}
+              sourceApproved={detail.contentApproval.state === "approved" && detail.contentApproval.subjectHash === current.contentHash}
+              disabledReason={detail.archived ? "보관된 원문이라 제안을 받을 수 없습니다." : draft?.archived ? "보관된 초안이라 제안을 받을 수 없습니다." : null}
+              editorId={draft ? "d-body" : null}
+            />
 
             {!draft ? (
               <ActionForm action={createChannelDraftAction} disabled={!canWrite} className="">
